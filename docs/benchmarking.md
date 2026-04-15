@@ -99,3 +99,19 @@ Supported variants:
 - `turboquant-v2-lean`, `turboquant-v2-rot`, `turboquant-v3-3.5`
 - `rotorquant`
 - `speculative-rotorquant`
+
+## 5) Qwen 3.5 experiment track
+
+Qwen experiments are documented and scripted separately from Gemma:
+
+- `scripts/run_dflash_mlx_benchmark.sh` (DFlash benchmark path)
+- `scripts/run_qwen_mlx_kv_sweep.sh` (KV sweep exploration)
+- `scripts/run_qwen_turboquant_mlx.sh` (TurboQuant variants)
+- `scripts/run_qwen_ddtree_benchmark.sh` (DDTree benchmark/prototype path)
+
+Primary Qwen reports:
+- `docs/qwen-tuning-report.md`
+- `docs/qwen-tuning-benchmarks.md`
+- `docs/qwen-dflash-sweep.md`
+- `docs/qwen-turboquant-eval.md`
+- `docs/qwen-ddtree-eval.md`

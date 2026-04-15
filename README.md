@@ -6,13 +6,14 @@ This repository packages:
 - pinned upstream sources (`dflash`, `ddtree`, `triattention`, `turboquant-mlx`)
 - versioned local patches
 - pinned Python runtime dependencies
-- reproducible benchmark runners for Gemma 4 26B A4B variants
+- benchmark runners for both Gemma 4 and Qwen 3.5 experiment tracks
 
 ## Why these tests were run
 
-The benchmark campaign targeted one question:
+The campaign targeted two practical questions:
 
-**Can a local 32 GB Apple Silicon machine reliably run Gemma 4 26B A4B for coding-agent style workloads with useful context length and practical throughput?**
+1. **Gemma 4 26B A4B track:** Can a local 32 GB Apple Silicon machine run high-parameter Gemma with usable context and speed?
+2. **Qwen 3.5 track:** Do DFlash/DDTree/TriAttention/TurboQuant/RotorQuant-style optimizations materially improve local agent workload behavior?
 
 To answer that, we measured:
 - low-context throughput (prompt/decode speed)
@@ -31,7 +32,7 @@ scripts/smoke_test.sh --venv-path .venv
 
 ## Models and variants tested
 
-### Base model family (strict target)
+### Gemma 4 experiment track
 
 - `Jiunsong/supergemma4-26b-uncensored-mlx-4bit-v2` (Gemma 4 26B A4B)
 
@@ -54,6 +55,26 @@ scripts/smoke_test.sh --venv-path .venv
 - `turboquant-v3-3.5` (compatibility-limited)
 - `rotorquant`
 - `speculative-rotorquant`
+
+### Qwen 3.5 experiment track
+
+Main family tested:
+- `Qwen3.5-27B` variants in MLX-compatible forms (baseline, DFlash and quant/cache variants)
+
+Optimization directions tested:
+- DFlash speculative decode path
+- DDTree integration/prototype path
+- TriAttention merge path
+- TurboQuant (v2/v3) cache substitutions
+- RotorQuant model variant
+
+Qwen-specific docs:
+- `docs/qwen-tuning-report.md`
+- `docs/qwen-tuning-benchmarks.md`
+- `docs/qwen-dflash-sweep.md`
+- `docs/qwen-turboquant-eval.md`
+- `docs/qwen-ddtree-eval.md`
+- `docs/qwen-optimization-report.md`
 
 ## Final benchmark outcomes (high-level)
 
@@ -109,6 +130,15 @@ scripts/benchmark_gemma4_a4b_variants.sh \
 ```
 
 Artifacts are written under `artifacts/benchmarks/gemma4-a4b/`.
+
+### Qwen track entry points
+
+```bash
+scripts/run_dflash_mlx_benchmark.sh --dry-run
+scripts/run_qwen_mlx_kv_sweep.sh --help
+scripts/run_qwen_turboquant_mlx.sh --help
+scripts/run_qwen_ddtree_benchmark.sh --help
+```
 
 ## What exactly gets stored per run
 
