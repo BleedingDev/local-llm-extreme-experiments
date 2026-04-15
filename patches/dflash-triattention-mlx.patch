@@ -1,0 +1,449 @@
+diff --git a/dflash/benchmark.py b/dflash/benchmark.py
+index 7845a5a..5f18db2 100644
+--- a/dflash/benchmark.py
++++ b/dflash/benchmark.py
+@@ -109,11 +109,22 @@ def _apply_chat_template(tokenizer, messages: list[dict], enable_thinking: bool)
+     )
+ 
+ 
+-def _make_decode_metrics(num_output_tokens: int, generation_tps: float, acceptance_lengths: list[int]) -> SimpleNamespace:
++def _make_decode_metrics(
++    num_output_tokens: int,
++    generation_tps: float,
++    acceptance_lengths: list[int],
++    *,
++    peak_memory_gb: float | None = None,
++    triattention_cache_len: int | None = None,
++    triattention_compressions: int = 0,
++) -> SimpleNamespace:
+     return SimpleNamespace(
+         num_output_tokens=num_output_tokens,
+         time_per_output_token=1.0 / generation_tps if generation_tps > 0 else float("inf"),
+         acceptance_lengths=acceptance_lengths,
++        peak_memory_gb=peak_memory_gb,
++        triattention_cache_len=triattention_cache_len,
++        triattention_compressions=triattention_compressions,
+     )
+ 
+ 
+@@ -124,6 +135,20 @@ def _print_decode_summary(responses: list[dict[int, SimpleNamespace]], block_siz
+     print(f"DFlash throughput:  {1 / dflash_tpot:.2f} tok/s")
+     print(f"Decoding speedup: {baseline_tpot / dflash_tpot:.2f}")
+ 
++    baseline_peak = [r[1].peak_memory_gb for r in responses if r[1].peak_memory_gb is not None]
++    dflash_peak = [r[block_size].peak_memory_gb for r in responses if r[block_size].peak_memory_gb is not None]
++    if baseline_peak:
++        print(f"Baseline peak memory: {np.mean(baseline_peak):.2f} GB")
++    if dflash_peak:
++        print(f"DFlash peak memory:  {np.mean(dflash_peak):.2f} GB")
++
++    tri_cache_lens = [r[block_size].triattention_cache_len for r in responses if r[block_size].triattention_cache_len is not None]
++    tri_compressions = [r[block_size].triattention_compressions for r in responses if r[block_size].triattention_compressions > 0]
++    if tri_cache_lens:
++        print(f"TriAttention final KV len: {np.mean(tri_cache_lens):.1f}")
++    if tri_compressions:
++        print(f"TriAttention compressions: {np.mean(tri_compressions):.1f}")
++
+     mean_accept = np.mean([np.mean(r[block_size].acceptance_lengths) for r in responses])
+     print(f"Average Acceptance length: {mean_accept:.2f}")
+ 
+@@ -339,13 +364,22 @@ def _run_mlx(args: argparse.Namespace) -> None:
+     logger.info(f"Loading draft: {args.draft_model}")
+     draft = load_draft(args.draft_model)
+     block_size = args.block_size if args.block_size is not None else int(draft.config.block_size)
++    triattention_kwargs = {
++        "triattention_enable": args.triattention_enable,
++        "triattention_stats_path": args.triattention_stats_path,
++        "triattention_kv_budget": args.triattention_kv_budget,
++        "triattention_divide_length": args.triattention_divide_length,
++        "triattention_prefill_pin": args.triattention_prefill_pin,
++        "triattention_disable_trig": args.triattention_disable_trig,
++        "triattention_disable_mlr": args.triattention_disable_mlr,
++    }
+ 
+     dataset = load_and_process_dataset(args.dataset)
+     dataset = _limit_dataset(dataset, args.max_samples)
+ 
+     warmup_prompt = tokenizer.encode("Hi")
+     list(stream_generate_baseline(model, tokenizer, warmup_prompt, 3, sampler=sampler))
+-    list(stream_generate(model, draft, tokenizer, warmup_prompt, block_size, 3, sampler=sampler))
++    list(stream_generate(model, draft, tokenizer, warmup_prompt, block_size, 3, sampler=sampler, **triattention_kwargs))
+ 
+     responses = []
+     for idx in tqdm(range(len(dataset))):
+@@ -357,18 +391,41 @@ def _run_mlx(args: argparse.Namespace) -> None:
+ 
+             response = {}
+ 
+-            tokens_bl, tps_bl = [], 0
++            tokens_bl, tps_bl, peak_bl = [], 0, None
+             for r in stream_generate_baseline(model, tokenizer, prompt, args.max_new_tokens, sampler=sampler):
+                 tokens_bl.append(r.token)
+                 tps_bl = r.generation_tps
+-            response[1] = _make_decode_metrics(len(tokens_bl), tps_bl, [1])
++                peak = getattr(r, "peak_memory", None)
++                if peak is not None:
++                    peak_bl = float(peak)
++            response[1] = _make_decode_metrics(len(tokens_bl), tps_bl, [1], peak_memory_gb=peak_bl)
+ 
+-            tokens_df, accs, tps_df = [], [], 0
+-            for r in stream_generate(model, draft, tokenizer, prompt, block_size, args.max_new_tokens, sampler=sampler):
++            tokens_df, accs, tps_df, peak_df = [], [], 0, None
++            tri_cache_len, tri_compressions = None, 0
++            for r in stream_generate(
++                model,
++                draft,
++                tokenizer,
++                prompt,
++                block_size,
++                args.max_new_tokens,
++                sampler=sampler,
++                **triattention_kwargs,
++            ):
+                 tokens_df.extend(r.tokens)
+                 accs.append(r.accepted)
+                 tps_df = r.generation_tps
+-            response[block_size] = _make_decode_metrics(len(tokens_df), tps_df, accs)
++                peak_df = float(r.peak_memory)
++                tri_cache_len = r.triattention_cache_len
++                tri_compressions = r.triattention_compressions
++            response[block_size] = _make_decode_metrics(
++                len(tokens_df),
++                tps_df,
++                accs,
++                peak_memory_gb=peak_df,
++                triattention_cache_len=tri_cache_len,
++                triattention_compressions=tri_compressions,
++            )
+ 
+             output_text = tokenizer.decode(tokens_df)
+             messages.append({"role": "assistant", "content": output_text})
+@@ -496,6 +553,13 @@ def main() -> None:
+     parser.add_argument("--top-k", type=int, default=1)
+     parser.add_argument("--enable-thinking", action="store_true")
+     parser.add_argument("--timeout-s", type=int, default=3600)
++    parser.add_argument("--triattention-enable", action="store_true")
++    parser.add_argument("--triattention-stats-path", type=str, default=None)
++    parser.add_argument("--triattention-kv-budget", type=int, default=2048)
++    parser.add_argument("--triattention-divide-length", type=int, default=8)
++    parser.add_argument("--triattention-prefill-pin", action="store_true")
++    parser.add_argument("--triattention-disable-trig", action="store_true")
++    parser.add_argument("--triattention-disable-mlr", action="store_true")
+ 
+     args = parser.parse_args()
+ 
+diff --git a/dflash/model_mlx.py b/dflash/model_mlx.py
+index ded744c..5439e7a 100644
+--- a/dflash/model_mlx.py
++++ b/dflash/model_mlx.py
+@@ -3,7 +3,7 @@ import time
+ from dataclasses import dataclass
+ from pathlib import Path
+ from threading import RLock
+-from typing import List, Optional, Tuple
++from typing import Any, Callable, List, Optional, Tuple
+ 
+ import mlx.core as mx
+ import mlx.nn as nn
+@@ -296,19 +296,131 @@ class GenerationResponse:
+     generation_tokens: int
+     generation_tps: float
+     peak_memory: float
++    triattention_cache_len: Optional[int] = None
++    triattention_compressions: int = 0
+     finish_reason: Optional[str] = None
+ 
+ 
+-def _make_response(text, tokens, accepted, prompt_size, prompt_tps, n, tic, finish_reason=None):
++@dataclass
++class _TriAttentionRuntime:
++    compressor: Any
++    step_fn: Callable[..., list]
++    kv_indices: Tuple[int, ...]
++    cache_len: int
++    position: int
++    compressions: int = 0
++
++
++def _make_response(
++    text,
++    tokens,
++    accepted,
++    prompt_size,
++    prompt_tps,
++    n,
++    tic,
++    finish_reason=None,
++    triattention_cache_len: Optional[int] = None,
++    triattention_compressions: int = 0,
++):
+     return GenerationResponse(
+         text, tokens, accepted, prompt_size, prompt_tps,
+-        n, n / (time.perf_counter() - tic), mx.get_peak_memory() / 1e9, finish_reason,
++        n,
++        n / (time.perf_counter() - tic),
++        mx.get_peak_memory() / 1e9,
++        triattention_cache_len,
++        triattention_compressions,
++        finish_reason,
++    )
++
++
++def _cache_offset(cache_entry) -> int:
++    return int(getattr(cache_entry, "offset", 0))
++
++
++def _apply_triattention_step(runtime: _TriAttentionRuntime, target_cache, *, is_prefill: bool, current_position: int) -> None:
++    kv_states = [target_cache[idx].state for idx in runtime.kv_indices]
++    if not is_prefill and kv_states:
++        seq_len = int(kv_states[0][0].shape[2])
++        cache_positions = getattr(runtime.compressor, "cache_positions", [])
++        if seq_len <= 0:
++            runtime.compressor.cache_positions = []
++        elif len(cache_positions) != seq_len:
++            start_pos = max(current_position - seq_len + 1, 0)
++            runtime.compressor.cache_positions = list(range(start_pos, start_pos + seq_len))
++        runtime.compressor.absolute_position = current_position + 1
++    kv_states = runtime.step_fn(
++        runtime.compressor,
++        kv_states,
++        is_prefill=is_prefill,
++        current_position=current_position,
++    )
++    for idx, state in zip(runtime.kv_indices, kv_states):
++        target_cache[idx].state = state
++
++
++def _init_triattention_runtime(
++    *,
++    enabled: bool,
++    model,
++    target_cache,
++    prompt_size: int,
++    stats_path: Optional[str],
++    kv_budget: int,
++    divide_length: int,
++    prefill_pin: bool,
++    disable_trig: bool,
++    disable_mlr: bool,
++) -> Optional[_TriAttentionRuntime]:
++    if not enabled:
++        return None
++    if kv_budget <= 0:
++        raise ValueError("--triattention-kv-budget must be > 0")
++    if divide_length <= 0:
++        raise ValueError("--triattention-divide-length must be > 0")
++
++    try:
++        from triattention.mlx import apply_triattention_mlx
++        from triattention.mlx.triattention_mlx import triattention_generate_step
++    except Exception as exc:
++        raise RuntimeError(
++            "TriAttention merge requested, but triattention.mlx import failed. "
++            "Fetch vendor/triattention and ensure it is on PYTHONPATH."
++        ) from exc
++
++    compressor = apply_triattention_mlx(
++        model,
++        kv_budget=kv_budget,
++        divide_length=divide_length,
++        prefill_pin=prefill_pin,
++        disable_trig=disable_trig,
++        disable_mlr=disable_mlr,
++        stats_path=stats_path,
++    )
++    kv_indices = tuple(i for i, cache in enumerate(target_cache) if isinstance(cache, KVCache))
++    if not kv_indices:
++        raise RuntimeError(
++            "TriAttention merge requested, but no KVCache layers were found in target cache."
++        )
++    return _TriAttentionRuntime(
++        compressor=compressor,
++        step_fn=triattention_generate_step,
++        kv_indices=kv_indices,
++        cache_len=_cache_offset(target_cache[kv_indices[0]]),
++        position=prompt_size,
+     )
+ 
+ 
+ def stream_generate(
+     model, draft, tokenizer, prompt,
+     block_size=None, max_tokens=256, temperature=0.0, sampler=None,
++    triattention_enable: bool = False,
++    triattention_stats_path: Optional[str] = None,
++    triattention_kv_budget: int = 2048,
++    triattention_divide_length: int = 8,
++    triattention_prefill_pin: bool = False,
++    triattention_disable_trig: bool = False,
++    triattention_disable_mlr: bool = False,
+ ):
+     _patch_model(model, draft.config.target_layer_ids)
+     block_size = block_size if block_size is not None else int(draft.config.block_size)
+@@ -337,6 +449,18 @@ def stream_generate(
+             "mlx_lm.models.gated_delta is unavailable."
+         )
+     _capture = _GDNStateCapture() if not _target_can_trim else None
++    triattention_runtime = _init_triattention_runtime(
++        enabled=triattention_enable,
++        model=model,
++        target_cache=target_cache,
++        prompt_size=int(prompt.size),
++        stats_path=triattention_stats_path,
++        kv_budget=triattention_kv_budget,
++        divide_length=triattention_divide_length,
++        prefill_pin=triattention_prefill_pin,
++        disable_trig=triattention_disable_trig,
++        disable_mlr=triattention_disable_mlr,
++    )
+ 
+     try:
+         tic = time.perf_counter()
+@@ -344,6 +468,14 @@ def stream_generate(
+             logits = model(prompt[None], target_cache)
+             hidden = mx.concatenate(model._hidden_states, axis=-1)
+         mx.eval(logits, hidden)
++        if triattention_runtime is not None and prompt.size > 0:
++            _apply_triattention_step(
++                triattention_runtime,
++                target_cache,
++                is_prefill=True,
++                current_position=int(prompt.size) - 1,
++            )
++            triattention_runtime.cache_len = _cache_offset(target_cache[triattention_runtime.kv_indices[0]])
+         prompt_tps = prompt.size / (time.perf_counter() - tic)
+ 
+         tic = time.perf_counter()
+@@ -354,11 +486,40 @@ def stream_generate(
+         if token in tokenizer.eos_token_ids:
+             detokenizer.add_token(token)
+             detokenizer.finalize()
+-            yield _make_response(detokenizer.last_segment, [token], 1, prompt.size, prompt_tps, n, tic, "stop")
++            yield _make_response(
++                detokenizer.last_segment,
++                [token],
++                1,
++                prompt.size,
++                prompt_tps,
++                n,
++                tic,
++                "stop",
++                triattention_cache_len=(
++                    triattention_runtime.cache_len if triattention_runtime is not None else None
++                ),
++                triattention_compressions=(
++                    triattention_runtime.compressions if triattention_runtime is not None else 0
++                ),
++            )
+             return
+ 
+         detokenizer.add_token(token)
+-        yield _make_response(detokenizer.last_segment, [token], 1, prompt.size, prompt_tps, n, tic)
++        yield _make_response(
++            detokenizer.last_segment,
++            [token],
++            1,
++            prompt.size,
++            prompt_tps,
++            n,
++            tic,
++            triattention_cache_len=(
++                triattention_runtime.cache_len if triattention_runtime is not None else None
++            ),
++            triattention_compressions=(
++                triattention_runtime.compressions if triattention_runtime is not None else 0
++            ),
++        )
+ 
+         while n < max_tokens:
+             bs = min(block_size, max_tokens - n + 1)
+@@ -395,7 +556,22 @@ def stream_generate(
+                 detokenizer.finalize()
+                 tokens.extend(new_tokens)
+                 n += len(new_tokens)
+-                yield _make_response(detokenizer.last_segment, new_tokens, accepted + 1, prompt.size, prompt_tps, n, tic, "stop")
++                yield _make_response(
++                    detokenizer.last_segment,
++                    new_tokens,
++                    accepted + 1,
++                    prompt.size,
++                    prompt_tps,
++                    n,
++                    tic,
++                    "stop",
++                    triattention_cache_len=(
++                        triattention_runtime.cache_len if triattention_runtime is not None else None
++                    ),
++                    triattention_compressions=(
++                        triattention_runtime.compressions if triattention_runtime is not None else 0
++                    ),
++                )
+                 return
+ 
+             for t in new_tokens:
+@@ -406,8 +582,6 @@ def stream_generate(
+             if n % 256 == 0:
+                 mx.clear_cache()
+ 
+-            yield _make_response(detokenizer.last_segment, new_tokens, accepted + 1, prompt.size, prompt_tps, n, tic)
+-
+             trim = bs - accepted - 1
+             if trim > 0:
+                 if _target_can_trim:
+@@ -416,8 +590,56 @@ def stream_generate(
+                     _capture.rollback(target_cache, accepted, trim)
+             hidden = hidden[:, :accepted + 1, :]
+ 
++            if triattention_runtime is not None:
++                before_len = _cache_offset(target_cache[triattention_runtime.kv_indices[0]])
++                if before_len > 0:
++                    _apply_triattention_step(
++                        triattention_runtime,
++                        target_cache,
++                        is_prefill=False,
++                        current_position=int(prompt.size + n - 1),
++                    )
++                    after_len = _cache_offset(target_cache[triattention_runtime.kv_indices[0]])
++                    if after_len < before_len:
++                        triattention_runtime.compressions += 1
++                    triattention_runtime.cache_len = after_len
++                else:
++                    triattention_runtime.cache_len = before_len
++                triattention_runtime.position = int(prompt.size + n)
++
++            yield _make_response(
++                detokenizer.last_segment,
++                new_tokens,
++                accepted + 1,
++                prompt.size,
++                prompt_tps,
++                n,
++                tic,
++                triattention_cache_len=(
++                    triattention_runtime.cache_len if triattention_runtime is not None else None
++                ),
++                triattention_compressions=(
++                    triattention_runtime.compressions if triattention_runtime is not None else 0
++                ),
++            )
++
+         detokenizer.finalize()
+-        yield _make_response(detokenizer.last_segment, [], 0, prompt.size, prompt_tps, n, tic, "length")
++        yield _make_response(
++            detokenizer.last_segment,
++            [],
++            0,
++            prompt.size,
++            prompt_tps,
++            n,
++            tic,
++            "length",
++            triattention_cache_len=(
++                triattention_runtime.cache_len if triattention_runtime is not None else None
++            ),
++            triattention_compressions=(
++                triattention_runtime.compressions if triattention_runtime is not None else 0
++            ),
++        )
+     finally:
+         if _capture is not None:
+             _capture.close()

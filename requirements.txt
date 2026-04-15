@@ -1,0 +1,9 @@
+# Core MLX runtime for local Apple Silicon execution
+mlx==0.31.1; platform_system == "Darwin"
+mlx-lm==0.31.2; platform_system == "Darwin"
+
+# SuperGemma model/tokenizer support
+huggingface_hub==1.10.2
+transformers==5.5.4
+sentencepiece==0.2.1
+safetensors==0.7.0
