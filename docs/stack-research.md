@@ -113,7 +113,7 @@ That is a **separate CUDA research harness**, not integrated into z-lab/dflash `
 Use a project-local venv only:
 
 ```bash
-cd /Users/satan/side/experiments/supergemma-dflash-ddtree-mlx
+cd .
 python3 -m venv .venv
 source .venv/bin/activate
 python -m pip install --upgrade pip setuptools wheel

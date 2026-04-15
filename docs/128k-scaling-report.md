@@ -37,7 +37,7 @@ scripts/run_long_context_map_reduce.sh \
 ```
 
 Artefakt:
-- `/Users/satan/side/experiments/supergemma-dflash-ddtree-mlx/artifacts/long-context/20260414T152350Z`
+- `artifacts/long-context/20260414T152350Z`
 
 Naměřené:
 - `input_token_count = 784896`
@@ -48,7 +48,7 @@ Naměřené:
 ### B) Reálný mini běh (bez dry-run)
 
 Artefakt:
-- `/Users/satan/side/experiments/supergemma-dflash-ddtree-mlx/artifacts/long-context/20260414T152420Z`
+- `artifacts/long-context/20260414T152420Z`
 
 Naměřené:
 - `input_token_count = 52`

@@ -29,10 +29,10 @@ Backend/model pair followed wrapper defaults:
 
 ## Artifacts/logs
 
-- `/Users/satan/side/experiments/supergemma-dflash-ddtree-mlx/artifacts/benchmarks/dflash-mlx-20260414-173127/benchmark.log`
-- `/Users/satan/side/experiments/supergemma-dflash-ddtree-mlx/artifacts/benchmarks/dflash-mlx-20260414-173612/benchmark.log`
-- `/Users/satan/side/experiments/supergemma-dflash-ddtree-mlx/artifacts/benchmarks/dflash-mlx-20260414-173921/benchmark.log`
-- Dataset cache created/used: `/Users/satan/side/experiments/supergemma-dflash-ddtree-mlx/vendor/dflash/cache/gsm8k.jsonl`
+- `artifacts/benchmarks/dflash-mlx-20260414-173127/benchmark.log`
+- `artifacts/benchmarks/dflash-mlx-20260414-173612/benchmark.log`
+- `artifacts/benchmarks/dflash-mlx-20260414-173921/benchmark.log`
+- Dataset cache created/used: `vendor/dflash/cache/gsm8k.jsonl`
 
 ## Measured results (from logs)
 

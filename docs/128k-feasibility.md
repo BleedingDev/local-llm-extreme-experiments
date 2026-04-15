@@ -8,8 +8,8 @@ Model to architektonicky podporuje, ale paměťově to nevychází.
 ## Empirické měření (`max-kv-size` probe)
 
 Artefakty:
-- `/Users/satan/side/experiments/supergemma-dflash-ddtree-mlx/artifacts/benchmarks/20260414T140214Z`
-- `/Users/satan/side/experiments/supergemma-dflash-ddtree-mlx/artifacts/benchmarks/20260414T140321Z`
+- `artifacts/benchmarks/20260414T140214Z`
+- `artifacts/benchmarks/20260414T140321Z`
 
 Výsledek:
 - ověřeno bez pádu až do `max-kv-size=32768`

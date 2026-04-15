@@ -5,13 +5,13 @@ Datum reportu: 2026-04-14 (z běhů `20260414T115232Z` a `20260414T115402Z`).
 ## 1) Vstupy a artefakty (reprodukovatelnost)
 
 Použité vstupy:
-- `/Users/satan/side/experiments/supergemma-dflash-ddtree-mlx/docs/benchmark-system-baseline.md`
-- `/Users/satan/side/experiments/supergemma-dflash-ddtree-mlx/docs/benchmarking.md`
+- `docs/benchmark-system-baseline.md`
+- `docs/benchmarking.md`
 
 Použité benchmark artefakty:
-- `/Users/satan/side/experiments/supergemma-dflash-ddtree-mlx/artifacts/benchmarks/20260414T115232Z`
+- `artifacts/benchmarks/20260414T115232Z`
   - `results.csv`, `summary.txt`, `config.env`, `prompt.txt`, `raw/*`
-- `/Users/satan/side/experiments/supergemma-dflash-ddtree-mlx/artifacts/benchmarks/20260414T115402Z`
+- `artifacts/benchmarks/20260414T115402Z`
   - `results.csv`, `summary.txt`, `config.env`, `prompt.txt`, `raw/*`
 
 ## 2) Hardware/software baseline (snapshot `2026-04-14T11:41:40Z`)
@@ -60,8 +60,8 @@ Harness:
 
 Poznámka k variabilitě:
 - Dva běhy mají výrazně nižší `prompt_tps` (57.368 a 57.870):
-  - `/Users/satan/side/experiments/supergemma-dflash-ddtree-mlx/artifacts/benchmarks/20260414T115232Z/raw/0006_benchmark_kv768_tok64_rep3.combined.log`
-  - `/Users/satan/side/experiments/supergemma-dflash-ddtree-mlx/artifacts/benchmarks/20260414T115232Z/raw/0011_benchmark_kv1280_tok64_rep2.combined.log`
+  - `artifacts/benchmarks/20260414T115232Z/raw/0006_benchmark_kv768_tok64_rep3.combined.log`
+  - `artifacts/benchmarks/20260414T115232Z/raw/0011_benchmark_kv1280_tok64_rep2.combined.log`
 
 ## 5) Max ověřený kontext/KV a hranice selhání (`20260414T115402Z`)
 

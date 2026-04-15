@@ -83,7 +83,7 @@ Zdroj tabulky: [vendor/dflash/README.md:10-29]
 
 ### 5.1 Lightweight sanity (ověřeno v tomto auditu)
 ```bash
-cd /Users/satan/side/experiments/supergemma-dflash-ddtree-mlx
+cd .
 git --no-pager -C vendor/dflash rev-parse HEAD
 scripts/combo_reality_check.sh
 scripts/run_dflash_mlx_benchmark.sh --dry-run
