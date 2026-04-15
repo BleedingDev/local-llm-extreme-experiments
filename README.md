@@ -1,4 +1,4 @@
-# supergemma-dflash-ddtree-mlx
+# local-llm-extreme-experiments
 
 Reproducible local benchmarking workspace for MLX-based model experiments on Apple Silicon.
 

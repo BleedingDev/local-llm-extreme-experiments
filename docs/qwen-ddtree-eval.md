@@ -64,7 +64,7 @@ Purpose:
 Use a Linux CUDA box (not this Apple Silicon machine):
 
 ```bash
-cd /path/to/supergemma-dflash-ddtree-mlx
+cd /path/to/local-llm-extreme-experiments
 
 # Prefer Python 3.10-3.12 for CUDA wheel availability
 python3.11 -m venv .venv-cuda
