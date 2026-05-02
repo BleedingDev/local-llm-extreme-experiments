@@ -1,0 +1,23 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false
+  },
+  "include": [
+    "src/**/*.ts",
+    "scripts/**/*.ts",
+    "tests/acp-path-policy.test.ts",
+    "tests/answer-wobble.test.ts",
+    "tests/bag-rpc-run.test.ts",
+    "tests/dflash-patch-compatibility.test.ts",
+    "tests/oauth-flows.test.ts",
+    "tests/optimized-prompt-loader.test.ts",
+    "tests/provider-role-model.test.ts",
+    "tests/sdk-agent-session.test.ts",
+    "tests/workspace-detect-project-kind.test.ts",
+    "tests/workspace-paths.test.ts",
+    "types/**/*.d.ts"
+  ]
+}

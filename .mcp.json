@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "trace-rag": {
+      "command": "/Users/satan/side/experiments/supergemma-dflash-ddtree-mlx/.venv-gepa/bin/python",
+      "args": [
+        "-m",
+        "mcp_servers.trace_rag.server"
+      ],
+      "env": {
+        "PYTHONPATH": "/Users/satan/side/experiments/supergemma-dflash-ddtree-mlx/trace-gepa",
+        "TRACE_RAG_INDEX_DIR": "/Users/satan/side/experiments/supergemma-dflash-ddtree-mlx/trace-gepa/artifacts/rag_index_v2"
+      }
+    }
+  }
+}
