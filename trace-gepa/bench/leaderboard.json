@@ -1,0 +1,588 @@
+{
+  "generated_at": "2026-05-02T00:56:55+00:00",
+  "results_dir": "trace-gepa/bench/results",
+  "total_runs": 6,
+  "ok_runs": 6,
+  "incomplete_runs": [],
+  "missing_harnesses": [],
+  "runs": [
+    {
+      "source_file": "trace-gepa/bench/results/codex_gpt-5.5_xhigh_20.json",
+      "harness": "codex",
+      "model": "gpt-5.5",
+      "system_prompt_id": "seed",
+      "tasks_file": "trace-gepa/data/benchmark_tasks.jsonl",
+      "limit": 20,
+      "schema_version": null,
+      "status": "ok",
+      "reason": null,
+      "aggregate": {
+        "overall": {
+          "mean_score": 1.0,
+          "count": 20,
+          "wallclock_s": 86.357577085495,
+          "lm_calls": null,
+          "input_tokens": null,
+          "output_tokens": null
+        },
+        "by_category": {
+          "tool_routing": {
+            "mean_score": 1.0,
+            "count": 20
+          }
+        },
+        "by_difficulty": {
+          "medium": {
+            "mean_score": 1.0,
+            "count": 13
+          },
+          "easy": {
+            "mean_score": 1.0,
+            "count": 2
+          },
+          "hard": {
+            "mean_score": 1.0,
+            "count": 5
+          }
+        }
+      },
+      "n_results": 20
+    },
+    {
+      "source_file": "trace-gepa/bench/results/codex_gpt-5.5_xhigh_strat20.json",
+      "harness": "codex",
+      "model": "gpt-5.5",
+      "system_prompt_id": "seed",
+      "tasks_file": "/tmp/codex_bench_tmp/benchmark_tasks_stratified20.jsonl",
+      "limit": 0,
+      "schema_version": null,
+      "status": "ok",
+      "reason": null,
+      "aggregate": {
+        "overall": {
+          "mean_score": 0.85,
+          "count": 20,
+          "wallclock_s": 108.3401689529419,
+          "lm_calls": null,
+          "input_tokens": null,
+          "output_tokens": null
+        },
+        "by_category": {
+          "tool_routing": {
+            "mean_score": 1.0,
+            "count": 3
+          },
+          "command_synthesis": {
+            "mean_score": 0.0,
+            "count": 3
+          },
+          "edit_safety": {
+            "mean_score": 1.0,
+            "count": 3
+          },
+          "path_grounding": {
+            "mean_score": 1.0,
+            "count": 3
+          },
+          "debugging": {
+            "mean_score": 1.0,
+            "count": 3
+          },
+          "recovery": {
+            "mean_score": 1.0,
+            "count": 3
+          },
+          "planning": {
+            "mean_score": 1.0,
+            "count": 2
+          }
+        },
+        "by_difficulty": {
+          "medium": {
+            "mean_score": 1.0,
+            "count": 9
+          },
+          "easy": {
+            "mean_score": 0.4,
+            "count": 5
+          },
+          "hard": {
+            "mean_score": 1.0,
+            "count": 6
+          }
+        }
+      },
+      "n_results": 20
+    },
+    {
+      "source_file": "trace-gepa/bench/results/smoke_anthropic.json",
+      "harness": "anthropic",
+      "model": "claude-opus-4-7",
+      "system_prompt_id": "seed",
+      "tasks_file": "trace-gepa/data/benchmark_tasks.jsonl",
+      "limit": 20,
+      "schema_version": null,
+      "status": "ok",
+      "reason": null,
+      "aggregate": {
+        "overall": {
+          "mean_score": 1.0,
+          "count": 20,
+          "wallclock_s": 7.94,
+          "lm_calls": 20,
+          "input_tokens": 7093,
+          "output_tokens": 489
+        },
+        "by_category": {
+          "tool_routing": {
+            "mean_score": 1.0,
+            "count": 20
+          }
+        },
+        "by_difficulty": {
+          "medium": {
+            "mean_score": 1.0,
+            "count": 13
+          },
+          "easy": {
+            "mean_score": 1.0,
+            "count": 2
+          },
+          "hard": {
+            "mean_score": 1.0,
+            "count": 5
+          }
+        }
+      },
+      "n_results": 20
+    },
+    {
+      "source_file": "trace-gepa/bench/results/smoke_anthropic_postfix.json",
+      "harness": "anthropic",
+      "model": "claude-opus-4-7",
+      "system_prompt_id": "seed",
+      "tasks_file": "trace-gepa/data/benchmark_tasks.jsonl",
+      "limit": 20,
+      "schema_version": null,
+      "status": "ok",
+      "reason": null,
+      "aggregate": {
+        "overall": {
+          "mean_score": 0.1,
+          "count": 20,
+          "wallclock_s": 8.5,
+          "lm_calls": 20,
+          "input_tokens": 7093,
+          "output_tokens": 491
+        },
+        "by_category": {
+          "tool_routing": {
+            "mean_score": 0.1,
+            "count": 20
+          }
+        },
+        "by_difficulty": {
+          "medium": {
+            "mean_score": 0.1538,
+            "count": 13
+          },
+          "easy": {
+            "mean_score": 0.0,
+            "count": 2
+          },
+          "hard": {
+            "mean_score": 0.0,
+            "count": 5
+          }
+        }
+      },
+      "n_results": 20
+    },
+    {
+      "source_file": "trace-gepa/bench/results/smoke_codex.json",
+      "harness": "codex",
+      "model": "gpt-5.5",
+      "system_prompt_id": "seed",
+      "tasks_file": "trace-gepa/data/benchmark_tasks.jsonl",
+      "limit": 5,
+      "schema_version": null,
+      "status": "ok",
+      "reason": null,
+      "aggregate": {
+        "overall": {
+          "mean_score": 1.0,
+          "count": 5,
+          "wallclock_s": 24.11851692199707,
+          "lm_calls": null,
+          "input_tokens": null,
+          "output_tokens": null
+        },
+        "by_category": {
+          "tool_routing": {
+            "mean_score": 1.0,
+            "count": 5
+          }
+        },
+        "by_difficulty": {
+          "medium": {
+            "mean_score": 1.0,
+            "count": 3
+          },
+          "easy": {
+            "mean_score": 1.0,
+            "count": 2
+          }
+        }
+      },
+      "n_results": 5
+    },
+    {
+      "source_file": "trace-gepa/bench/results/smoke_mlx.json",
+      "harness": "mlx",
+      "model": "mlx-community/Llama-3.2-1B-Instruct-4bit",
+      "system_prompt_id": "seed",
+      "tasks_file": "/Users/satan/side/experiments/supergemma-dflash-ddtree-mlx/trace-gepa/data/benchmark_tasks.jsonl",
+      "limit": null,
+      "schema_version": null,
+      "status": "ok",
+      "reason": null,
+      "aggregate": {
+        "overall": {
+          "mean_score": 0.4,
+          "count": 10,
+          "wallclock_s": 10.42,
+          "lm_calls": null,
+          "input_tokens": null,
+          "output_tokens": 972
+        },
+        "by_category": {
+          "tool_routing": {
+            "mean_score": 0.4,
+            "count": 10
+          }
+        }
+      },
+      "n_results": 10
+    }
+  ],
+  "rankings": {
+    "overall": [
+      {
+        "harness": "codex",
+        "model": "gpt-5.5",
+        "system_prompt_id": "seed",
+        "mean_score": 1.0,
+        "count": 20,
+        "wallclock_s": 86.357577085495,
+        "lm_calls": null,
+        "input_tokens": null,
+        "output_tokens": null,
+        "cost_effectiveness": 0.23159519610189816,
+        "status": "ok",
+        "source_file": "trace-gepa/bench/results/codex_gpt-5.5_xhigh_20.json"
+      },
+      {
+        "harness": "anthropic",
+        "model": "claude-opus-4-7",
+        "system_prompt_id": "seed",
+        "mean_score": 1.0,
+        "count": 20,
+        "wallclock_s": 7.94,
+        "lm_calls": 20,
+        "input_tokens": 7093,
+        "output_tokens": 489,
+        "cost_effectiveness": 2.5188916876574305,
+        "status": "ok",
+        "source_file": "trace-gepa/bench/results/smoke_anthropic.json"
+      },
+      {
+        "harness": "codex",
+        "model": "gpt-5.5",
+        "system_prompt_id": "seed",
+        "mean_score": 1.0,
+        "count": 5,
+        "wallclock_s": 24.11851692199707,
+        "lm_calls": null,
+        "input_tokens": null,
+        "output_tokens": null,
+        "cost_effectiveness": 0.20730959603240764,
+        "status": "ok",
+        "source_file": "trace-gepa/bench/results/smoke_codex.json"
+      },
+      {
+        "harness": "codex",
+        "model": "gpt-5.5",
+        "system_prompt_id": "seed",
+        "mean_score": 0.85,
+        "count": 20,
+        "wallclock_s": 108.3401689529419,
+        "lm_calls": null,
+        "input_tokens": null,
+        "output_tokens": null,
+        "cost_effectiveness": 0.15691317601123583,
+        "status": "ok",
+        "source_file": "trace-gepa/bench/results/codex_gpt-5.5_xhigh_strat20.json"
+      },
+      {
+        "harness": "mlx",
+        "model": "mlx-community/Llama-3.2-1B-Instruct-4bit",
+        "system_prompt_id": "seed",
+        "mean_score": 0.4,
+        "count": 10,
+        "wallclock_s": 10.42,
+        "lm_calls": null,
+        "input_tokens": null,
+        "output_tokens": 972,
+        "cost_effectiveness": 0.3838771593090211,
+        "status": "ok",
+        "source_file": "trace-gepa/bench/results/smoke_mlx.json"
+      },
+      {
+        "harness": "anthropic",
+        "model": "claude-opus-4-7",
+        "system_prompt_id": "seed",
+        "mean_score": 0.1,
+        "count": 20,
+        "wallclock_s": 8.5,
+        "lm_calls": 20,
+        "input_tokens": 7093,
+        "output_tokens": 491,
+        "cost_effectiveness": 0.23529411764705885,
+        "status": "ok",
+        "source_file": "trace-gepa/bench/results/smoke_anthropic_postfix.json"
+      }
+    ],
+    "by_category": {
+      "tool_routing": [
+        {
+          "harness": "codex",
+          "model": "gpt-5.5",
+          "system_prompt_id": "seed",
+          "mean_score": 1.0,
+          "count": 20,
+          "source_file": "trace-gepa/bench/results/codex_gpt-5.5_xhigh_20.json"
+        },
+        {
+          "harness": "codex",
+          "model": "gpt-5.5",
+          "system_prompt_id": "seed",
+          "mean_score": 1.0,
+          "count": 3,
+          "source_file": "trace-gepa/bench/results/codex_gpt-5.5_xhigh_strat20.json"
+        },
+        {
+          "harness": "anthropic",
+          "model": "claude-opus-4-7",
+          "system_prompt_id": "seed",
+          "mean_score": 1.0,
+          "count": 20,
+          "source_file": "trace-gepa/bench/results/smoke_anthropic.json"
+        },
+        {
+          "harness": "codex",
+          "model": "gpt-5.5",
+          "system_prompt_id": "seed",
+          "mean_score": 1.0,
+          "count": 5,
+          "source_file": "trace-gepa/bench/results/smoke_codex.json"
+        },
+        {
+          "harness": "mlx",
+          "model": "mlx-community/Llama-3.2-1B-Instruct-4bit",
+          "system_prompt_id": "seed",
+          "mean_score": 0.4,
+          "count": 10,
+          "source_file": "trace-gepa/bench/results/smoke_mlx.json"
+        },
+        {
+          "harness": "anthropic",
+          "model": "claude-opus-4-7",
+          "system_prompt_id": "seed",
+          "mean_score": 0.1,
+          "count": 20,
+          "source_file": "trace-gepa/bench/results/smoke_anthropic_postfix.json"
+        }
+      ],
+      "command_synthesis": [
+        {
+          "harness": "codex",
+          "model": "gpt-5.5",
+          "system_prompt_id": "seed",
+          "mean_score": null,
+          "count": 3,
+          "source_file": "trace-gepa/bench/results/codex_gpt-5.5_xhigh_strat20.json"
+        }
+      ],
+      "edit_safety": [
+        {
+          "harness": "codex",
+          "model": "gpt-5.5",
+          "system_prompt_id": "seed",
+          "mean_score": 1.0,
+          "count": 3,
+          "source_file": "trace-gepa/bench/results/codex_gpt-5.5_xhigh_strat20.json"
+        }
+      ],
+      "path_grounding": [
+        {
+          "harness": "codex",
+          "model": "gpt-5.5",
+          "system_prompt_id": "seed",
+          "mean_score": 1.0,
+          "count": 3,
+          "source_file": "trace-gepa/bench/results/codex_gpt-5.5_xhigh_strat20.json"
+        }
+      ],
+      "debugging": [
+        {
+          "harness": "codex",
+          "model": "gpt-5.5",
+          "system_prompt_id": "seed",
+          "mean_score": 1.0,
+          "count": 3,
+          "source_file": "trace-gepa/bench/results/codex_gpt-5.5_xhigh_strat20.json"
+        }
+      ],
+      "recovery": [
+        {
+          "harness": "codex",
+          "model": "gpt-5.5",
+          "system_prompt_id": "seed",
+          "mean_score": 1.0,
+          "count": 3,
+          "source_file": "trace-gepa/bench/results/codex_gpt-5.5_xhigh_strat20.json"
+        }
+      ],
+      "planning": [
+        {
+          "harness": "codex",
+          "model": "gpt-5.5",
+          "system_prompt_id": "seed",
+          "mean_score": 1.0,
+          "count": 2,
+          "source_file": "trace-gepa/bench/results/codex_gpt-5.5_xhigh_strat20.json"
+        }
+      ]
+    },
+    "by_difficulty": {
+      "medium": [
+        {
+          "harness": "codex",
+          "model": "gpt-5.5",
+          "system_prompt_id": "seed",
+          "mean_score": 1.0,
+          "count": 13,
+          "source_file": "trace-gepa/bench/results/codex_gpt-5.5_xhigh_20.json"
+        },
+        {
+          "harness": "codex",
+          "model": "gpt-5.5",
+          "system_prompt_id": "seed",
+          "mean_score": 1.0,
+          "count": 9,
+          "source_file": "trace-gepa/bench/results/codex_gpt-5.5_xhigh_strat20.json"
+        },
+        {
+          "harness": "anthropic",
+          "model": "claude-opus-4-7",
+          "system_prompt_id": "seed",
+          "mean_score": 1.0,
+          "count": 13,
+          "source_file": "trace-gepa/bench/results/smoke_anthropic.json"
+        },
+        {
+          "harness": "codex",
+          "model": "gpt-5.5",
+          "system_prompt_id": "seed",
+          "mean_score": 1.0,
+          "count": 3,
+          "source_file": "trace-gepa/bench/results/smoke_codex.json"
+        },
+        {
+          "harness": "anthropic",
+          "model": "claude-opus-4-7",
+          "system_prompt_id": "seed",
+          "mean_score": 0.1538,
+          "count": 13,
+          "source_file": "trace-gepa/bench/results/smoke_anthropic_postfix.json"
+        }
+      ],
+      "easy": [
+        {
+          "harness": "codex",
+          "model": "gpt-5.5",
+          "system_prompt_id": "seed",
+          "mean_score": 1.0,
+          "count": 2,
+          "source_file": "trace-gepa/bench/results/codex_gpt-5.5_xhigh_20.json"
+        },
+        {
+          "harness": "anthropic",
+          "model": "claude-opus-4-7",
+          "system_prompt_id": "seed",
+          "mean_score": 1.0,
+          "count": 2,
+          "source_file": "trace-gepa/bench/results/smoke_anthropic.json"
+        },
+        {
+          "harness": "codex",
+          "model": "gpt-5.5",
+          "system_prompt_id": "seed",
+          "mean_score": 1.0,
+          "count": 2,
+          "source_file": "trace-gepa/bench/results/smoke_codex.json"
+        },
+        {
+          "harness": "codex",
+          "model": "gpt-5.5",
+          "system_prompt_id": "seed",
+          "mean_score": 0.4,
+          "count": 5,
+          "source_file": "trace-gepa/bench/results/codex_gpt-5.5_xhigh_strat20.json"
+        },
+        {
+          "harness": "anthropic",
+          "model": "claude-opus-4-7",
+          "system_prompt_id": "seed",
+          "mean_score": null,
+          "count": 2,
+          "source_file": "trace-gepa/bench/results/smoke_anthropic_postfix.json"
+        }
+      ],
+      "hard": [
+        {
+          "harness": "codex",
+          "model": "gpt-5.5",
+          "system_prompt_id": "seed",
+          "mean_score": 1.0,
+          "count": 5,
+          "source_file": "trace-gepa/bench/results/codex_gpt-5.5_xhigh_20.json"
+        },
+        {
+          "harness": "codex",
+          "model": "gpt-5.5",
+          "system_prompt_id": "seed",
+          "mean_score": 1.0,
+          "count": 6,
+          "source_file": "trace-gepa/bench/results/codex_gpt-5.5_xhigh_strat20.json"
+        },
+        {
+          "harness": "anthropic",
+          "model": "claude-opus-4-7",
+          "system_prompt_id": "seed",
+          "mean_score": 1.0,
+          "count": 5,
+          "source_file": "trace-gepa/bench/results/smoke_anthropic.json"
+        },
+        {
+          "harness": "anthropic",
+          "model": "claude-opus-4-7",
+          "system_prompt_id": "seed",
+          "mean_score": null,
+          "count": 5,
+          "source_file": "trace-gepa/bench/results/smoke_anthropic_postfix.json"
+        }
+      ]
+    }
+  }
+}
