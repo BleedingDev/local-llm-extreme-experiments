@@ -1,0 +1,485 @@
+{
+  "summary": {
+    "n_sessions": 220,
+    "n_records": 30313,
+    "datasets": [
+      "data/dataset.jsonl",
+      "data/dataset_v2.jsonl"
+    ]
+  },
+  "tool_histogram_top10": [
+    [
+      "Bash",
+      13257
+    ],
+    [
+      "exec_command",
+      5039
+    ],
+    [
+      "Read",
+      4393
+    ],
+    [
+      "Edit",
+      3143
+    ],
+    [
+      "SendMessage",
+      1209
+    ],
+    [
+      "Write",
+      1048
+    ],
+    [
+      "ToolSearch",
+      840
+    ],
+    [
+      "write_stdin",
+      824
+    ],
+    [
+      "spawn_agent",
+      162
+    ],
+    [
+      "TaskCreate",
+      121
+    ]
+  ],
+  "bash_verb_top20": [
+    [
+      "git",
+      3470
+    ],
+    [
+      "zig",
+      2895
+    ],
+    [
+      "grep",
+      2173
+    ],
+    [
+      "ls",
+      1045
+    ],
+    [
+      "cat",
+      463
+    ],
+    [
+      "pnpm",
+      383
+    ],
+    [
+      "find",
+      297
+    ],
+    [
+      "wc",
+      231
+    ],
+    [
+      "python3",
+      146
+    ],
+    [
+      "tail",
+      112
+    ],
+    [
+      "sleep",
+      112
+    ],
+    [
+      "rg",
+      108
+    ],
+    [
+      "head",
+      97
+    ],
+    [
+      "sed",
+      90
+    ],
+    [
+      "mkdir",
+      86
+    ],
+    [
+      "time",
+      74
+    ],
+    [
+      "ps",
+      74
+    ],
+    [
+      "timeout",
+      68
+    ],
+    [
+      "which",
+      67
+    ],
+    [
+      "until",
+      51
+    ]
+  ],
+  "bash_flag_combos_top5_per_verb": {
+    "git": [
+      [
+        "cd && git log",
+        659
+      ],
+      [
+        "cd && git status",
+        551
+      ],
+      [
+        "cd && git add",
+        420
+      ],
+      [
+        "cd && git stash",
+        362
+      ],
+      [
+        "cd && git diff",
+        302
+      ]
+    ],
+    "zig": [
+      [
+        "cd && zig build",
+        2451
+      ],
+      [
+        "cd && zig test",
+        334
+      ],
+      [
+        "cd && zig version",
+        80
+      ],
+      [
+        "cd && zig fmt",
+        28
+      ],
+      [
+        "zig version 2>&1; which",
+        2
+      ]
+    ],
+    "grep": [
+      [
+        "cd && grep -n",
+        303
+      ],
+      [
+        "grep -n \"pub fn",
+        303
+      ],
+      [
+        "grep -n | head",
+        218
+      ],
+      [
+        "grep -n",
+        73
+      ],
+      [
+        "grep -rn | head",
+        54
+      ]
+    ],
+    "ls": [
+      [
+        "ls 2>&1",
+        173
+      ],
+      [
+        "ls",
+        141
+      ],
+      [
+        "ls 2>&1 | head",
+        137
+      ],
+      [
+        "ls -la",
+        47
+      ],
+      [
+        "cd && ls &&",
+        44
+      ]
+    ],
+    "cat": [
+      [
+        "cat 2>&1 | head",
+        78
+      ],
+      [
+        "cat",
+        61
+      ],
+      [
+        "cat 2>&1 | tail",
+        40
+      ],
+      [
+        "cd && cat",
+        30
+      ],
+      [
+        "cat > <<'EOF' const",
+        27
+      ]
+    ],
+    "pnpm": [
+      [
+        "pnpm exec vp check",
+        151
+      ],
+      [
+        "pnpm exec vp test",
+        96
+      ],
+      [
+        "pnpm exec vp lint",
+        30
+      ],
+      [
+        "pnpm exec tsc --noEmit",
+        26
+      ],
+      [
+        "pnpm typecheck 2>&1 |",
+        21
+      ]
+    ],
+    "find": [
+      [
+        "find -path | head",
+        78
+      ],
+      [
+        "find -name -path \"*std*\"",
+        30
+      ],
+      [
+        "find -type f -name",
+        25
+      ],
+      [
+        "find -maxdepth 3 -type",
+        23
+      ],
+      [
+        "find -name -type f",
+        19
+      ]
+    ],
+    "wc": [
+      [
+        "cd && wc -l",
+        137
+      ],
+      [
+        "wc -l",
+        60
+      ],
+      [
+        "wc -l 2>&1",
+        12
+      ],
+      [
+        "wc -c",
+        6
+      ],
+      [
+        "wc -l && grep",
+        4
+      ]
+    ]
+  },
+  "path_histogram": [
+    [
+      "/Users/satan/side/experiments/",
+      18381
+    ],
+    [
+      "~/.claude/",
+      92
+    ],
+    [
+      "/Users/satan/.claude/",
+      91
+    ],
+    [
+      "~/.codex/sessions/",
+      23
+    ],
+    [
+      "/Users/satan/.codex/sessions/",
+      19
+    ]
+  ],
+  "language_signals": {
+    "czech_token_counts": [
+      [
+        "vůbec",
+        80
+      ],
+      [
+        "lepší",
+        64
+      ],
+      [
+        "nene",
+        50
+      ],
+      [
+        "počkej",
+        48
+      ],
+      [
+        "fakt",
+        26
+      ],
+      [
+        "pozor",
+        14
+      ]
+    ],
+    "samples": [
+      {
+        "token": "počkej",
+        "snippet": "Počkej, Michael už to dělá, takže jen pullni změny."
+      },
+      {
+        "token": "počkej",
+        "snippet": "Počkej, Michael už to dělá, takže jen pullni změny."
+      },
+      {
+        "token": "pozor",
+        "snippet": "rkovat našeho vlastního agenta BAG. Ale pozor, aktivně se tu vyvíjí, je tu další agent, který implem"
+      },
+      {
+        "token": "pozor",
+        "snippet": "rkovat našeho vlastního agenta BAG. Ale pozor, aktivně se tu vyvíjí, je tu další agent, který implem"
+      },
+      {
+        "token": "pozor",
+        "snippet": "rkovat našeho vlastního agenta BAG. Ale pozor, aktivně se tu vyvíjí, je tu další agent, který implem"
+      },
+      {
+        "token": "pozor",
+        "snippet": "rkovat našeho vlastního agenta BAG. Ale pozor, aktivně se tu vyvíjí, je tu další agent, který implem"
+      },
+      {
+        "token": "pozor",
+        "snippet": "rkovat našeho vlastního agenta BAG. Ale pozor, aktivně se tu vyvíjí, je tu další agent, který implem"
+      },
+      {
+        "token": "pozor",
+        "snippet": "rkovat našeho vlastního agenta BAG. Ale pozor, aktivně se tu vyvíjí, je tu další agent, který implem"
+      },
+      {
+        "token": "pozor",
+        "snippet": "rkovat našeho vlastního agenta BAG. Ale pozor, aktivně se tu vyvíjí, je tu další agent, který implem"
+      },
+      {
+        "token": "nene",
+        "snippet": "1. Nene, chci maximální kvalitu na Opus. Potřebujeme udělat max"
+      },
+      {
+        "token": "nene",
+        "snippet": "1. Nene, chci maximální kvalitu na Opus. Potřebujeme udělat max"
+      },
+      {
+        "token": "nene",
+        "snippet": "1. Nene, chci maximální kvalitu na Opus. Potřebujeme udělat max"
+      }
+    ]
+  },
+  "skill_top10": [
+    [
+      "subagent-graph",
+      2
+    ],
+    [
+      "plan-graph",
+      2
+    ],
+    [
+      "helm",
+      2
+    ],
+    [
+      "frontend-design",
+      2
+    ]
+  ],
+  "subagent_top10": [
+    [
+      "explorer",
+      162
+    ]
+  ],
+  "repo_top5": [
+    [
+      "ir-multivector-retrieval",
+      14702
+    ],
+    [
+      "ir-expo",
+      2739
+    ],
+    [
+      "supergemma-dflash-ddtree-mlx",
+      426
+    ],
+    [
+      "bonsai-android-llamacpp",
+      202
+    ],
+    [
+      "codex-native",
+      175
+    ]
+  ],
+  "recovery_top5": [
+    {
+      "failed": "Bash",
+      "recovered": "Bash",
+      "count": 2000
+    },
+    {
+      "failed": "exec_command",
+      "recovered": "exec_command",
+      "count": 600
+    },
+    {
+      "failed": "Bash",
+      "recovered": "Read",
+      "count": 452
+    },
+    {
+      "failed": "Bash",
+      "recovered": "Edit",
+      "count": 252
+    },
+    {
+      "failed": "Bash",
+      "recovered": "SendMessage",
+      "count": 121
+    }
+  ]
+}

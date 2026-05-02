@@ -22,3 +22,34 @@ logs/
 tmp/
 *.log
 vendor/
+bench/vendor/
+bench/aider_polyglot/results/
+
+# trace-gepa: raw traces, derived RAG indexes, run intermediates
+trace-gepa/data/*.jsonl
+trace-gepa/data/sanitised/
+trace-gepa/data/codex_session_models.json
+trace-gepa/artifacts/optimized-prompts/*/gepa_state/
+trace-gepa/artifacts/rag_index*
+trace-gepa/artifacts/real_smoke/
+trace-gepa/artifacts/lora_adapters/
+trace-gepa/.pytest_cache/
+trace-gepa/.venv-gepa/
+
+# Whitelist trace-gepa artefacts we explicitly want tracked
+# (top-level `artifacts/` rule above otherwise blocks them)
+!trace-gepa/artifacts/
+!trace-gepa/artifacts/CLAUDE.generated.md
+!trace-gepa/artifacts/optimized-prompts/
+!trace-gepa/artifacts/optimized-prompts/**
+
+# BleedingAgent TypeScript workspace
+node_modules/
+dist/
+.bag/
+
+# Secrets / local-only config
+.env
+.env.*
+!.env.example
+bag.config.json
