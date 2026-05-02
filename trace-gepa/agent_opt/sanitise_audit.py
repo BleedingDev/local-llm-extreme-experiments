@@ -10,6 +10,7 @@ from pathlib import Path
 
 CHECKS = [
     ("path_users_satan", re.compile(r"/Users/satan(?=/|\b)")),
+    ("path_flat_users_satan", re.compile(r"-Users-satan(?=-|\b)")),
     ("anthropic_key", re.compile(r"sk-ant-[A-Za-z0-9_\-]+")),
     ("openai_key", re.compile(r"\bsk-[A-Za-z0-9_\-]{20,}")),
     ("github_token", re.compile(r"ghp_[A-Za-z0-9]{20,}")),

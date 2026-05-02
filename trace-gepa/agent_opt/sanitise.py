@@ -42,6 +42,8 @@ class Redaction:
 # Order matters: path prefixes first, then api keys, then private repos.
 DEFAULT_RULES: list[Redaction] = [
     Redaction("path_users_satan", re.compile(r"/Users/satan(?=/|\b)"), "/Users/USER"),
+    # Claude Code flattens paths into project-id like '-Users-satan-side-...'.
+    Redaction("path_flat_users_satan", re.compile(r"-Users-satan(?=-|\b)"), "-Users-USER"),
     Redaction("path_tilde_satan", re.compile(r"~/satan(?=/|\b)"), "~/USER"),
     Redaction("env_home_satan", re.compile(r"\$HOME/satan(?=/|\b)"), "$HOME"),
     Redaction("anthropic_key", re.compile(r"sk-ant-[A-Za-z0-9_\-]+"), "<REDACTED_KEY>"),
