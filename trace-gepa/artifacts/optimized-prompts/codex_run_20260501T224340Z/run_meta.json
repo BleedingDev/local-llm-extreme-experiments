@@ -1,0 +1,17 @@
+{
+  "track": "codex",
+  "timestamp": "20260501T224340Z",
+  "elapsed_seconds": 645.28,
+  "budget": 300,
+  "train_size": 80,
+  "val_size": 40,
+  "seed": 42,
+  "task_model": "claude-haiku-4-5",
+  "reflection_model": "claude-opus-4-7",
+  "seed_source": "agent_opt.seed_codex.SEED_PROMPT_CODEX",
+  "val_score_before": 0.575,
+  "val_score_after": 0.75,
+  "delta": 0.175,
+  "error": null,
+  "run_dir": "/Users/satan/side/experiments/supergemma-dflash-ddtree-mlx/trace-gepa/artifacts/optimized-prompts/codex_run_20260501T224340Z"
+}

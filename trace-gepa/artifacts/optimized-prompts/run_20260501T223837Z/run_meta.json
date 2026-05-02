@@ -1,0 +1,15 @@
+{
+  "timestamp": "20260501T223837Z",
+  "elapsed_seconds": 1033.83,
+  "budget": 600,
+  "train_size": 120,
+  "val_size": 50,
+  "seed": 42,
+  "task_model": "claude-haiku-4-5",
+  "reflection_model": "claude-opus-4-7",
+  "val_score_before": 0.48,
+  "val_score_after": 0.62,
+  "delta": 0.14,
+  "error": null,
+  "run_dir": "/Users/satan/side/experiments/supergemma-dflash-ddtree-mlx/trace-gepa/artifacts/optimized-prompts/run_20260501T223837Z"
+}

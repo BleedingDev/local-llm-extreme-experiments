@@ -1,0 +1,171 @@
+{
+  "status": "ok",
+  "harness": "run_mlx",
+  "model": "mlx-community/Llama-3.2-1B-Instruct-4bit",
+  "tasks_path": "/Users/satan/side/experiments/supergemma-dflash-ddtree-mlx/trace-gepa/data/benchmark_tasks.jsonl",
+  "n_tasks": 10,
+  "n_pass": 4,
+  "pass_rate": 0.4,
+  "load_seconds": 1.34,
+  "total_gen_tokens": 972,
+  "total_gen_seconds": 10.42,
+  "mean_tokens_per_sec": 93.31,
+  "peak_memory_bytes": 1064886288,
+  "peak_memory_gb": 0.992,
+  "skipped_timeout": 0,
+  "skipped_oom": 0,
+  "by_category": {
+    "tool_routing": {
+      "n": 10,
+      "pass_rate": 0.4
+    }
+  },
+  "by_verifier_kind": {
+    "structural_json": {
+      "n": 10,
+      "pass_rate": 0.4
+    }
+  },
+  "signal_counts": {
+    "json_parse_fail": 6,
+    "json_parsed": 4
+  },
+  "per_task": [
+    {
+      "id": "task_tool_routing_000",
+      "category": "tool_routing",
+      "verifier_kind": "structural_json",
+      "score": 0.0,
+      "signal": "json_parse_fail",
+      "status": "ok",
+      "latency_seconds": 0.678,
+      "gen_tokens": 41,
+      "tokens_per_sec": 60.52,
+      "error": null,
+      "predicted_preview": "{\"tool_name\": \"AskUserQuestion\", \"input\": {\"description\": \"Investigation app over Jira/Confluence\"}, \"reason\": \"Investigate app over Jira/Confluence\"}}"
+    },
+    {
+      "id": "task_tool_routing_001",
+      "category": "tool_routing",
+      "verifier_kind": "structural_json",
+      "score": 0.0,
+      "signal": "json_parse_fail",
+      "status": "ok",
+      "latency_seconds": 5.352,
+      "gen_tokens": 513,
+      "tokens_per_sec": 95.85,
+      "error": null,
+      "predicted_preview": "```json\n{\n  \"tool_name\": \"AskUserQuestion\",\n  \"input\": {\n    \"question\": \"What is the next single action for me to implement in separate folder (go../ir-multivector-retrieval)?\",\n    \"answer\": \"I will"
+    },
+    {
+      "id": "task_tool_routing_002",
+      "category": "tool_routing",
+      "verifier_kind": "structural_json",
+      "score": 0.0,
+      "signal": "json_parse_fail",
+      "status": "ok",
+      "latency_seconds": 0.484,
+      "gen_tokens": 43,
+      "tokens_per_sec": 88.87,
+      "error": null,
+      "predicted_preview": "{\"tool_name\": \"AskUserQuestion\", \"input\": {\"type\": \"user_input\", \"value\": \"Can you tell me the current date and time?\"}, \"reason\": \"AskUserQuestion\"}}"
+    },
+    {
+      "id": "task_tool_routing_003",
+      "category": "tool_routing",
+      "verifier_kind": "structural_json",
+      "score": 1.0,
+      "signal": "json_parsed",
+      "status": "ok",
+      "latency_seconds": 0.479,
+      "gen_tokens": 42,
+      "tokens_per_sec": 87.65,
+      "error": null,
+      "predicted_preview": "{\"tool_name\": \"AskUserQuestion\", \"input\": {\"type\": \"string\", \"name\": \"ask_user_question\"}, \"reason\": \"Ask user question to get input for tool creation.\"}"
+    },
+    {
+      "id": "task_tool_routing_004",
+      "category": "tool_routing",
+      "verifier_kind": "structural_json",
+      "score": 1.0,
+      "signal": "json_parsed",
+      "status": "ok",
+      "latency_seconds": 0.544,
+      "gen_tokens": 50,
+      "tokens_per_sec": 91.96,
+      "error": null,
+      "predicted_preview": "{\"tool_name\": \"AskUserQuestion\", \"input\": {\"type\": \"text\", \"prompt\": \"What is the API key for the server?\", \"default\": \"1234567890\"}, \"reason\": \"Server API key prompt\"}"
+    },
+    {
+      "id": "task_tool_routing_005",
+      "category": "tool_routing",
+      "verifier_kind": "structural_json",
+      "score": 1.0,
+      "signal": "json_parsed",
+      "status": "ok",
+      "latency_seconds": 0.436,
+      "gen_tokens": 41,
+      "tokens_per_sec": 93.96,
+      "error": null,
+      "predicted_preview": "{\"tool_name\": \"ExitWorktree\", \"input\": {\"path\": \"/Users/satan/side/experiments/ir-expo\"}, \"reason\": \"Unpack Jira fixtures for testing\"}"
+    },
+    {
+      "id": "task_tool_routing_006",
+      "category": "tool_routing",
+      "verifier_kind": "structural_json",
+      "score": 0.0,
+      "signal": "json_parse_fail",
+      "status": "ok",
+      "latency_seconds": 0.449,
+      "gen_tokens": 39,
+      "tokens_per_sec": 86.85,
+      "error": null,
+      "predicted_preview": "{\"tool_name\": \"WebSearch\", \"input\": {\"url\": \"https://www.google.com\"}, \"reason\": \"Search the web for L3 deep-scan-controller-engineer\"}}"
+    },
+    {
+      "id": "task_tool_routing_007",
+      "category": "tool_routing",
+      "verifier_kind": "structural_json",
+      "score": 0.0,
+      "signal": "json_parse_fail",
+      "status": "ok",
+      "latency_seconds": 0.909,
+      "gen_tokens": 97,
+      "tokens_per_sec": 106.73,
+      "error": null,
+      "predicted_preview": "{\"tool_name\": \"CronCreate\", \"input\": {\"task_id\": \"CLAIM TASK #12 (TaskUpdate owner=atomic-write-engineer, status=in_progress)\", \"task_name\": \"Claim L12 atomic-write\", \"task_type\": \"CLAIM\", \"task_statu"
+    },
+    {
+      "id": "task_tool_routing_008",
+      "category": "tool_routing",
+      "verifier_kind": "structural_json",
+      "score": 1.0,
+      "signal": "json_parsed",
+      "status": "ok",
+      "latency_seconds": 0.483,
+      "gen_tokens": 47,
+      "tokens_per_sec": 97.4,
+      "error": null,
+      "predicted_preview": "{\"tool_name\": \"CronCreate\", \"input\": {\"command\": \"cron\", \"arguments\": [\"create\", \"indexer\", \"tachiom-zig-0.16\"], \"output\": \"output.txt\"}}"
+    },
+    {
+      "id": "task_tool_routing_009",
+      "category": "tool_routing",
+      "verifier_kind": "structural_json",
+      "score": 0.0,
+      "signal": "json_parse_fail",
+      "status": "ok",
+      "latency_seconds": 0.604,
+      "gen_tokens": 59,
+      "tokens_per_sec": 97.69,
+      "error": null,
+      "predicted_preview": "{\"tool_name\": \"CronCreate\", \"input\": {\"name\": \"plan\", \"file\": \"/Users/satan/side/experiments/ir-expo/.codex/plans/perf-08-ingest-all-projects.plan.md\"}, \"reason\": \"Write plan file\"}}"
+    }
+  ],
+  "config": {
+    "max_tokens": 512,
+    "temp": 0.0,
+    "top_p": 1.0,
+    "task_timeout": 60
+  }
+}

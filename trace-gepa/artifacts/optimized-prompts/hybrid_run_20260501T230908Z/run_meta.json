@@ -1,0 +1,15 @@
+{
+  "timestamp": "20260501T230908Z",
+  "method": "hybrid_merge",
+  "sources": [
+    "bag_run_20260501T224339Z",
+    "codex_run_20260501T224340Z"
+  ],
+  "source_paths": [
+    "/Users/satan/side/experiments/supergemma-dflash-ddtree-mlx/trace-gepa/artifacts/optimized-prompts/bag_run_20260501T224339Z/best_candidate.system.md",
+    "/Users/satan/side/experiments/supergemma-dflash-ddtree-mlx/trace-gepa/artifacts/optimized-prompts/codex_run_20260501T224340Z/best_candidate.system.md"
+  ],
+  "elapsed_seconds": 12.22,
+  "merger_model": "claude-opus-4-7",
+  "chars": 2940
+}

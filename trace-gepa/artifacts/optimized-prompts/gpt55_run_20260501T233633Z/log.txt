@@ -1,0 +1,10 @@
+[gpt55] run_dir=/Users/satan/side/experiments/supergemma-dflash-ddtree-mlx/trace-gepa/artifacts/optimized-prompts/gpt55_run_20260501T233633Z
+[gpt55] args={'budget': 300, 'train_size': 80, 'val_size': 40, 'max_sessions': 80, 'seed': 42, 'task_model': 'claude-opus-4-7', 'reflection_model': 'claude-opus-4-7'}
+[gpt55] extracting from 80 sessions (targets=['gpt-5.5'])
+[gpt55] raw records: 6820
+[gpt55] gpt-5.5 actionable: 1431
+[gpt55] wrote 6820 records to /Users/satan/side/experiments/supergemma-dflash-ddtree-mlx/trace-gepa/data/codex_gpt55_dataset.jsonl
+[gpt55] train=80 val=40
+[gpt55] train cat={'None': 73, 'bash_exit_nonzero': 4, 'retry_loop': 1, 'user_correction': 1, 'cmd_not_found_127': 1}
+[gpt55] val cat={'None': 38, 'bash_exit_nonzero': 2}
+[gpt55] baseline val on seed prompt

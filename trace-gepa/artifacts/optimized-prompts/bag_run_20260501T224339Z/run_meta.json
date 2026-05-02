@@ -1,0 +1,15 @@
+{
+  "timestamp": "20260501T224339Z",
+  "elapsed_seconds": 675.07,
+  "budget": 300,
+  "train_size": 80,
+  "val_size": 40,
+  "seed": 42,
+  "task_model": "claude-haiku-4-5",
+  "reflection_model": "claude-opus-4-7",
+  "val_score_before": 0.6,
+  "val_score_after": 0.6875,
+  "delta": 0.0875,
+  "error": null,
+  "run_dir": "/Users/satan/side/experiments/supergemma-dflash-ddtree-mlx/trace-gepa/artifacts/optimized-prompts/bag_run_20260501T224339Z"
+}

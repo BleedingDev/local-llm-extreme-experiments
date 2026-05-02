@@ -1,0 +1,13 @@
+[optimize] run_dir=/Users/satan/side/experiments/supergemma-dflash-ddtree-mlx/trace-gepa/artifacts/optimized-prompts/run_20260501T215441Z
+[optimize] args={'budget': 8, 'train_size': 16, 'val_size': 8, 'seed': 42, 'task_model': 'claude-haiku-4-5', 'reflection_model': 'claude-opus-4-7'}
+[optimize] loading 2751 train + 589 val records
+[optimize] loaded train=2751 val=589
+[optimize] train sampled=16 categories={'bash_timeout_141': 1, 'None': 7, 'bash_exit_nonzero': 2, 'hallucinated_path': 1, 'cmd_not_found_127': 1, 'user_correction': 1, 'retry_loop': 1, 'hallucinated_skill': 1, 'cancelled_parallel_batch': 1}
+[optimize] val sampled=8 categories={'retry_loop': 1, 'hallucinated_path': 1, 'cmd_not_found_127': 1, 'None': 2, 'bash_exit_nonzero': 1, 'user_correction': 1, 'bash_timeout_141': 1}
+[optimize] computing baseline val score on seed prompt
+[optimize] val_score_before=0.3750
+[optimize] calling gepa.optimize with budget=8
+Iteration 0: Base program full valset score: 0.375 over 8 / 8 examples
+[optimize] gepa.optimize returned in 22.8s
+[optimize] best_idx=0 val_score_after=0.3750
+[optimize] num_candidates=1 total_metric_calls=8

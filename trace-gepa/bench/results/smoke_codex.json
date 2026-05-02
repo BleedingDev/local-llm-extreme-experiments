@@ -1,0 +1,151 @@
+{
+  "summary": {
+    "n": 5,
+    "pass_rate": 1.0,
+    "by_category": {
+      "tool_routing": {
+        "n": 5,
+        "pass_rate": 1.0
+      }
+    },
+    "by_difficulty": {
+      "medium": {
+        "n": 3,
+        "pass_rate": 1.0
+      },
+      "easy": {
+        "n": 2,
+        "pass_rate": 1.0
+      }
+    },
+    "parser_counts": {
+      "json_direct": 5
+    },
+    "error_counts": {},
+    "timeouts": 0,
+    "mean_elapsed_s": 9.932363128662109
+  },
+  "config": {
+    "model": "gpt-5.5",
+    "reasoning": "high",
+    "max_workers": 4,
+    "timeout_s": 90.0,
+    "limit": 5,
+    "tasks_path": "trace-gepa/data/benchmark_tasks.jsonl",
+    "codex_bin": "/opt/homebrew/bin/codex",
+    "elapsed_total_s": 24.11851692199707,
+    "tasks_n": 5
+  },
+  "results": [
+    {
+      "id": "task_tool_routing_000",
+      "category": "tool_routing",
+      "difficulty": "medium",
+      "score": 1.0,
+      "verifier": {
+        "score": 1.0,
+        "tier": 1,
+        "signal": "json_parsed",
+        "details": {}
+      },
+      "elapsed_s": 10.356887817382812,
+      "exit_code": 0,
+      "timed_out": false,
+      "stdout_chars": 561,
+      "stderr_tail": "",
+      "final_message_chars": 230,
+      "parser_status": "json_direct",
+      "message_status": "ok",
+      "predicted_tool": "EnterWorktree",
+      "predicted_preview": "{\"tool_name\": \"EnterWorktree\", \"input\": {\"path\": \"/Users/satan/side/experiments/supergemma-dflash-ddtree-mlx/trace-gepa\"}, \"reason\": \"The request requires reading local plan and architecture files before making implementation changes.\"}"
+    },
+    {
+      "id": "task_tool_routing_001",
+      "category": "tool_routing",
+      "difficulty": "medium",
+      "score": 1.0,
+      "verifier": {
+        "score": 1.0,
+        "tier": 1,
+        "signal": "json_parsed",
+        "details": {}
+      },
+      "elapsed_s": 9.158371925354004,
+      "exit_code": 0,
+      "timed_out": false,
+      "stdout_chars": 526,
+      "stderr_tail": "",
+      "final_message_chars": 193,
+      "parser_status": "json_direct",
+      "message_status": "ok",
+      "predicted_tool": "EnterWorktree",
+      "predicted_preview": "{\"tool_name\": \"EnterWorktree\", \"input\": {\"path\": \"../ir-multivector-retrieval\", \"create\": true}, \"reason\": \"The first step is to create and switch into the separate project folder the user requested.\"}"
+    },
+    {
+      "id": "task_tool_routing_002",
+      "category": "tool_routing",
+      "difficulty": "easy",
+      "score": 1.0,
+      "verifier": {
+        "score": 1.0,
+        "tier": 1,
+        "signal": "json_parsed",
+        "details": {}
+      },
+      "elapsed_s": 13.760565996170044,
+      "exit_code": 0,
+      "timed_out": false,
+      "stdout_chars": 699,
+      "stderr_tail": "",
+      "final_message_chars": 360,
+      "parser_status": "json_direct",
+      "message_status": "ok",
+      "predicted_tool": "AskUserQuestion",
+      "predicted_preview": "{\"tool_name\": \"AskUserQuestion\", \"input\": {\"question\": \"Nem\\u016f\\u017eu pou\\u017e\\u00edt sv\\u016fj vlastn\\u00ed API key; chcete agenta napojit na v\\u00e1\\u0161 kl\\u00ed\\u010d p\\u0159es existuj\\u00edc\\u00ed secret/env prom\\u011bnnou, a poku"
+    },
+    {
+      "id": "task_tool_routing_003",
+      "category": "tool_routing",
+      "difficulty": "medium",
+      "score": 1.0,
+      "verifier": {
+        "score": 1.0,
+        "tier": 1,
+        "signal": "json_parsed",
+        "details": {}
+      },
+      "elapsed_s": 5.9458229541778564,
+      "exit_code": 0,
+      "timed_out": false,
+      "stdout_chars": 517,
+      "stderr_tail": "",
+      "final_message_chars": 190,
+      "parser_status": "json_direct",
+      "message_status": "ok",
+      "predicted_tool": "EnterPlanMode",
+      "predicted_preview": "{\"tool_name\": \"EnterPlanMode\", \"input\": {}, \"reason\": \"The request is broad and exploratory, so the next step is to plan the trace analysis and dataset/optimizer approach before making changes.\"}"
+    },
+    {
+      "id": "task_tool_routing_004",
+      "category": "tool_routing",
+      "difficulty": "easy",
+      "score": 1.0,
+      "verifier": {
+        "score": 1.0,
+        "tier": 1,
+        "signal": "json_parsed",
+        "details": {}
+      },
+      "elapsed_s": 10.44016695022583,
+      "exit_code": 0,
+      "timed_out": false,
+      "stdout_chars": 575,
+      "stderr_tail": "",
+      "final_message_chars": 244,
+      "parser_status": "json_direct",
+      "message_status": "ok",
+      "predicted_tool": "EnterWorktree",
+      "predicted_preview": "{\"tool_name\": \"EnterWorktree\", \"input\": {\"cwd\": \"/Users/satan/side/experiments/supergemma-dflash-ddtree-mlx/trace-gepa\"}, \"reason\": \"Nejprve je pot\\u0159eba vstoupit do projektu, zjistit jak se server spou\\u0161t\\u00ed a p\\u0159ipravit bezp"
+    }
+  ]
+}

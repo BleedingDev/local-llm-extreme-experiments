@@ -1,0 +1,485 @@
+{
+  "summary": {
+    "n": 20,
+    "pass_rate": 1.0,
+    "by_category": {
+      "tool_routing": {
+        "n": 20,
+        "pass_rate": 1.0
+      }
+    },
+    "by_difficulty": {
+      "medium": {
+        "n": 13,
+        "pass_rate": 1.0
+      },
+      "easy": {
+        "n": 2,
+        "pass_rate": 1.0
+      },
+      "hard": {
+        "n": 5,
+        "pass_rate": 1.0
+      }
+    },
+    "parser_counts": {
+      "json_direct": 20
+    },
+    "error_counts": {},
+    "timeouts": 0,
+    "mean_elapsed_s": 13.727833580970763
+  },
+  "config": {
+    "model": "gpt-5.5",
+    "reasoning": "xhigh",
+    "max_workers": 4,
+    "timeout_s": 90.0,
+    "limit": 20,
+    "tasks_path": "trace-gepa/data/benchmark_tasks.jsonl",
+    "codex_bin": "/opt/homebrew/bin/codex",
+    "elapsed_total_s": 86.357577085495,
+    "tasks_n": 20
+  },
+  "results": [
+    {
+      "id": "task_tool_routing_000",
+      "category": "tool_routing",
+      "difficulty": "medium",
+      "score": 1.0,
+      "verifier": {
+        "score": 1.0,
+        "tier": 1,
+        "signal": "json_parsed",
+        "details": {}
+      },
+      "elapsed_s": 16.14426302909851,
+      "exit_code": 0,
+      "timed_out": false,
+      "stdout_chars": 462,
+      "stderr_tail": "",
+      "final_message_chars": 135,
+      "parser_status": "json_direct",
+      "message_status": "ok",
+      "predicted_tool": "EnterWorktree",
+      "predicted_preview": "{\"tool_name\": \"EnterWorktree\", \"input\": {}, \"reason\": \"The request requires reading repository files before beginning implementation work.\"}"
+    },
+    {
+      "id": "task_tool_routing_001",
+      "category": "tool_routing",
+      "difficulty": "medium",
+      "score": 1.0,
+      "verifier": {
+        "score": 1.0,
+        "tier": 1,
+        "signal": "json_parsed",
+        "details": {}
+      },
+      "elapsed_s": 13.406814098358154,
+      "exit_code": 0,
+      "timed_out": false,
+      "stdout_chars": 540,
+      "stderr_tail": "",
+      "final_message_chars": 207,
+      "parser_status": "json_direct",
+      "message_status": "ok",
+      "predicted_tool": "EnterWorktree",
+      "predicted_preview": "{\"tool_name\": \"EnterWorktree\", \"input\": {\"path\": \"../ir-multivector-retrieval\", \"create\": true}, \"reason\": \"The first step is to create and enter the separate project folder before planning or implementation work.\"}"
+    },
+    {
+      "id": "task_tool_routing_002",
+      "category": "tool_routing",
+      "difficulty": "easy",
+      "score": 1.0,
+      "verifier": {
+        "score": 1.0,
+        "tier": 1,
+        "signal": "json_parsed",
+        "details": {}
+      },
+      "elapsed_s": 15.197710037231445,
+      "exit_code": 0,
+      "timed_out": false,
+      "stdout_chars": 681,
+      "stderr_tail": "",
+      "final_message_chars": 350,
+      "parser_status": "json_direct",
+      "message_status": "ok",
+      "predicted_tool": "AskUserQuestion",
+      "predicted_preview": "{\"tool_name\": \"AskUserQuestion\", \"input\": {\"question\": \"Nemohu pou\\u017e\\u00edt vlastn\\u00ed API key; dodejte pros\\u00edm sv\\u016fj API key/secret nebo potvr\\u010fte existuj\\u00edc\\u00ed prom\\u011bnnou prost\\u0159ed\\u00ed a ur\\u010dete, v j"
+    },
+    {
+      "id": "task_tool_routing_003",
+      "category": "tool_routing",
+      "difficulty": "medium",
+      "score": 1.0,
+      "verifier": {
+        "score": 1.0,
+        "tier": 1,
+        "signal": "json_parsed",
+        "details": {}
+      },
+      "elapsed_s": 13.544531106948853,
+      "exit_code": 0,
+      "timed_out": false,
+      "stdout_chars": 521,
+      "stderr_tail": "",
+      "final_message_chars": 194,
+      "parser_status": "json_direct",
+      "message_status": "ok",
+      "predicted_tool": "EnterPlanMode",
+      "predicted_preview": "{\"tool_name\": \"EnterPlanMode\", \"input\": {}, \"reason\": \"The request is broad and exploratory, so the best next step is to define a concrete analysis and dataset/optimizer plan before implementation.\"}"
+    },
+    {
+      "id": "task_tool_routing_004",
+      "category": "tool_routing",
+      "difficulty": "easy",
+      "score": 1.0,
+      "verifier": {
+        "score": 1.0,
+        "tier": 1,
+        "signal": "json_parsed",
+        "details": {}
+      },
+      "elapsed_s": 14.30680799484253,
+      "exit_code": 0,
+      "timed_out": false,
+      "stdout_chars": 559,
+      "stderr_tail": "",
+      "final_message_chars": 227,
+      "parser_status": "json_direct",
+      "message_status": "ok",
+      "predicted_tool": "EnterWorktree",
+      "predicted_preview": "{\"tool_name\": \"EnterWorktree\", \"input\": {\"path\": \"/Users/satan/side/experiments/supergemma-dflash-ddtree-mlx/trace-gepa\"}, \"reason\": \"User wants repository-local server setup and exposure, so the next step is to enter the worktree.\"}"
+    },
+    {
+      "id": "task_tool_routing_005",
+      "category": "tool_routing",
+      "difficulty": "medium",
+      "score": 1.0,
+      "verifier": {
+        "score": 1.0,
+        "tier": 1,
+        "signal": "json_parsed",
+        "details": {}
+      },
+      "elapsed_s": 9.182154178619385,
+      "exit_code": 0,
+      "timed_out": false,
+      "stdout_chars": 542,
+      "stderr_tail": "",
+      "final_message_chars": 211,
+      "parser_status": "json_direct",
+      "message_status": "ok",
+      "predicted_tool": "EnterWorktree",
+      "predicted_preview": "{\"tool_name\": \"EnterWorktree\", \"input\": {\"path\": \"/Users/satan/side/experiments/ir-expo\"}, \"reason\": \"The task requires editing and inspecting the ir-expo repository before implementing the fixture-backed connector.\"}"
+    },
+    {
+      "id": "task_tool_routing_006",
+      "category": "tool_routing",
+      "difficulty": "medium",
+      "score": 1.0,
+      "verifier": {
+        "score": 1.0,
+        "tier": 1,
+        "signal": "json_parsed",
+        "details": {}
+      },
+      "elapsed_s": 9.333986043930054,
+      "exit_code": 0,
+      "timed_out": false,
+      "stdout_chars": 529,
+      "stderr_tail": "",
+      "final_message_chars": 192,
+      "parser_status": "json_direct",
+      "message_status": "ok",
+      "predicted_tool": "TaskUpdate",
+      "predicted_preview": "{\"tool_name\": \"TaskUpdate\", \"input\": {\"task_id\": 3, \"owner\": \"deep-scan-controller-engineer\", \"status\": \"in_progress\"}, \"reason\": \"Claiming task #3 is the first required step before reading or coding.\"}"
+    },
+    {
+      "id": "task_tool_routing_007",
+      "category": "tool_routing",
+      "difficulty": "medium",
+      "score": 1.0,
+      "verifier": {
+        "score": 1.0,
+        "tier": 1,
+        "signal": "json_parsed",
+        "details": {}
+      },
+      "elapsed_s": 9.384057998657227,
+      "exit_code": 0,
+      "timed_out": false,
+      "stdout_chars": 542,
+      "stderr_tail": "",
+      "final_message_chars": 204,
+      "parser_status": "json_direct",
+      "message_status": "ok",
+      "predicted_tool": "TaskUpdate",
+      "predicted_preview": "{\"tool_name\": \"TaskUpdate\", \"input\": {\"task_id\": 12, \"owner\": \"atomic-write-engineer\", \"status\": \"in_progress\"}, \"reason\": \"The first required step is to claim task #12 before reading its details or editing code.\"}"
+    },
+    {
+      "id": "task_tool_routing_008",
+      "category": "tool_routing",
+      "difficulty": "medium",
+      "score": 1.0,
+      "verifier": {
+        "score": 1.0,
+        "tier": 1,
+        "signal": "json_parsed",
+        "details": {}
+      },
+      "elapsed_s": 15.706447124481201,
+      "exit_code": 0,
+      "timed_out": false,
+      "stdout_chars": 532,
+      "stderr_tail": "",
+      "final_message_chars": 201,
+      "parser_status": "json_direct",
+      "message_status": "ok",
+      "predicted_tool": "EnterWorktree",
+      "predicted_preview": "{\"tool_name\": \"EnterWorktree\", \"input\": {\"path\": \"/Users/satan/side/experiments/ir-multivector-retrieval\"}, \"reason\": \"The first step is to enter the specified repository before reading or modifying files.\"}"
+    },
+    {
+      "id": "task_tool_routing_009",
+      "category": "tool_routing",
+      "difficulty": "medium",
+      "score": 1.0,
+      "verifier": {
+        "score": 1.0,
+        "tier": 1,
+        "signal": "json_parsed",
+        "details": {}
+      },
+      "elapsed_s": 11.109188079833984,
+      "exit_code": 0,
+      "timed_out": false,
+      "stdout_chars": 505,
+      "stderr_tail": "",
+      "final_message_chars": 173,
+      "parser_status": "json_direct",
+      "message_status": "ok",
+      "predicted_tool": "EnterWorktree",
+      "predicted_preview": "{\"tool_name\": \"EnterWorktree\", \"input\": {\"path\": \"/Users/satan/side/experiments/ir-expo\"}, \"reason\": \"Switch to the assigned repository before reading the plan and scoped files.\"}"
+    },
+    {
+      "id": "task_tool_routing_010",
+      "category": "tool_routing",
+      "difficulty": "medium",
+      "score": 1.0,
+      "verifier": {
+        "score": 1.0,
+        "tier": 1,
+        "signal": "json_parsed",
+        "details": {}
+      },
+      "elapsed_s": 13.18180799484253,
+      "exit_code": 0,
+      "timed_out": false,
+      "stdout_chars": 540,
+      "stderr_tail": "",
+      "final_message_chars": 209,
+      "parser_status": "json_direct",
+      "message_status": "ok",
+      "predicted_tool": "EnterWorktree",
+      "predicted_preview": "{\"tool_name\": \"EnterWorktree\", \"input\": {\"path\": \"/Users/satan/side/experiments/ir-multivector-retrieval\"}, \"reason\": \"The teammate must first enter the specified repository before reading files or making changes.\"}"
+    },
+    {
+      "id": "task_tool_routing_011",
+      "category": "tool_routing",
+      "difficulty": "medium",
+      "score": 1.0,
+      "verifier": {
+        "score": 1.0,
+        "tier": 1,
+        "signal": "json_parsed",
+        "details": {}
+      },
+      "elapsed_s": 8.295788049697876,
+      "exit_code": 0,
+      "timed_out": false,
+      "stdout_chars": 570,
+      "stderr_tail": "",
+      "final_message_chars": 239,
+      "parser_status": "json_direct",
+      "message_status": "ok",
+      "predicted_tool": "EnterWorktree",
+      "predicted_preview": "{\"tool_name\": \"EnterWorktree\", \"input\": {\"path\": \"/Users/satan/side/experiments/ir-multivector-retrieval\"}, \"reason\": \"Start read-only investigation from the target repository before inspecting README.md and AGENTS.md with file-line citatio"
+    },
+    {
+      "id": "task_tool_routing_012",
+      "category": "tool_routing",
+      "difficulty": "medium",
+      "score": 1.0,
+      "verifier": {
+        "score": 1.0,
+        "tier": 1,
+        "signal": "json_parsed",
+        "details": {}
+      },
+      "elapsed_s": 12.984373092651367,
+      "exit_code": 0,
+      "timed_out": false,
+      "stdout_chars": 514,
+      "stderr_tail": "",
+      "final_message_chars": 183,
+      "parser_status": "json_direct",
+      "message_status": "ok",
+      "predicted_tool": "WebFetch",
+      "predicted_preview": "{\"tool_name\": \"WebFetch\", \"input\": {\"url\": \"https://github.com/ax-llm/ax\"}, \"reason\": \"Fetch the primary repository first to ground the research in Ax's official source and documentation.\"}"
+    },
+    {
+      "id": "task_tool_routing_013",
+      "category": "tool_routing",
+      "difficulty": "medium",
+      "score": 1.0,
+      "verifier": {
+        "score": 1.0,
+        "tier": 1,
+        "signal": "json_parsed",
+        "details": {}
+      },
+      "elapsed_s": 13.364343881607056,
+      "exit_code": 0,
+      "timed_out": false,
+      "stdout_chars": 614,
+      "stderr_tail": "",
+      "final_message_chars": 283,
+      "parser_status": "json_direct",
+      "message_status": "ok",
+      "predicted_tool": "WebSearch",
+      "predicted_preview": "{\"tool_name\": \"WebSearch\", \"input\": {\"query\": \"site:github.com/ax-llm/ax Anthropic Claude AxAIAnthropic provider tool calling examples signature structured output\"}, \"reason\": \"Find the Anthropic-specific provider code and examples needed t"
+    },
+    {
+      "id": "task_tool_routing_014",
+      "category": "tool_routing",
+      "difficulty": "medium",
+      "score": 1.0,
+      "verifier": {
+        "score": 1.0,
+        "tier": 1,
+        "signal": "json_parsed",
+        "details": {}
+      },
+      "elapsed_s": 15.416770696640015,
+      "exit_code": 0,
+      "timed_out": false,
+      "stdout_chars": 676,
+      "stderr_tail": "",
+      "final_message_chars": 343,
+      "parser_status": "json_direct",
+      "message_status": "ok",
+      "predicted_tool": "WebSearch",
+      "predicted_preview": "{\"tool_name\": \"WebSearch\", \"input\": {\"query\": \"site:axllm.dev OR site:github.com/ax-llm/ax Ax Anthropic Claude provider signatures examples ChainOfThought ReAct MIPRO BootstrapFewShot TypeScript\", \"max_results\": 5}, \"reason\": \"Find official"
+    },
+    {
+      "id": "task_tool_routing_015",
+      "category": "tool_routing",
+      "difficulty": "hard",
+      "score": 1.0,
+      "verifier": {
+        "score": 1.0,
+        "tier": 1,
+        "signal": "json_parsed",
+        "details": {}
+      },
+      "elapsed_s": 13.595385074615479,
+      "exit_code": 0,
+      "timed_out": false,
+      "stdout_chars": 468,
+      "stderr_tail": "",
+      "final_message_chars": 140,
+      "parser_status": "json_direct",
+      "message_status": "ok",
+      "predicted_tool": "EnterPlanMode",
+      "predicted_preview": "{\"tool_name\": \"EnterPlanMode\", \"input\": {}, \"reason\": \"Define the shared contracts and work boundaries before starting parallel implementation.\"}"
+    },
+    {
+      "id": "task_tool_routing_016",
+      "category": "tool_routing",
+      "difficulty": "hard",
+      "score": 1.0,
+      "verifier": {
+        "score": 1.0,
+        "tier": 1,
+        "signal": "json_parsed",
+        "details": {}
+      },
+      "elapsed_s": 13.286702156066895,
+      "exit_code": 0,
+      "timed_out": false,
+      "stdout_chars": 828,
+      "stderr_tail": "",
+      "final_message_chars": 497,
+      "parser_status": "json_direct",
+      "message_status": "ok",
+      "predicted_tool": "TaskCreate",
+      "predicted_preview": "{\"tool_name\": \"TaskCreate\", \"input\": {\"description\": \"Settle and document the shared implementation contracts for the hackathon lanes so parallel agents can work independently, including API shapes, ownership boundaries, required env/config"
+    },
+    {
+      "id": "task_tool_routing_017",
+      "category": "tool_routing",
+      "difficulty": "hard",
+      "score": 1.0,
+      "verifier": {
+        "score": 1.0,
+        "tier": 1,
+        "signal": "json_parsed",
+        "details": {}
+      },
+      "elapsed_s": 24.859877824783325,
+      "exit_code": 0,
+      "timed_out": false,
+      "stdout_chars": 889,
+      "stderr_tail": "",
+      "final_message_chars": 553,
+      "parser_status": "json_direct",
+      "message_status": "ok",
+      "predicted_tool": "TaskCreate",
+      "predicted_preview": "{\"tool_name\": \"TaskCreate\", \"input\": {\"description\": \"Finalize shared implementation contracts\", \"prompt\": \"Finalize the shared contracts needed for parallel work: review the new hackathon boundaries ADR and shared error taxonomy, identify "
+    },
+    {
+      "id": "task_tool_routing_018",
+      "category": "tool_routing",
+      "difficulty": "hard",
+      "score": 1.0,
+      "verifier": {
+        "score": 1.0,
+        "tier": 1,
+        "signal": "json_parsed",
+        "details": {}
+      },
+      "elapsed_s": 16.063939094543457,
+      "exit_code": 0,
+      "timed_out": false,
+      "stdout_chars": 546,
+      "stderr_tail": "",
+      "final_message_chars": 215,
+      "parser_status": "json_direct",
+      "message_status": "ok",
+      "predicted_tool": "EnterPlanMode",
+      "predicted_preview": "{\"tool_name\": \"EnterPlanMode\", \"input\": {\"reason\": \"Settle shared contracts and parallel work boundaries before implementation.\"}, \"reason\": \"The user wants contract alignment before separate implementation work begins.\"}"
+    },
+    {
+      "id": "task_tool_routing_019",
+      "category": "tool_routing",
+      "difficulty": "hard",
+      "score": 1.0,
+      "verifier": {
+        "score": 1.0,
+        "tier": 1,
+        "signal": "json_parsed",
+        "details": {}
+      },
+      "elapsed_s": 16.191724061965942,
+      "exit_code": 0,
+      "timed_out": false,
+      "stdout_chars": 552,
+      "stderr_tail": "",
+      "final_message_chars": 221,
+      "parser_status": "json_direct",
+      "message_status": "ok",
+      "predicted_tool": "EnterWorktree",
+      "predicted_preview": "{\"tool_name\": \"EnterWorktree\", \"input\": {\"reason\": \"Commit and push the already-lint-passing changes directly to master as requested.\"}, \"reason\": \"The next step requires worktree access to run git commit and push operations.\"}"
+    }
+  ]
+}

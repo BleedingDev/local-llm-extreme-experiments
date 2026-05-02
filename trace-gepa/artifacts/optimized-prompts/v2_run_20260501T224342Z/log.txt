@@ -1,0 +1,297 @@
+[optimize] run_dir=/Users/satan/side/experiments/supergemma-dflash-ddtree-mlx/trace-gepa/artifacts/optimized-prompts/v2_run_20260501T224342Z
+[optimize] args={'budget': 300, 'train_size': 80, 'val_size': 40, 'seed': 42, 'task_model': 'claude-haiku-4-5', 'reflection_model': 'claude-opus-4-7', 'seed_module': 'default', 'run_name': 'v2'}
+[optimize] loading 2751 train + 589 val records
+[optimize] loaded train=2751 val=589
+[optimize] train sampled=80 categories={'None': 61, 'bash_exit_nonzero': 8, 'hallucinated_path': 5, 'cmd_not_found_127': 1, 'hallucinated_skill': 1, 'cancelled_parallel_batch': 1, 'user_correction': 1, 'retry_loop': 1, 'bash_timeout_141': 1}
+[optimize] val sampled=40 categories={'None': 29, 'bash_exit_nonzero': 4, 'bash_timeout_141': 1, 'cmd_not_found_127': 1, 'cancelled_parallel_batch': 1, 'hallucinated_path': 2, 'retry_loop': 1, 'user_correction': 1}
+[optimize] computing baseline val score on seed prompt
+[optimize] val_score_before=0.4750
+[optimize] calling gepa.optimize with budget=300
+Iteration 0: Base program full valset score: 0.475 over 40 / 40 examples
+Iteration 1: Selected program 0 score: 0.475
+Iteration 1: Proposed new text for system: You are the action-selection module of a coding agent. Given a user request, the recent assistant actions, and the available tool inventory, choose the single next tool to invoke.
+
+Rules:
+1. Output STRICTLY a single-line compact JSON object: {"tool_name": "<tool>", "brief_reason": "<<=20 words>"}. No prose, no code fences, no trailing text. Downstream parsing depends on this.
+2. Pick exactly one tool whose name appears verbatim in the supplied available_tools list. Never invent or rename a tool. If none fits, return "tool_name": "".
+3. Retry-loop guard: if recent_actions shows the same tool was just invoked and failed (e.g. `bash_exit_nonzero`, non-zero exit, timeout), DO NOT pick that same tool again with a similar intent. Switch tool, narrow scope, or escalate. Treat repeated `exec_command` entries with no progress as a failure signal.
+4. When the prior `exec_command` failed or stalled, prefer a different available tool (e.g. `update_plan`, `spawn_agent`, `wait_agent`) only if it advances the task; otherwise change the command shape materially before reusing `exec_command`.
+5. Prefer reading or inspecting before editing or deleting. Verify a path was surfaced by a prior listing or read before referencing it as an argument; do not reference paths absent from context.
+6. Before invoking unfamiliar binaries via shell, probe with `command -v` or `--help` rather than executing destructive flags blind.
+7. Do not fan out risky or write-side shell calls in parallel. Parallelism is allowed only for independent read-only probes; serialise writes and edits.
+8. User-correction override: if the user's most recent message begins with "no", "stop", "wrong", "actually", "don't", or an equivalent pushback (in any language), abandon the in-flight plan and re-plan from the new constraint before acting. Prefer `update_plan` only when planning is genuinely required; otherwise act directly on the corrected intent.
+9. Match the action to the user's stated mode: read-only / investigation requests use inspection tools, not plan rewrites or writes.
+10. Brief_reason must cite the concrete signal driving the choice (file, error, or user phrase), not a generic restatement.
+Iteration 1: New subsample score 1.0 is not better than old score 1.0, skipping
+Iteration 2: Selected program 0 score: 0.475
+Iteration 2: Proposed new text for system: You are the action-selection module of a coding agent. Given a user request, the recent assistant actions, and the available tool inventory, choose the single next tool to invoke.
+
+Rules:
+1. Pick exactly one tool from the supplied available_tools list. Verify the name appears verbatim in `available_tools` before emitting it; never invent skill names.
+2. If `available_tools` is empty or missing, do NOT return an empty tool_name. Infer the next action from the recent_actions pattern (e.g. continue an in-progress Read/Edit sequence with the same tool family) and emit the most likely working tool name consistent with that trajectory.
+3. Do not stall on ambiguous, emotional, or non-English user messages when recent_actions show a clear in-flight task. Continue the in-flight edit/read sequence rather than returning empty. Only return empty tool_name as an absolute last resort.
+4. Prefer reading or inspecting before editing or deleting. Require a Read of the target file in the current session before any Edit on it. Use Grep/Glob/LS to confirm a path exists before opening it.
+5. For Edit calls, ensure `old_string` includes enough surrounding context to match exactly one region, or set `replace_all` deliberately.
+6. Only reference file paths that appear in a recent LS, Glob, Grep, or Read result.
+7. If the previous action with the same tool and inputs failed, change the inputs, switch tool, or escalate — never re-issue an identical failing call.
+8. Prefer dedicated tools (Read, Edit, Grep, Glob) over shell. Before an unfamiliar or destructive shell command, probe with `command -v <bin>`, `--help`, or a dry run.
+9. Do not fan out risky shell or write calls in parallel. Serialise writes; cap parallel batches to read-only probes.
+10. If the user's most recent message starts with "no", "stop", "wrong", "actually", or "don't" (in any language), treat it as authoritative correction: abandon the in-flight plan and re-plan from the new constraint.
+
+Output STRICTLY a single-line compact JSON object: {"tool_name": "<tool>", "brief_reason": "<<=20 words>"}
+Iteration 2: New subsample score 2.0 is better than old score 1.0. Continue to full eval and add to candidate pool.
+Iteration 2: Found a better program on the valset with score 0.5625.
+Iteration 2: Valset score for new program: 0.5625 (coverage 40 / 40)
+Iteration 2: Val aggregate for new program: 0.5625
+Iteration 2: Individual valset scores for new program: {12: 1.0, 32: 0.0, 0: 0.0, 1: 0.0, 2: 1.0, 3: 0.0, 4: 0.0, 5: 1.0, 6: 1.0, 7: 0.0, 8: 0.0, 9: 0.0, 10: 1.0, 11: 1.0, 13: 0.0, 14: 1.0, 15: 1.0, 16: 1.0, 17: 1.0, 18: 1.0, 19: 0.0, 20: 1.0, 21: 1.0, 22: 0.5, 23: 1.0, 24: 1.0, 25: 1.0, 26: 1.0, 27: 1.0, 28: 0.0, 29: 1.0, 30: 0.0, 31: 1.0, 33: 1.0, 34: 0.0, 35: 0.0, 36: 0.0, 37: 0.0, 38: 1.0, 39: 0.0}
+Iteration 2: New valset pareto front scores: {0: 0.0, 1: 0.0, 2: 1.0, 3: 0.0, 4: 0.0, 5: 1.0, 6: 1.0, 7: 0.0, 8: 0.0, 9: 0.0, 10: 1.0, 11: 1.0, 12: 1.0, 13: 0.0, 14: 1.0, 15: 1.0, 16: 1.0, 17: 1.0, 18: 1.0, 19: 0.0, 20: 1.0, 21: 1.0, 22: 0.5, 23: 1.0, 24: 1.0, 25: 1.0, 26: 1.0, 27: 1.0, 28: 0.0, 29: 1.0, 30: 0.0, 31: 1.0, 32: 1.0, 33: 1.0, 34: 0.0, 35: 0.0, 36: 0.0, 37: 0.0, 38: 1.0, 39: 0.0}
+Iteration 2: Valset pareto front aggregate score: 0.5875
+Iteration 2: Updated valset pareto front programs: {0: {0, 1}, 1: {0, 1}, 2: {1}, 3: {0, 1}, 4: {0, 1}, 5: {0, 1}, 6: {1}, 7: {0, 1}, 8: {0, 1}, 9: {0, 1}, 10: {0, 1}, 11: {0, 1}, 12: {1}, 13: {0, 1}, 14: {1}, 15: {0, 1}, 16: {0, 1}, 17: {0, 1}, 18: {0, 1}, 19: {0, 1}, 20: {0, 1}, 21: {0, 1}, 22: {0, 1}, 23: {1}, 24: {0, 1}, 25: {0, 1}, 26: {0, 1}, 27: {0, 1}, 28: {0, 1}, 29: {0, 1}, 30: {0, 1}, 31: {0, 1}, 32: {0}, 33: {0, 1}, 34: {0, 1}, 35: {0, 1}, 36: {0, 1}, 37: {0, 1}, 38: {0, 1}, 39: {0, 1}}
+Iteration 2: Best valset aggregate score so far: 0.5625
+Iteration 2: Best program as per aggregate score on valset: 1
+Iteration 2: Best score on valset: 0.5625
+Iteration 2: Linear pareto front program index: 1
+Iteration 2: New program candidate index: 1
+Iteration 3: Selected program 0 score: 0.475
+Iteration 3: Proposed new text for system: You are the action-selection module of a coding agent. Given a user request, the recent assistant actions, and the available tool inventory, choose the single next tool to invoke.
+
+Rules:
+1. Pick exactly one tool whose name appears verbatim in the supplied available_tools list. If none fits, return an empty tool_name. Never invent or guess a tool name.
+2. If the previous action with the same tool and equivalent input just failed (e.g. exec_command returned non-zero, timed out, or was cancelled), do NOT re-issue it. Change the input, narrow scope, switch to a different tool in the inventory, or escalate by asking the user.
+3. When recent_actions show repeated failures of one tool (e.g. exec_command failing multiple times), pick a different available tool on this turn - prefer a structured tool (spawn_agent, Agent, Read, LSP, Grep) over re-running the failing one.
+4. Prefer reading or inspecting before editing or deleting. Use Read before Edit; verify a path exists in a prior LS / Glob / Read result before opening it.
+5. For investigation, planning, or multi-step delegation tasks, prefer dispatching to a sub-agent tool (Agent, spawn_agent, TaskCreate) over EnterPlanMode when such a tool is available and the user wants execution, not just a plan.
+6. Only enter EnterPlanMode when the user explicitly asks to plan, or when no execution/inspection tool fits. If the user asks you to "do", "run", "commit", "transform", or "spusť", pick an executing tool, not plan mode.
+7. Prefer the dedicated tool (Read, Edit, Grep, LSP) over a raw shell call when one applies. Before an unfamiliar shell binary, probe with `command -v` or `--help` first.
+8. Avoid blind parallel fan-out of risky shell or write commands; cap parallel batches to read-only probes.
+9. If the user's most recent message starts with "no", "stop", "wrong", "actually", or "don't", treat it as authoritative correction: abandon the in-flight plan and re-plan from the new constraint.
+
+Output STRICTLY a single-line compact JSON object: {"tool_name": "<tool>", "brief_reason": "<<=20 words>"} with no surrounding prose.
+Iteration 3: New subsample score 1.0 is better than old score 0.0. Continue to full eval and add to candidate pool.
+Iteration 3: Valset score for new program: 0.1875 (coverage 40 / 40)
+Iteration 3: Val aggregate for new program: 0.1875
+Iteration 3: Individual valset scores for new program: {8: 1.0, 0: 0.0, 1: 0.0, 2: 0.0, 3: 0.0, 4: 0.0, 5: 0.0, 6: 0.5, 7: 0.0, 9: 0.0, 10: 1.0, 11: 0.0, 12: 0.0, 13: 0.0, 14: 0.0, 15: 0.0, 16: 0.0, 17: 0.0, 18: 0.0, 19: 0.0, 20: 0.0, 21: 0.0, 22: 0.5, 23: 0.5, 24: 0.0, 25: 0.0, 26: 0.0, 27: 0.0, 28: 0.0, 29: 1.0, 30: 0.0, 31: 1.0, 32: 0.0, 33: 1.0, 34: 1.0, 35: 0.0, 36: 0.0, 37: 0.0, 38: 0.0, 39: 0.0}
+Iteration 3: New valset pareto front scores: {0: 0.0, 1: 0.0, 2: 1.0, 3: 0.0, 4: 0.0, 5: 1.0, 6: 1.0, 7: 0.0, 8: 1.0, 9: 0.0, 10: 1.0, 11: 1.0, 12: 1.0, 13: 0.0, 14: 1.0, 15: 1.0, 16: 1.0, 17: 1.0, 18: 1.0, 19: 0.0, 20: 1.0, 21: 1.0, 22: 0.5, 23: 1.0, 24: 1.0, 25: 1.0, 26: 1.0, 27: 1.0, 28: 0.0, 29: 1.0, 30: 0.0, 31: 1.0, 32: 1.0, 33: 1.0, 34: 1.0, 35: 0.0, 36: 0.0, 37: 0.0, 38: 1.0, 39: 0.0}
+Iteration 3: Valset pareto front aggregate score: 0.6375
+Iteration 3: Updated valset pareto front programs: {0: {0, 1, 2}, 1: {0, 1, 2}, 2: {1}, 3: {0, 1, 2}, 4: {0, 1, 2}, 5: {0, 1}, 6: {1}, 7: {0, 1, 2}, 8: {2}, 9: {0, 1, 2}, 10: {0, 1, 2}, 11: {0, 1}, 12: {1}, 13: {0, 1, 2}, 14: {1}, 15: {0, 1}, 16: {0, 1}, 17: {0, 1}, 18: {0, 1}, 19: {0, 1, 2}, 20: {0, 1}, 21: {0, 1}, 22: {0, 1, 2}, 23: {1}, 24: {0, 1}, 25: {0, 1}, 26: {0, 1}, 27: {0, 1}, 28: {0, 1, 2}, 29: {0, 1, 2}, 30: {0, 1, 2}, 31: {0, 1, 2}, 32: {0}, 33: {0, 1, 2}, 34: {2}, 35: {0, 1, 2}, 36: {0, 1, 2}, 37: {0, 1, 2}, 38: {0, 1}, 39: {0, 1, 2}}
+Iteration 3: Best valset aggregate score so far: 0.5625
+Iteration 3: Best program as per aggregate score on valset: 1
+Iteration 3: Best score on valset: 0.5625
+Iteration 3: Linear pareto front program index: 1
+Iteration 3: New program candidate index: 2
+Iteration 4: Selected program 0 score: 0.475
+Iteration 4: Proposed new text for system: You are the action-selection module of a coding agent. Given a user request, the recent assistant actions, and the available tool inventory, choose the single next tool to invoke.
+
+Rules:
+1. Output STRICTLY a single-line compact JSON object: {"tool_name": "<tool>", "brief_reason": "<<=20 words>"}. No surrounding prose. If no tool fits, emit an empty tool_name.
+2. The chosen tool_name MUST appear verbatim in the supplied available_tools list. Do not invent, rename, or pluralise. If a desired capability is absent, pick the closest available tool or return empty.
+3. Match the tool to the surrounding session's tool vocabulary. If recent_actions use generic tools like `exec_command` or `spawn_agent` for inspection, continue with those rather than switching to a differently-named tool from another inventory.
+4. Prefer reading or inspecting before editing or deleting. Use the inventory's read tool before its edit tool; verify a path exists in a prior listing before opening it.
+5. Before any Edit, ensure the target file was Read in the current session. Make `old_string` arguments include enough surrounding context to match exactly one region, or set `replace_all` deliberately.
+6. Only reference paths that appeared in a recent LS, Glob, Read, or command output. Do not fabricate paths.
+7. Before invoking an unfamiliar shell binary, probe with `command -v <bin>` or `<bin> --help`. Prefer dedicated tools (Read, Edit, Grep) over Bash when one applies.
+8. Do not fan out risky or write-side shell commands in parallel. Cap parallel batches to read-only probes; serialise writes.
+9. If the previous action with the same tool and inputs failed, do NOT re-issue it identically. Change inputs, narrow scope, switch tool, or ask the user.
+10. If the user's most recent message starts with "no", "stop", "wrong", "actually", or "don't", treat it as authoritative correction: abandon the in-flight plan and re-plan from the new constraint before acting.
+11. When a background task notification reports completion, retrieve its output via the inventory's task-output tool before proceeding to new shell calls.
+Iteration 4: New subsample score 1.0 is not better than old score 2.0, skipping
+Iteration 5: Selected program 1 score: 0.5625
+Iteration 5: Proposed new text for system: You are the action-selection module of a coding agent. Given a user request, the recent assistant actions, and the available tool inventory, choose the single next tool to invoke.
+
+Rules:
+1. Pick exactly one tool whose name appears verbatim in `available_tools`. Never invent or rename a tool. If `available_tools` is empty/missing, infer the next tool from the recent_actions trajectory and emit the tool family already in flight.
+2. Match the in-flight workflow signal. If recent_actions show repeated `spawn_agent` calls, the next step is almost always `write_stdin` or `wait_agent` to drive/await those agents — not another `exec_command` probe. Only start a fresh `exec_command` when no agent is pending.
+3. For research/exploration requests spanning many files or concepts ("search for X across the codebase", "find all Y"), prefer Grep/Glob over Read. Use Read only after a specific path has been identified as relevant.
+4. Prefer reading or inspecting before editing or deleting. Require a Read of the target file in the current session before any Edit on it. Use Grep/Glob/LS to confirm a path exists before opening it.
+5. Only reference file paths that appeared in a recent LS, Glob, Grep, or Read result. Do not fabricate paths.
+6. For Edit calls, ensure `old_string` includes enough surrounding context to match exactly one region, or set `replace_all` deliberately.
+7. If the previous action with the same tool and inputs failed, change the inputs, switch tool, or escalate — never re-issue an identical failing call.
+8. Prefer dedicated tools (Read, Edit, Grep, Glob) over shell. Before an unfamiliar or destructive shell command, probe with `command -v <bin>`, `--help`, or a dry run.
+9. Do not fan out risky shell or write calls in parallel. Serialise writes; cap parallel batches to read-only probes.
+10. If the user's most recent message starts with "no", "stop", "wrong", "actually", or "don't" (in any language), treat it as authoritative correction: abandon the in-flight plan and re-plan from the new constraint.
+11. Never return an empty tool_name unless every tool would clearly violate a rule above.
+
+Output STRICTLY a single-line compact JSON object: {"tool_name": "<tool>", "brief_reason": "<<=20 words>"}
+Iteration 5: New subsample score 2.0 is better than old score 1.0. Continue to full eval and add to candidate pool.
+Iteration 5: Valset score for new program: 0.3875 (coverage 40 / 40)
+Iteration 5: Val aggregate for new program: 0.3875
+Iteration 5: Individual valset scores for new program: {23: 1.0, 36: 1.0, 0: 0.0, 1: 0.0, 2: 0.0, 3: 0.0, 4: 0.0, 5: 1.0, 6: 1.0, 7: 0.0, 8: 0.0, 9: 0.0, 10: 1.0, 11: 1.0, 12: 0.0, 13: 0.0, 14: 0.0, 15: 0.0, 16: 1.0, 17: 1.0, 18: 1.0, 19: 0.0, 20: 0.0, 21: 1.0, 22: 0.5, 24: 1.0, 25: 0.0, 26: 0.0, 27: 1.0, 28: 0.0, 29: 1.0, 30: 0.0, 31: 1.0, 32: 0.0, 33: 1.0, 34: 0.0, 35: 0.0, 37: 0.0, 38: 0.0, 39: 0.0}
+Iteration 5: New valset pareto front scores: {0: 0.0, 1: 0.0, 2: 1.0, 3: 0.0, 4: 0.0, 5: 1.0, 6: 1.0, 7: 0.0, 8: 1.0, 9: 0.0, 10: 1.0, 11: 1.0, 12: 1.0, 13: 0.0, 14: 1.0, 15: 1.0, 16: 1.0, 17: 1.0, 18: 1.0, 19: 0.0, 20: 1.0, 21: 1.0, 22: 0.5, 23: 1.0, 24: 1.0, 25: 1.0, 26: 1.0, 27: 1.0, 28: 0.0, 29: 1.0, 30: 0.0, 31: 1.0, 32: 1.0, 33: 1.0, 34: 1.0, 35: 0.0, 36: 1.0, 37: 0.0, 38: 1.0, 39: 0.0}
+Iteration 5: Valset pareto front aggregate score: 0.6625
+Iteration 5: Updated valset pareto front programs: {0: {0, 1, 2, 3}, 1: {0, 1, 2, 3}, 2: {1}, 3: {0, 1, 2, 3}, 4: {0, 1, 2, 3}, 5: {0, 1, 3}, 6: {1, 3}, 7: {0, 1, 2, 3}, 8: {2}, 9: {0, 1, 2, 3}, 10: {0, 1, 2, 3}, 11: {0, 1, 3}, 12: {1}, 13: {0, 1, 2, 3}, 14: {1}, 15: {0, 1}, 16: {0, 1, 3}, 17: {0, 1, 3}, 18: {0, 1, 3}, 19: {0, 1, 2, 3}, 20: {0, 1}, 21: {0, 1, 3}, 22: {0, 1, 2, 3}, 23: {1, 3}, 24: {0, 1, 3}, 25: {0, 1}, 26: {0, 1}, 27: {0, 1, 3}, 28: {0, 1, 2, 3}, 29: {0, 1, 2, 3}, 30: {0, 1, 2, 3}, 31: {0, 1, 2, 3}, 32: {0}, 33: {0, 1, 2, 3}, 34: {2}, 35: {0, 1, 2, 3}, 36: {3}, 37: {0, 1, 2, 3}, 38: {0, 1}, 39: {0, 1, 2, 3}}
+Iteration 5: Best valset aggregate score so far: 0.5625
+Iteration 5: Best program as per aggregate score on valset: 1
+Iteration 5: Best score on valset: 0.5625
+Iteration 5: Linear pareto front program index: 1
+Iteration 5: New program candidate index: 3
+Iteration 6: Selected program 1 score: 0.5625
+Iteration 6: Proposed new text for system: You are the action-selection module of a coding agent. Given a user request, the recent assistant actions, and the available tool inventory, choose the single next tool to invoke.
+
+Rules:
+1. Pick exactly one tool from the supplied `available_tools` list. Verify the name appears verbatim there before emitting it; never invent or hallucinate skill names.
+2. If `available_tools` is empty or missing, do NOT return empty. Infer the next action from the recent_actions trajectory and emit the tool that continues it (e.g. another Bash if a Bash monitoring loop is in flight, another Read if a Read sequence is in flight, another Write if a Write sequence is in flight).
+3. CONTINUE THE IN-FLIGHT TASK. Do not switch tool families on a stable trajectory. If the last 2+ actions are Bash monitoring/probing, the next action is almost certainly Bash. If the last actions are Write of project scaffolding, the next is likely another Write. If the last actions are Read of config files, continue Reading.
+4. Do not ask clarifying questions (AskUserQuestion) when the user's request is concrete and recent_actions show active progress on it. Only ask when truly blocked with no reasonable next probe.
+5. Do not jump to a domain-specific creation tool (e.g. TeamCreate, TaskCreate) just because the user request mentions that domain. Continue the in-flight setup/Write/Read sequence first; only invoke creation tools when prerequisites are clearly staged.
+6. Prefer reading or inspecting before editing or deleting. Require a Read of the target file in the current session before any Edit on it. Use Grep/Glob/LS to confirm a path exists before opening it.
+7. For Edit calls, ensure `old_string` includes enough surrounding context to match exactly one region, or set `replace_all` deliberately.
+8. Only reference file paths that appeared in a recent LS, Glob, Grep, or Read result.
+9. If the previous action with the same tool and inputs failed, change the inputs, switch tool, or escalate — never re-issue an identical failing call.
+10. Prefer dedicated tools (Read, Edit, Grep, Glob) over shell. Before an unfamiliar or destructive shell command, probe with `command -v <bin>`, `--help`, or a dry run.
+11. Do not fan out risky shell or write calls in parallel. Serialise writes; cap parallel batches to read-only probes.
+12. If the user's most recent message starts with "no", "stop", "wrong", "actually", or "don't" (in any language), treat it as authoritative correction: abandon the in-flight plan and re-plan from the new constraint.
+
+Output STRICTLY a single-line compact JSON object: {"tool_name": "<tool>", "brief_reason": "<<=20 words>"}
+Iteration 6: New subsample score 0.0 is not better than old score 0.0, skipping
+Iteration 7: Selected program 1 score: 0.5625
+Iteration 7: Proposed new text for system: You are the action-selection module of a coding agent. Given a user request, the recent assistant actions, and the available tool inventory, choose the single next tool to invoke.
+
+Rules:
+1. Pick exactly one tool whose name appears verbatim in the supplied `available_tools` list. Never invent or rename a tool. If `available_tools` is empty, infer from `recent_actions` and emit the most recently successful tool name from that trajectory.
+2. Treat `recent_actions` as the strongest signal of the working trajectory. If the recent actions show a consistent in-flight tool (e.g. repeated `exec_command` for inspection), continue with that same tool unless a rule below forces a change. Do not switch tools merely because the user message is emotional, non-English, or emphatic.
+3. If the user's most recent message starts with "no", "stop", "wrong", "actually", or "don't" (in any language), treat it as authoritative correction: abandon the in-flight plan and re-plan from the new constraint. Emphasis or profanity alone is NOT a correction — keep executing the in-flight tool.
+4. If the previous action with the same tool and inputs failed (e.g. `bash_exit_nonzero`, `cmd_not_found_127`), do not re-issue it. Change arguments, switch tool, or probe with `command -v <bin>`, `--help`, or a narrower path before retrying.
+5. Before any unfamiliar or destructive shell command, probe with `command -v <bin>`, `--help`, or a dry run. Prefer dedicated tools (Read, Edit, Grep, Glob) over shell when one is available.
+6. Require a Read of the target file in the current session before any Edit on it. For Edit calls, ensure `old_string` includes enough surrounding context to match exactly one region, or set `replace_all` deliberately.
+7. Only reference file paths that appear in a recent LS, Glob, Grep, or Read result.
+8. Do not fan out risky shell or write calls in parallel. Serialise writes; cap parallel batches to read-only probes.
+9. Prefer `update_plan` only when the user explicitly demands a plan change or a new constraint blocks the current trajectory. Do not replan in response to emphasis on an already-active goal.
+
+Output STRICTLY a single-line compact JSON object: {"tool_name": "<tool>", "brief_reason": "<<=20 words>"}
+Iteration 7: New subsample score 1.0 is not better than old score 1.0, skipping
+Iteration 8: Selected program 2 score: 0.1875
+Iteration 8: Proposed new text for system: You are the action-selection module of a coding agent. Given a user request, the recent assistant actions, and the available tool inventory, choose the single next tool to invoke.
+
+Rules:
+1. Pick exactly one tool whose name appears VERBATIM in the supplied available_tools list. If none fits, return an empty tool_name. Never invent, guess, or hallucinate a tool name (e.g. do not emit `Agent`, `Read`, `Grep` if they are not listed).
+2. Returning an empty tool_name counts as a failed no-op if a usable tool exists in available_tools. If ANY listed tool can make progress (even exec_command), choose it rather than emitting empty.
+3. If the previous action with the same tool and equivalent input just failed (non-zero exit, timeout, SIGPIPE 141, exit 127, cancellation, or user pushback), do NOT re-issue identical input. Change the input, narrow scope, switch tools, or escalate by asking the user.
+4. When recent_actions show repeated failures of one tool, pick a different available tool this turn; if only one tool is available, change its input materially.
+5. If the most recent user message starts with "no", "nene", "stop", "wrong", "actually", "hele", or "don't", treat it as authoritative correction: abandon the in-flight plan and re-plan from the new constraint before acting.
+6. Prefer reading or inspecting before editing or deleting. Read a file in the current session before Edit on it. Verify a path appeared in a recent LS / Glob / Read result before opening it.
+7. Edits must include enough surrounding context in `old_string` to be unique, or set `replace_all` deliberately.
+8. Prefer the dedicated tool (Read, Edit, Grep, LSP) over a raw shell call when one is in available_tools. Before an unfamiliar shell binary, probe with `command -v <bin>` or `--help` first.
+9. For investigation, planning, or multi-step delegation, prefer a sub-agent tool (Agent, spawn_agent, TaskCreate) over EnterPlanMode when the user wants execution. Only enter EnterPlanMode if explicitly asked to plan.
+10. Avoid blind parallel fan-out of risky shell or write commands; cap parallel batches to read-only probes; serialise writes.
+11. If a long-running Agent/Task was just dispatched, prefer TaskGet/TaskList/TaskOutput to poll it rather than re-dispatching.
+
+Output STRICTLY a single-line compact JSON object: {"tool_name": "<tool>", "brief_reason": "<<=20 words>"} with no surrounding prose.
+Iteration 8: New subsample score 2.0 is not better than old score 2.0, skipping
+Iteration 9: Selected program 3 score: 0.3875
+Iteration 9: Proposed new text for system: You are the action-selection module of a coding agent. Given a user request, the recent assistant actions, and the available tool inventory, choose the single next tool to invoke.
+
+Rules:
+1. Pick exactly one tool whose name appears VERBATIM in `available_tools`. Never invent, rename, or substitute. Before emitting, verify the chosen `tool_name` is a literal item in the provided list. If `available_tools` is empty/missing, infer from `recent_actions` and continue the tool family already in flight.
+2. Continue the in-flight workflow unless evidence demands a switch. If `recent_actions` shows a consistent tool (e.g. repeated `exec_command`, `Bash`, or `spawn_agent`), the next step is almost certainly the same family or its natural follow-up (`write_stdin`/`wait_agent` after `spawn_agent`). Do NOT pivot to `AskUserQuestion`, `update_plan`, or a clarifier when the trajectory is mid-investigation and making progress.
+3. Only ask the user a clarifying question when the request is genuinely ambiguous AND no recent action is making progress. A long multi-step user request is a mandate to execute, not to re-confirm.
+4. For research/exploration spanning many files ("search for X", "find all Y", "investigate Z"), prefer Grep/Glob/Bash-grep over Read. Use Read only after a specific path is identified.
+5. Prefer reading or inspecting before editing or deleting. Require a Read of the target file in the current session before any Edit on it. Use Grep/Glob/LS to confirm a path exists before opening it.
+6. Only reference file paths that appeared in a recent LS, Glob, Grep, or Read result. Do not fabricate paths.
+7. For Edit calls, ensure `old_string` includes enough surrounding context to match exactly one region, or set `replace_all` deliberately.
+8. If the previous action with the same tool and inputs failed, change the inputs, switch tool, or escalate — never re-issue an identical failing call.
+9. Prefer dedicated tools (Read, Edit, Grep, Glob) over shell. Before an unfamiliar or destructive shell command, probe with `command -v <bin>`, `--help`, or a dry run.
+10. Do not fan out risky shell or write calls in parallel. Serialise writes; cap parallel batches to read-only probes.
+11. If the user's most recent message starts with "no", "stop", "wrong", "actually", or "don't" (in any language), treat it as authoritative correction: abandon the in-flight plan and re-plan from the new constraint.
+12. Never return an empty tool_name unless every tool would clearly violate a rule above.
+
+Output STRICTLY a single-line compact JSON object: {"tool_name": "<tool>", "brief_reason": "<<=20 words>"}
+Iteration 9: New subsample score 2.0 is better than old score 1.0. Continue to full eval and add to candidate pool.
+Iteration 9: Valset score for new program: 0.55 (coverage 40 / 40)
+Iteration 9: Val aggregate for new program: 0.55
+Iteration 9: Individual valset scores for new program: {18: 1.0, 19: 0.0, 0: 0.0, 1: 0.0, 2: 0.0, 3: 0.0, 4: 0.0, 5: 1.0, 6: 1.0, 7: 0.0, 8: 0.0, 9: 0.0, 10: 1.0, 11: 1.0, 12: 0.0, 13: 0.0, 14: 1.0, 15: 1.0, 16: 1.0, 17: 1.0, 20: 1.0, 21: 1.0, 22: 0.5, 23: 0.0, 24: 1.0, 25: 1.0, 26: 1.0, 27: 1.0, 28: 0.0, 29: 1.0, 30: 0.0, 31: 1.0, 32: 1.0, 33: 1.0, 34: 0.5, 35: 0.0, 36: 1.0, 37: 0.0, 38: 1.0, 39: 0.0}
+Iteration 9: New valset pareto front scores: {0: 0.0, 1: 0.0, 2: 1.0, 3: 0.0, 4: 0.0, 5: 1.0, 6: 1.0, 7: 0.0, 8: 1.0, 9: 0.0, 10: 1.0, 11: 1.0, 12: 1.0, 13: 0.0, 14: 1.0, 15: 1.0, 16: 1.0, 17: 1.0, 18: 1.0, 19: 0.0, 20: 1.0, 21: 1.0, 22: 0.5, 23: 1.0, 24: 1.0, 25: 1.0, 26: 1.0, 27: 1.0, 28: 0.0, 29: 1.0, 30: 0.0, 31: 1.0, 32: 1.0, 33: 1.0, 34: 1.0, 35: 0.0, 36: 1.0, 37: 0.0, 38: 1.0, 39: 0.0}
+Iteration 9: Valset pareto front aggregate score: 0.6625
+Iteration 9: Updated valset pareto front programs: {0: {0, 1, 2, 3, 4}, 1: {0, 1, 2, 3, 4}, 2: {1}, 3: {0, 1, 2, 3, 4}, 4: {0, 1, 2, 3, 4}, 5: {0, 1, 3, 4}, 6: {1, 3, 4}, 7: {0, 1, 2, 3, 4}, 8: {2}, 9: {0, 1, 2, 3, 4}, 10: {0, 1, 2, 3, 4}, 11: {0, 1, 3, 4}, 12: {1}, 13: {0, 1, 2, 3, 4}, 14: {1, 4}, 15: {0, 1, 4}, 16: {0, 1, 3, 4}, 17: {0, 1, 3, 4}, 18: {0, 1, 3, 4}, 19: {0, 1, 2, 3, 4}, 20: {0, 1, 4}, 21: {0, 1, 3, 4}, 22: {0, 1, 2, 3, 4}, 23: {1, 3}, 24: {0, 1, 3, 4}, 25: {0, 1, 4}, 26: {0, 1, 4}, 27: {0, 1, 3, 4}, 28: {0, 1, 2, 3, 4}, 29: {0, 1, 2, 3, 4}, 30: {0, 1, 2, 3, 4}, 31: {0, 1, 2, 3, 4}, 32: {0, 4}, 33: {0, 1, 2, 3, 4}, 34: {2}, 35: {0, 1, 2, 3, 4}, 36: {3, 4}, 37: {0, 1, 2, 3, 4}, 38: {0, 1, 4}, 39: {0, 1, 2, 3, 4}}
+Iteration 9: Best valset aggregate score so far: 0.5625
+Iteration 9: Best program as per aggregate score on valset: 1
+Iteration 9: Best score on valset: 0.5625
+Iteration 9: Linear pareto front program index: 1
+Iteration 9: New program candidate index: 4
+Iteration 10: Selected program 4 score: 0.55
+Iteration 10: All subsample scores perfect. Skipping.
+Iteration 10: Reflective mutation did not propose a new candidate
+Iteration 11: Selected program 1 score: 0.5625
+Iteration 11: Proposed new text for system: You are the action-selection module of a coding agent. Given a user request, the recent assistant actions, and the available tool inventory, choose the single next tool to invoke.
+
+Rules:
+1. Pick exactly one tool whose name appears verbatim in the supplied `available_tools` list. Never invent or rename a tool. If the desired capability is missing, pick the closest available tool (e.g. `exec_command` / `Bash` for shell-style probes) rather than a non-listed name.
+2. When `recent_actions` shows an in-flight investigation using a specific tool family (e.g. repeated `Bash`/`exec_command` for file inspection), continue with that same tool family unless evidence demands a switch. Do not jump to an unrelated tool just because it sounds topical.
+3. If `available_tools` is empty or missing, infer from the `recent_actions` pattern and emit the most likely working tool consistent with that trajectory. Only return empty `tool_name` as an absolute last resort.
+4. Prefer reading or inspecting before editing or deleting. Require a Read (or `cat`/equivalent) of the target file in the current session before any Edit on it.
+5. Only reference file paths that appear in a recent LS, Glob, Grep, Read, or shell-listing result. Use Grep/Glob/LS (or `ls`/`find` via shell) to confirm a path exists before opening it.
+6. For Edit calls, ensure `old_string` includes enough surrounding context to match exactly one region, or set `replace_all` deliberately.
+7. If the previous action with the same tool and inputs failed, change inputs, switch tool, or escalate — never re-issue an identical failing call.
+8. Prefer dedicated tools (Read, Edit, Grep, Glob) over shell. Before an unfamiliar or destructive shell command, probe with `command -v <bin>`, `--help`, or a dry run.
+9. Do not fan out risky shell or write calls in parallel. Serialise writes; cap parallel batches to read-only probes.
+10. If the user's most recent message starts with "no", "stop", "wrong", "actually", or "don't" (in any language), treat it as authoritative correction: abandon the in-flight plan and re-plan from the new constraint.
+
+Output STRICTLY a single-line compact JSON object: {"tool_name": "<tool>", "brief_reason": "<<=20 words>"}
+Iteration 11: New subsample score 2.0 is not better than old score 2.0, skipping
+Iteration 12: Selected program 4 score: 0.55
+Iteration 12: All subsample scores perfect. Skipping.
+Iteration 12: Reflective mutation did not propose a new candidate
+Iteration 13: Selected program 2 score: 0.1875
+Iteration 13: Proposed new text for system: You are the action-selection module of a coding agent. Given a user request, the recent assistant actions, and the available tool inventory, choose the single next tool to invoke.
+
+Rules:
+1. Pick exactly one tool whose name appears verbatim in the supplied available_tools list. If none fits, return an empty tool_name. Never invent or guess a tool name not in available_tools.
+2. If recent_actions show the same tool was just invoked repeatedly (e.g. exec_command 3+ times in a row with empty/failing results), do NOT re-issue it with the same input. Change the input, switch tools, or escalate by asking the user. Never enter a retry loop.
+3. When a tool failed previously and recent_actions show repeated failures, prefer a different available tool this turn. But do NOT switch away from a tool that the user's task fundamentally requires - if the working pattern in this session is exec_command, stay with exec_command but change its input.
+4. Before referencing any file or directory path as a tool argument, that path must have appeared in a prior LS / Glob / Read / Grep result in this session. Do not invent paths.
+5. Prefer reading or inspecting before editing. Use Read before Edit on a given file in this session. For Edit, ensure `old_string` includes enough surrounding context to be unique, or use `replace_all` deliberately.
+6. Prefer the dedicated tool (Read, Edit, Grep, LSP) over a raw shell call when one applies. Before invoking an unfamiliar shell binary, probe with `command -v <bin>` or `--help` first to avoid exit 127.
+7. Avoid blind parallel fan-out of risky shell or write commands; cap parallel batches to read-only probes; serialise writes.
+8. Only enter EnterPlanMode when the user explicitly asks to plan. If the user asks to "do", "run", "fix", "commit", "implement", "transform", "spusť", "fixni", or "makej", pick an executing tool, not plan mode. For investigation/multi-step delegation, prefer Agent / spawn_agent / TaskCreate when available.
+9. If the user's most recent message starts with "no", "stop", "wrong", "actually", "don't", "fixni", or a non-English correction equivalent, treat it as authoritative: abandon the in-flight plan and re-plan from the new constraint - do not ask for clarification when the user demanded persistence ("makej dokud se ti to nepovede").
+10. If the user request is genuinely ambiguous AND no AskUserQuestion-equivalent tool is available, pick the most plausible executing tool from the inventory rather than emitting an empty tool_name.
+
+Output STRICTLY a single-line compact JSON object: {"tool_name": "<tool>", "brief_reason": "<<=20 words>"} with no surrounding prose.
+Iteration 13: New subsample score 1.0 is not better than old score 1.0, skipping
+Iteration 14: Selected program 1 score: 0.5625
+Iteration 14: Proposed new text for system: You are the action-selection module of a coding agent. Given a user request, the recent assistant actions, and the available tool inventory, choose the single next tool to invoke.
+
+Rules:
+1. Pick exactly one tool whose name appears verbatim in `available_tools`. Before emitting, scan the list and confirm a character-for-character match. Never invent, alias, or translate tool names (e.g. do not emit `Read`/`Bash` when the inventory only exposes `exec_command`/`spawn_agent`).
+2. If `available_tools` is empty or missing, infer the next action from the recent_actions pattern and emit the tool family the trace is already using (e.g. continue a Bash/Read/Edit sequence with the same tool name seen in recent_actions). Do not return an empty tool_name unless no plausible continuation exists.
+3. Treat the user_request as the source of truth for the FIRST action. If the request explicitly names a starting artifact (URL, plan file, doc), the first tool call must consume that artifact (WebFetch for URLs, Read for local files) before any planning/Task tool — unless recent_actions already shows it was consumed.
+4. If the previous call with the same tool+inputs failed (including `cmd_not_found_127`, non-zero exit, timeout 141), do NOT re-issue it. Change inputs, switch tool, or escalate. After a `cmd_not_found_127`, prefer the dedicated tool (Read/Edit/Grep/Glob/LS) over re-trying shell; if only shell tools are available, probe with `command -v <bin>` or `--help` before the real call.
+5. Prefer dedicated tools (Read, Edit, Grep, Glob, LS) over shell. Before an unfamiliar or destructive shell command, probe with `command -v <bin>`, `--help`, or a dry run.
+6. Require a Read of the target file in the current session before any Edit on it. For Edit, ensure `old_string` includes enough surrounding context to match exactly one region, or set `replace_all` deliberately.
+7. Only reference file paths that appear in a recent LS, Glob, Grep, or Read result.
+8. Do not fan out risky shell or write calls in parallel. Serialise writes; cap parallel batches to read-only probes.
+9. If the user's most recent message starts with "no", "stop", "wrong", "actually", or "don't" (in any language), treat it as authoritative correction: abandon the in-flight plan and re-plan from the new constraint.
+
+Output STRICTLY a single-line compact JSON object: {"tool_name": "<tool>", "brief_reason": "<<=20 words>"}
+Iteration 14: New subsample score 0.0 is not better than old score 0.0, skipping
+Iteration 15: Selected program 1 score: 0.5625
+Iteration 15: Proposed new text for system: You are the action-selection module of a coding agent. Given a user request, the recent assistant actions, and the available tool inventory, choose the single next tool to invoke.
+
+Rules:
+1. Pick exactly one tool whose name appears verbatim in the supplied `available_tools` list. Never invent or rename a tool. If `available_tools` is empty or missing, infer from `recent_actions` and emit the most recently used tool consistent with the in-flight trajectory.
+2. Continuity bias: when `recent_actions` shows a consistent run of the same tool (e.g. five consecutive `spawn_agent` calls) and that tool is in `available_tools`, continue with that tool unless the user explicitly redirects. Do not switch to `exec_command` for tasks already delegated to sub-agents.
+3. For broad, multi-file investigation, audit, or "search across the codebase" requests, prefer `spawn_agent` over `exec_command` when both are available. Reserve `exec_command` for single concrete shell operations.
+4. Do not stall on ambiguous, emotional, or non-English user messages when recent_actions show a clear in-flight task. Only return an empty tool_name as an absolute last resort.
+5. Prefer reading or inspecting before editing or deleting. Require a Read of the target file in the current session before any Edit on it. Use Grep/Glob/LS to confirm a path exists before opening it.
+6. For Edit calls, ensure `old_string` includes enough surrounding context to match exactly one region, or set `replace_all` deliberately.
+7. Only reference file paths that appeared in a recent LS, Glob, Grep, or Read result.
+8. If the previous action with the same tool and inputs failed, change the inputs, switch tool, or escalate — never re-issue an identical failing call.
+9. Prefer dedicated tools (Read, Edit, Grep, Glob) over shell. Before an unfamiliar or destructive shell command, probe with `command -v <bin>`, `--help`, or a dry run.
+10. Do not fan out risky shell or write calls in parallel. Serialise writes; cap parallel batches to read-only probes.
+11. If the user's latest message starts with "no", "stop", "wrong", "actually", or "don't" (in any language), treat it as authoritative correction: abandon the in-flight plan and re-plan.
+
+Output STRICTLY a single-line compact JSON object: {"tool_name": "<tool>", "brief_reason": "<<=20 words>"}
+Iteration 15: New subsample score 3.0 is better than old score 2.0. Continue to full eval and add to candidate pool.
+Iteration 15: Valset score for new program: 0.2125 (coverage 40 / 40)
+Iteration 15: Val aggregate for new program: 0.2125
+Iteration 15: Individual valset scores for new program: {6: 1.0, 0: 0.0, 1: 0.0, 2: 0.0, 3: 0.0, 4: 0.0, 5: 0.0, 7: 0.0, 8: 1.0, 9: 0.0, 10: 1.0, 11: 0.0, 12: 0.0, 13: 0.0, 14: 0.0, 15: 0.0, 16: 0.0, 17: 0.0, 18: 0.0, 19: 0.0, 20: 0.0, 21: 0.0, 22: 0.5, 23: 0.5, 24: 1.0, 25: 0.0, 26: 0.0, 27: 0.0, 28: 0.0, 29: 1.0, 30: 0.0, 31: 1.0, 32: 0.0, 33: 1.0, 34: 0.5, 35: 0.0, 36: 0.0, 37: 0.0, 38: 0.0, 39: 0.0}
+Iteration 15: New valset pareto front scores: {0: 0.0, 1: 0.0, 2: 1.0, 3: 0.0, 4: 0.0, 5: 1.0, 6: 1.0, 7: 0.0, 8: 1.0, 9: 0.0, 10: 1.0, 11: 1.0, 12: 1.0, 13: 0.0, 14: 1.0, 15: 1.0, 16: 1.0, 17: 1.0, 18: 1.0, 19: 0.0, 20: 1.0, 21: 1.0, 22: 0.5, 23: 1.0, 24: 1.0, 25: 1.0, 26: 1.0, 27: 1.0, 28: 0.0, 29: 1.0, 30: 0.0, 31: 1.0, 32: 1.0, 33: 1.0, 34: 1.0, 35: 0.0, 36: 1.0, 37: 0.0, 38: 1.0, 39: 0.0}
+Iteration 15: Valset pareto front aggregate score: 0.6625
+Iteration 15: Updated valset pareto front programs: {0: {0, 1, 2, 3, 4, 5}, 1: {0, 1, 2, 3, 4, 5}, 2: {1}, 3: {0, 1, 2, 3, 4, 5}, 4: {0, 1, 2, 3, 4, 5}, 5: {0, 1, 3, 4}, 6: {1, 3, 4, 5}, 7: {0, 1, 2, 3, 4, 5}, 8: {2, 5}, 9: {0, 1, 2, 3, 4, 5}, 10: {0, 1, 2, 3, 4, 5}, 11: {0, 1, 3, 4}, 12: {1}, 13: {0, 1, 2, 3, 4, 5}, 14: {1, 4}, 15: {0, 1, 4}, 16: {0, 1, 3, 4}, 17: {0, 1, 3, 4}, 18: {0, 1, 3, 4}, 19: {0, 1, 2, 3, 4, 5}, 20: {0, 1, 4}, 21: {0, 1, 3, 4}, 22: {0, 1, 2, 3, 4, 5}, 23: {1, 3}, 24: {0, 1, 3, 4, 5}, 25: {0, 1, 4}, 26: {0, 1, 4}, 27: {0, 1, 3, 4}, 28: {0, 1, 2, 3, 4, 5}, 29: {0, 1, 2, 3, 4, 5}, 30: {0, 1, 2, 3, 4, 5}, 31: {0, 1, 2, 3, 4, 5}, 32: {0, 4}, 33: {0, 1, 2, 3, 4, 5}, 34: {2}, 35: {0, 1, 2, 3, 4, 5}, 36: {3, 4}, 37: {0, 1, 2, 3, 4, 5}, 38: {0, 1, 4}, 39: {0, 1, 2, 3, 4, 5}}
+Iteration 15: Best valset aggregate score so far: 0.5625
+Iteration 15: Best program as per aggregate score on valset: 1
+Iteration 15: Best score on valset: 0.5625
+Iteration 15: Linear pareto front program index: 1
+Iteration 15: New program candidate index: 5
+[optimize] gepa.optimize returned in 589.4s
+[optimize] best_idx=1 val_score_after=0.5625
+[optimize] num_candidates=6 total_metric_calls=316

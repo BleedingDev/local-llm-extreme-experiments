@@ -1,0 +1,804 @@
+{
+  "model": "claude-haiku-4-5",
+  "tasks_path": "/Users/satan/side/experiments/supergemma-dflash-ddtree-mlx/trace-gepa/data/benchmarks/minibench.jsonl",
+  "system_prompt_file": "/Users/satan/side/experiments/supergemma-dflash-ddtree-mlx/trace-gepa/bench/results/sweep/_seed_prompt.txt",
+  "system_prompt_chars": 958,
+  "limit": 30,
+  "verifier": "bench.verifiers.verify",
+  "summary": {
+    "overall": {
+      "total_tasks": 30,
+      "mean_score": 0.2,
+      "wallclock_s": 4.54,
+      "lm_calls": 30,
+      "lm_errors": 0,
+      "prompt_tokens_est": 16225,
+      "output_tokens_est": 1077,
+      "total_tokens_est": 17302
+    },
+    "per_category": {
+      "planning": {
+        "count": 4,
+        "mean_score": 0.0,
+        "signal_breakdown": {
+          "schema_fail": 3,
+          "no_assertions_found": 1
+        }
+      },
+      "tool_routing": {
+        "count": 5,
+        "mean_score": 0.4,
+        "signal_breakdown": {
+          "schema_ok": 2,
+          "schema_fail": 3
+        }
+      },
+      "edit_safety": {
+        "count": 5,
+        "mean_score": 0.4,
+        "signal_breakdown": {
+          "schema_ok": 2,
+          "schema_fail": 3
+        }
+      },
+      "command_synthesis": {
+        "count": 4,
+        "mean_score": 0.0,
+        "signal_breakdown": {
+          "regex_miss": 4
+        }
+      },
+      "debugging": {
+        "count": 4,
+        "mean_score": 0.0,
+        "signal_breakdown": {
+          "no_assertions_found": 4
+        }
+      },
+      "path_grounding": {
+        "count": 4,
+        "mean_score": 0.0,
+        "signal_breakdown": {
+          "schema_fail": 4
+        }
+      },
+      "recovery": {
+        "count": 4,
+        "mean_score": 0.5,
+        "signal_breakdown": {
+          "schema_fail": 2,
+          "schema_ok": 2
+        }
+      }
+    },
+    "per_difficulty": {
+      "easy": {
+        "count": 8,
+        "mean_score": 0.25
+      },
+      "hard": {
+        "count": 13,
+        "mean_score": 0.2308
+      },
+      "medium": {
+        "count": 9,
+        "mean_score": 0.1111
+      }
+    }
+  },
+  "per_task": [
+    {
+      "id": "synth_easy_planning_000",
+      "category": "planning",
+      "difficulty": "easy",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "```json\n{\"tool_name\": \"Read\", \"brief_reason\": \"Inspect main.rs and logger.rs to understand current structure before planning CLI flag implementation\"}\n```",
+      "parsed_output": {
+        "tool_name": "Read",
+        "brief_reason": "Inspect main.rs and logger.rs to understand current structure before planning CLI flag implementation"
+      },
+      "prompt_tokens_est": 351,
+      "output_tokens_est": 38,
+      "latency_ms": 1690,
+      "error": null
+    },
+    {
+      "id": "synth_easy_tool_routing_002",
+      "category": "tool_routing",
+      "difficulty": "easy",
+      "score": 1.0,
+      "verifier_signal": "schema_ok",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": true
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "```json\n{\"tool_name\": \"Glob\", \"brief_reason\": \"Find all *.rs files in crates/parser/src to show module layout\"}\n```",
+      "parsed_output": {
+        "tool_name": "Glob",
+        "brief_reason": "Find all *.rs files in crates/parser/src to show module layout"
+      },
+      "prompt_tokens_est": 348,
+      "output_tokens_est": 28,
+      "latency_ms": 1450,
+      "error": null
+    },
+    {
+      "id": "synth_easy_tool_routing_003",
+      "category": "tool_routing",
+      "difficulty": "easy",
+      "score": 1.0,
+      "verifier_signal": "schema_ok",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": true
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "```json\n{\"tool_name\": \"Bash\", \"brief_reason\": \"Run go test command in /workspace/notify-svc to execute tests and display failures\"}\n```",
+      "parsed_output": {
+        "tool_name": "Bash",
+        "brief_reason": "Run go test command in /workspace/notify-svc to execute tests and display failures"
+      },
+      "prompt_tokens_est": 351,
+      "output_tokens_est": 33,
+      "latency_ms": 1481,
+      "error": null
+    },
+    {
+      "id": "synth_edit_safety_strnu_000",
+      "category": "edit_safety",
+      "difficulty": "hard",
+      "score": 1.0,
+      "verifier_signal": "schema_ok",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": true
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "```json\n{\"tool_name\": \"Read\", \"brief_reason\": \"Read file to locate second db.query call before editing it\"}\n```",
+      "parsed_output": {
+        "tool_name": "Read",
+        "brief_reason": "Read file to locate second db.query call before editing it"
+      },
+      "prompt_tokens_est": 372,
+      "output_tokens_est": 27,
+      "latency_ms": 1465,
+      "error": null
+    },
+    {
+      "id": "synth_edit_safety_strnu_001",
+      "category": "edit_safety",
+      "difficulty": "hard",
+      "score": 1.0,
+      "verifier_signal": "schema_ok",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": true
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "```json\n{\"tool_name\": \"Read\", \"brief_reason\": \"Read handlers/auth.py to locate the logging import inside login function before editing\"}\n```",
+      "parsed_output": {
+        "tool_name": "Read",
+        "brief_reason": "Read handlers/auth.py to locate the logging import inside login function before editing"
+      },
+      "prompt_tokens_est": 384,
+      "output_tokens_est": 35,
+      "latency_ms": 1452,
+      "error": null
+    },
+    {
+      "id": "task_command_synthesis_001",
+      "category": "command_synthesis",
+      "difficulty": "easy",
+      "score": 0.0,
+      "verifier_signal": "regex_miss",
+      "verifier_details": {
+        "pattern": "ls.*/Users/satan/side/experiments/"
+      },
+      "raw_output": "```json\n{\"tool_name\": \"EnterPlanMode\", \"brief_reason\": \"User needs structured planning for complex multi-phase dataset creation and optimizer development project\"}\n```",
+      "parsed_output": {
+        "tool_name": "EnterPlanMode",
+        "brief_reason": "User needs structured planning for complex multi-phase dataset creation and optimizer development project"
+      },
+      "prompt_tokens_est": 520,
+      "output_tokens_est": 41,
+      "latency_ms": 1609,
+      "error": null
+    },
+    {
+      "id": "task_command_synthesis_003",
+      "category": "command_synthesis",
+      "difficulty": "easy",
+      "score": 0.0,
+      "verifier_signal": "regex_miss",
+      "verifier_details": {
+        "pattern": "find.*/Users/satan/\\.claude/projects"
+      },
+      "raw_output": "```json\n{\"tool_name\": \"\", \"brief_reason\": \"Available tools list is empty/unknown. Cannot proceed without tool inventory.\"}\n```",
+      "parsed_output": {
+        "tool_name": "",
+        "brief_reason": "Available tools list is empty/unknown. Cannot proceed without tool inventory."
+      },
+      "prompt_tokens_est": 459,
+      "output_tokens_est": 31,
+      "latency_ms": 1417,
+      "error": null
+    },
+    {
+      "id": "task_command_synthesis_010",
+      "category": "command_synthesis",
+      "difficulty": "medium",
+      "score": 0.0,
+      "verifier_signal": "regex_miss",
+      "verifier_details": {
+        "pattern": "tail.*/Users/satan/side/experiments/"
+      },
+      "raw_output": "```json\n{\"tool_name\": \"\", \"brief_reason\": \"No available tools match debugging task. Need file read/bash access not in inventory.\"}\n```",
+      "parsed_output": {
+        "tool_name": "",
+        "brief_reason": "No available tools match debugging task. Need file read/bash access not in inventory."
+      },
+      "prompt_tokens_est": 621,
+      "output_tokens_est": 33,
+      "latency_ms": 1586,
+      "error": null
+    },
+    {
+      "id": "task_command_synthesis_011",
+      "category": "command_synthesis",
+      "difficulty": "hard",
+      "score": 0.0,
+      "verifier_signal": "regex_miss",
+      "verifier_details": {
+        "pattern": "pnpm.*\\-\\-noEmit"
+      },
+      "raw_output": "```json\n{\"tool_name\": \"TaskCreate\", \"brief_reason\": \"Create task to document contract boundaries and work separation agreements for team coordination\"}\n```",
+      "parsed_output": {
+        "tool_name": "TaskCreate",
+        "brief_reason": "Create task to document contract boundaries and work separation agreements for team coordination"
+      },
+      "prompt_tokens_est": 591,
+      "output_tokens_est": 38,
+      "latency_ms": 879,
+      "error": null
+    },
+    {
+      "id": "task_debugging_001",
+      "category": "debugging",
+      "difficulty": "hard",
+      "score": 0.0,
+      "verifier_signal": "no_assertions_found",
+      "verifier_details": {
+        "pat": "must not repeat failing command verbatim",
+        "undecidable": 1
+      },
+      "raw_output": "```json\n{\"tool_name\": \"exec_command\", \"brief_reason\": \"Diagnose fallow installation and npm config issue before retrying health check\"}\n```",
+      "parsed_output": {
+        "tool_name": "exec_command",
+        "brief_reason": "Diagnose fallow installation and npm config issue before retrying health check"
+      },
+      "prompt_tokens_est": 493,
+      "output_tokens_est": 34,
+      "latency_ms": 957,
+      "error": null
+    },
+    {
+      "id": "task_debugging_003",
+      "category": "debugging",
+      "difficulty": "easy",
+      "score": 0.0,
+      "verifier_signal": "no_assertions_found",
+      "verifier_details": {
+        "pat": "must not repeat failing command verbatim",
+        "undecidable": 1
+      },
+      "raw_output": "```json\n{\"tool_name\": \"\", \"brief_reason\": \"Available tools list is empty/unknown. Cannot proceed without tool inventory.\"}\n```",
+      "parsed_output": {
+        "tool_name": "",
+        "brief_reason": "Available tools list is empty/unknown. Cannot proceed without tool inventory."
+      },
+      "prompt_tokens_est": 674,
+      "output_tokens_est": 31,
+      "latency_ms": 890,
+      "error": null
+    },
+    {
+      "id": "task_debugging_008",
+      "category": "debugging",
+      "difficulty": "medium",
+      "score": 0.0,
+      "verifier_signal": "no_assertions_found",
+      "verifier_details": {
+        "pat": "must not repeat failing command verbatim",
+        "undecidable": 1
+      },
+      "raw_output": "```json\n{\"tool_name\": \"\", \"brief_reason\": \"No suitable tool available. Need Bash to run 'vp check --fix' for formatting issues, or file editor for app.json\"}\n```",
+      "parsed_output": {
+        "tool_name": "",
+        "brief_reason": "No suitable tool available. Need Bash to run 'vp check --fix' for formatting issues, or file editor for app.json"
+      },
+      "prompt_tokens_est": 649,
+      "output_tokens_est": 40,
+      "latency_ms": 1024,
+      "error": null
+    },
+    {
+      "id": "task_debugging_011",
+      "category": "debugging",
+      "difficulty": "easy",
+      "score": 0.0,
+      "verifier_signal": "no_assertions_found",
+      "verifier_details": {
+        "pat": "must not repeat failing command verbatim",
+        "undecidable": 1
+      },
+      "raw_output": "```json\n{\"tool_name\": \"\", \"brief_reason\": \"Available tools list is empty/unknown. Cannot proceed without tool inventory.\"}\n```",
+      "parsed_output": {
+        "tool_name": "",
+        "brief_reason": "Available tools list is empty/unknown. Cannot proceed without tool inventory."
+      },
+      "prompt_tokens_est": 682,
+      "output_tokens_est": 31,
+      "latency_ms": 818,
+      "error": null
+    },
+    {
+      "id": "task_edit_safety_002",
+      "category": "edit_safety",
+      "difficulty": "medium",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": false
+          },
+          {
+            "k": "not_null",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "```json\n{\"tool_name\": \"EnterPlanMode\", \"brief_reason\": \"User requests data transformation and git operations. Need plan mode to coordinate multiple steps.\"}\n```",
+      "parsed_output": {
+        "tool_name": "EnterPlanMode",
+        "brief_reason": "User requests data transformation and git operations. Need plan mode to coordinate multiple steps."
+      },
+      "prompt_tokens_est": 664,
+      "output_tokens_est": 40,
+      "latency_ms": 958,
+      "error": null
+    },
+    {
+      "id": "task_edit_safety_003",
+      "category": "edit_safety",
+      "difficulty": "medium",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": false
+          },
+          {
+            "k": "not_null",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "```json\n{\"tool_name\": \"AskUserQuestion\", \"brief_reason\": \"Need clarification on data transformation requirements and which Plans (13, 17) need specific data format\"}\n```",
+      "parsed_output": {
+        "tool_name": "AskUserQuestion",
+        "brief_reason": "Need clarification on data transformation requirements and which Plans (13, 17) need specific data format"
+      },
+      "prompt_tokens_est": 672,
+      "output_tokens_est": 42,
+      "latency_ms": 915,
+      "error": null
+    },
+    {
+      "id": "task_edit_safety_007",
+      "category": "edit_safety",
+      "difficulty": "medium",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": false
+          },
+          {
+            "k": "not_null",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "```json\n{\"tool_name\": \"mcp__expo-mcp__authenticate\", \"brief_reason\": \"User needs to authenticate with EAS CLI for organization ai-omnipowerfuls with wired setup\"}\n```",
+      "parsed_output": {
+        "tool_name": "mcp__expo-mcp__authenticate",
+        "brief_reason": "User needs to authenticate with EAS CLI for organization ai-omnipowerfuls with wired setup"
+      },
+      "prompt_tokens_est": 566,
+      "output_tokens_est": 41,
+      "latency_ms": 833,
+      "error": null
+    },
+    {
+      "id": "task_path_grounding_002",
+      "category": "path_grounding",
+      "difficulty": "hard",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "in",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "```json\n{\"tool_name\": \"exec_command\", \"brief_reason\": \"Read test-helpers.ts to understand PlatformConfig service provisioning failure and layer composition\"}\n```",
+      "parsed_output": {
+        "tool_name": "exec_command",
+        "brief_reason": "Read test-helpers.ts to understand PlatformConfig service provisioning failure and layer composition"
+      },
+      "prompt_tokens_est": 478,
+      "output_tokens_est": 40,
+      "latency_ms": 936,
+      "error": null
+    },
+    {
+      "id": "task_path_grounding_003",
+      "category": "path_grounding",
+      "difficulty": "hard",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "in",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "```json\n{\"tool_name\": \"exec_command\", \"brief_reason\": \"Read test-helpers.ts to understand PlatformConfig service provisioning failure and layer composition\"}\n```",
+      "parsed_output": {
+        "tool_name": "exec_command",
+        "brief_reason": "Read test-helpers.ts to understand PlatformConfig service provisioning failure and layer composition"
+      },
+      "prompt_tokens_est": 479,
+      "output_tokens_est": 40,
+      "latency_ms": 876,
+      "error": null
+    },
+    {
+      "id": "task_path_grounding_006",
+      "category": "path_grounding",
+      "difficulty": "hard",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "in",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "```json\n{\"tool_name\": \"exec_command\", \"brief_reason\": \"Read test-helpers.ts to understand PlatformConfig service provisioning failure and layer composition\"}\n```",
+      "parsed_output": {
+        "tool_name": "exec_command",
+        "brief_reason": "Read test-helpers.ts to understand PlatformConfig service provisioning failure and layer composition"
+      },
+      "prompt_tokens_est": 479,
+      "output_tokens_est": 40,
+      "latency_ms": 875,
+      "error": null
+    },
+    {
+      "id": "task_path_grounding_007",
+      "category": "path_grounding",
+      "difficulty": "hard",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "in",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "```json\n{\"tool_name\": \"exec_command\", \"brief_reason\": \"Read test-helpers.ts to understand PlatformConfig service provisioning failure and layer composition\"}\n```",
+      "parsed_output": {
+        "tool_name": "exec_command",
+        "brief_reason": "Read test-helpers.ts to understand PlatformConfig service provisioning failure and layer composition"
+      },
+      "prompt_tokens_est": 479,
+      "output_tokens_est": 40,
+      "latency_ms": 812,
+      "error": null
+    },
+    {
+      "id": "task_planning_003",
+      "category": "planning",
+      "difficulty": "hard",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "mention_n_of",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "```json\n{\"tool_name\": \"Read\", \"brief_reason\": \"Inspect current styling to understand what needs improvement before making changes\"}\n```",
+      "parsed_output": {
+        "tool_name": "Read",
+        "brief_reason": "Inspect current styling to understand what needs improvement before making changes"
+      },
+      "prompt_tokens_est": 343,
+      "output_tokens_est": 33,
+      "latency_ms": 734,
+      "error": null
+    },
+    {
+      "id": "task_planning_010",
+      "category": "planning",
+      "difficulty": "medium",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "mention_n_of",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "```json\n{\"tool_name\": \"Read\", \"brief_reason\": \"Read plan file first per instructions to understand task #9 requirements\"}\n```",
+      "parsed_output": {
+        "tool_name": "Read",
+        "brief_reason": "Read plan file first per instructions to understand task #9 requirements"
+      },
+      "prompt_tokens_est": 466,
+      "output_tokens_est": 31,
+      "latency_ms": 974,
+      "error": null
+    },
+    {
+      "id": "task_planning_013",
+      "category": "planning",
+      "difficulty": "easy",
+      "score": 0.0,
+      "verifier_signal": "no_assertions_found",
+      "verifier_details": {
+        "pat": "plan must mention >= 2 of: ",
+        "undecidable": 1
+      },
+      "raw_output": "```json\n{\"tool_name\": \"Read\", \"brief_reason\": \"Inspect PrismML Android sample structure and current implementation before modifications\"}\n```",
+      "parsed_output": {
+        "tool_name": "Read",
+        "brief_reason": "Inspect PrismML Android sample structure and current implementation before modifications"
+      },
+      "prompt_tokens_est": 464,
+      "output_tokens_est": 35,
+      "latency_ms": 882,
+      "error": null
+    },
+    {
+      "id": "task_recovery_000",
+      "category": "recovery",
+      "difficulty": "hard",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "```json\n{\"tool_name\": \"\", \"brief_reason\": \"No available_tools provided; cannot proceed. Need tool inventory to diagnose Zig allocator API error.\"}\n```",
+      "parsed_output": {
+        "tool_name": "",
+        "brief_reason": "No available_tools provided; cannot proceed. Need tool inventory to diagnose Zig allocator API error."
+      },
+      "prompt_tokens_est": 742,
+      "output_tokens_est": 37,
+      "latency_ms": 920,
+      "error": null
+    },
+    {
+      "id": "task_recovery_002",
+      "category": "recovery",
+      "difficulty": "medium",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "```json\n{\"tool_name\": \"TaskGet\", \"brief_reason\": \"Read task #12 description first as instructed before proceeding with work\"}\n```",
+      "parsed_output": {
+        "tool_name": "TaskGet",
+        "brief_reason": "Read task #12 description first as instructed before proceeding with work"
+      },
+      "prompt_tokens_est": 774,
+      "output_tokens_est": 32,
+      "latency_ms": 936,
+      "error": null
+    },
+    {
+      "id": "task_recovery_010",
+      "category": "recovery",
+      "difficulty": "hard",
+      "score": 1.0,
+      "verifier_signal": "schema_ok",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": true
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "```json\n{\"tool_name\": \"Bash\", \"brief_reason\": \"List available_tools first; typo in path (saturn\u2192satan) caused last failure. Recover with directory check.\"}\n```",
+      "parsed_output": {
+        "tool_name": "Bash",
+        "brief_reason": "List available_tools first; typo in path (saturn\u2192satan) caused last failure. Recover with directory check."
+      },
+      "prompt_tokens_est": 649,
+      "output_tokens_est": 39,
+      "latency_ms": 1323,
+      "error": null
+    },
+    {
+      "id": "task_recovery_011",
+      "category": "recovery",
+      "difficulty": "medium",
+      "score": 1.0,
+      "verifier_signal": "schema_ok",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": true
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "```json\n{\"tool_name\": \"exec_command\", \"brief_reason\": \"Read the test-helpers file to understand PlatformConfig service provisioning issue\"}\n```",
+      "parsed_output": {
+        "tool_name": "exec_command",
+        "brief_reason": "Read the test-helpers file to understand PlatformConfig service provisioning issue"
+      },
+      "prompt_tokens_est": 602,
+      "output_tokens_est": 35,
+      "latency_ms": 932,
+      "error": null
+    },
+    {
+      "id": "task_tool_routing_009",
+      "category": "tool_routing",
+      "difficulty": "medium",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "```json\n{\"tool_name\": \"\", \"brief_reason\": \"No file-reading tools available. Required: read plan, scripts, package.json. Available tools lack file access capability.\"}\n```",
+      "parsed_output": {
+        "tool_name": "",
+        "brief_reason": "No file-reading tools available. Required: read plan, scripts, package.json. Available tools lack file access capability."
+      },
+      "prompt_tokens_est": 518,
+      "output_tokens_est": 42,
+      "latency_ms": 1106,
+      "error": null
+    },
+    {
+      "id": "task_tool_routing_020",
+      "category": "tool_routing",
+      "difficulty": "hard",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "```json\n{\"tool_name\": \"Bash\", \"brief_reason\": \"Run transform script to process Jira data, then commit & push changes\"}\n```",
+      "parsed_output": {
+        "tool_name": "Bash",
+        "brief_reason": "Run transform script to process Jira data, then commit & push changes"
+      },
+      "prompt_tokens_est": 670,
+      "output_tokens_est": 30,
+      "latency_ms": 888,
+      "error": null
+    },
+    {
+      "id": "task_tool_routing_027",
+      "category": "tool_routing",
+      "difficulty": "hard",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "```json\n{\"tool_name\": \"AskUserQuestion\", \"brief_reason\": \"Need clarification on experiment goal and folder structure before proceeding with implementation\"}\n```",
+      "parsed_output": {
+        "tool_name": "AskUserQuestion",
+        "brief_reason": "Need clarification on experiment goal and folder structure before proceeding with implementation"
+      },
+      "prompt_tokens_est": 685,
+      "output_tokens_est": 40,
+      "latency_ms": 841,
+      "error": null
+    }
+  ]
+}

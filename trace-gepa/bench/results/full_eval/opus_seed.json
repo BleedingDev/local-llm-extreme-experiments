@@ -1,0 +1,4273 @@
+{
+  "model": "claude-opus-4-7",
+  "tasks_path": "trace-gepa/data/benchmark_tasks_full.jsonl",
+  "system_prompt_file": null,
+  "system_prompt_chars": 236,
+  "limit": 0,
+  "verifier": "bench.verifiers.verify",
+  "summary": {
+    "overall": {
+      "total_tasks": 175,
+      "mean_score": 0.3029,
+      "wallclock_s": 43.55,
+      "lm_calls": 175,
+      "lm_errors": 0,
+      "prompt_tokens_est": 55135,
+      "output_tokens_est": 3911,
+      "total_tokens_est": 59046
+    },
+    "per_category": {
+      "tool_routing": {
+        "count": 39,
+        "mean_score": 0.1795,
+        "signal_breakdown": {
+          "schema_fail": 26,
+          "schema_ok": 7,
+          "no_assertions_found": 6
+        }
+      },
+      "command_synthesis": {
+        "count": 16,
+        "mean_score": 0.0,
+        "signal_breakdown": {
+          "regex_miss": 16
+        }
+      },
+      "edit_safety": {
+        "count": 38,
+        "mean_score": 0.4474,
+        "signal_breakdown": {
+          "schema_fail": 13,
+          "schema_ok": 17,
+          "no_assertions_found": 8
+        }
+      },
+      "path_grounding": {
+        "count": 24,
+        "mean_score": 0.0833,
+        "signal_breakdown": {
+          "schema_fail": 22,
+          "schema_ok": 2
+        }
+      },
+      "debugging": {
+        "count": 20,
+        "mean_score": 0.85,
+        "signal_breakdown": {
+          "schema_ok": 15,
+          "regex_match": 2,
+          "regex_miss": 3
+        }
+      },
+      "recovery": {
+        "count": 19,
+        "mean_score": 0.4211,
+        "signal_breakdown": {
+          "schema_fail": 7,
+          "schema_ok": 8,
+          "regex_miss": 4
+        }
+      },
+      "planning": {
+        "count": 19,
+        "mean_score": 0.1053,
+        "signal_breakdown": {
+          "schema_fail": 13,
+          "no_assertions_found": 4,
+          "schema_ok": 2
+        }
+      }
+    },
+    "per_difficulty": {
+      "medium": {
+        "count": 48,
+        "mean_score": 0.2917
+      },
+      "easy": {
+        "count": 47,
+        "mean_score": 0.3191
+      },
+      "hard": {
+        "count": 80,
+        "mean_score": 0.3
+      }
+    }
+  },
+  "per_task": [
+    {
+      "id": "task_tool_routing_000",
+      "category": "tool_routing",
+      "difficulty": "medium",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"EnterPlanMode\",\"brief_reason\":\"Need to read docs and plan implementation before acting\"}",
+      "parsed_output": {
+        "tool_name": "EnterPlanMode",
+        "brief_reason": "Need to read docs and plan implementation before acting"
+      },
+      "prompt_tokens_est": 357,
+      "output_tokens_est": 25,
+      "latency_ms": 2729,
+      "error": null
+    },
+    {
+      "id": "task_tool_routing_001",
+      "category": "tool_routing",
+      "difficulty": "medium",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"WebFetch\",\"brief_reason\":\"Fetch the arxiv paper to understand project context\"}",
+      "parsed_output": {
+        "tool_name": "WebFetch",
+        "brief_reason": "Fetch the arxiv paper to understand project context"
+      },
+      "prompt_tokens_est": 356,
+      "output_tokens_est": 23,
+      "latency_ms": 2570,
+      "error": null
+    },
+    {
+      "id": "task_tool_routing_002",
+      "category": "tool_routing",
+      "difficulty": "easy",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"AskUserQuestion\",\"brief_reason\":\"Need API key and agent details to proceed safely\"}",
+      "parsed_output": {
+        "tool_name": "AskUserQuestion",
+        "brief_reason": "Need API key and agent details to proceed safely"
+      },
+      "prompt_tokens_est": 250,
+      "output_tokens_est": 24,
+      "latency_ms": 2802,
+      "error": null
+    },
+    {
+      "id": "task_tool_routing_003",
+      "category": "tool_routing",
+      "difficulty": "medium",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"EnterPlanMode\",\"brief_reason\":\"Complex multi-step task needs planning before execution\"}",
+      "parsed_output": {
+        "tool_name": "EnterPlanMode",
+        "brief_reason": "Complex multi-step task needs planning before execution"
+      },
+      "prompt_tokens_est": 340,
+      "output_tokens_est": 25,
+      "latency_ms": 2569,
+      "error": null
+    },
+    {
+      "id": "task_tool_routing_004",
+      "category": "tool_routing",
+      "difficulty": "easy",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"AskUserQuestion\",\"brief_reason\":\"Need clarification on which server, API key, and exposure method\"}",
+      "parsed_output": {
+        "tool_name": "AskUserQuestion",
+        "brief_reason": "Need clarification on which server, API key, and exposure method"
+      },
+      "prompt_tokens_est": 248,
+      "output_tokens_est": 28,
+      "latency_ms": 2607,
+      "error": null
+    },
+    {
+      "id": "task_tool_routing_005",
+      "category": "tool_routing",
+      "difficulty": "medium",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"EnterWorktree\",\"brief_reason\":\"Need isolated worktree to implement fixture-backed AtlassianConnector\"}",
+      "parsed_output": {
+        "tool_name": "EnterWorktree",
+        "brief_reason": "Need isolated worktree to implement fixture-backed AtlassianConnector"
+      },
+      "prompt_tokens_est": 315,
+      "output_tokens_est": 29,
+      "latency_ms": 2571,
+      "error": null
+    },
+    {
+      "id": "task_tool_routing_006",
+      "category": "tool_routing",
+      "difficulty": "medium",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"TaskGet\",\"brief_reason\":\"Read task #3 details before claiming\"}",
+      "parsed_output": {
+        "tool_name": "TaskGet",
+        "brief_reason": "Read task #3 details before claiming"
+      },
+      "prompt_tokens_est": 337,
+      "output_tokens_est": 19,
+      "latency_ms": 2640,
+      "error": null
+    },
+    {
+      "id": "task_tool_routing_007",
+      "category": "tool_routing",
+      "difficulty": "medium",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"TaskUpdate\",\"brief_reason\":\"Claim task #12 as in_progress\"}",
+      "parsed_output": {
+        "tool_name": "TaskUpdate",
+        "brief_reason": "Claim task #12 as in_progress"
+      },
+      "prompt_tokens_est": 337,
+      "output_tokens_est": 18,
+      "latency_ms": 2569,
+      "error": null
+    },
+    {
+      "id": "task_tool_routing_008",
+      "category": "tool_routing",
+      "difficulty": "medium",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"EnterWorktree\",\"brief_reason\":\"Enter working directory to orient and read project files\"}",
+      "parsed_output": {
+        "tool_name": "EnterWorktree",
+        "brief_reason": "Enter working directory to orient and read project files"
+      },
+      "prompt_tokens_est": 324,
+      "output_tokens_est": 25,
+      "latency_ms": 2084,
+      "error": null
+    },
+    {
+      "id": "task_tool_routing_009",
+      "category": "tool_routing",
+      "difficulty": "medium",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"EnterWorktree\",\"brief_reason\":\"Enter worktree to begin task #9\"}",
+      "parsed_output": {
+        "tool_name": "EnterWorktree",
+        "brief_reason": "Enter worktree to begin task #9"
+      },
+      "prompt_tokens_est": 337,
+      "output_tokens_est": 19,
+      "latency_ms": 2023,
+      "error": null
+    },
+    {
+      "id": "task_tool_routing_010",
+      "category": "tool_routing",
+      "difficulty": "medium",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"EnterWorktree\",\"brief_reason\":\"Enter working directory to begin orientation\"}",
+      "parsed_output": {
+        "tool_name": "EnterWorktree",
+        "brief_reason": "Enter working directory to begin orientation"
+      },
+      "prompt_tokens_est": 325,
+      "output_tokens_est": 22,
+      "latency_ms": 1959,
+      "error": null
+    },
+    {
+      "id": "task_tool_routing_011",
+      "category": "tool_routing",
+      "difficulty": "medium",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"\",\"brief_reason\":\"No suitable file-reading tool available; cannot proceed.\"}",
+      "parsed_output": {
+        "tool_name": "",
+        "brief_reason": "No suitable file-reading tool available; cannot proceed."
+      },
+      "prompt_tokens_est": 304,
+      "output_tokens_est": 22,
+      "latency_ms": 2785,
+      "error": null
+    },
+    {
+      "id": "task_tool_routing_012",
+      "category": "tool_routing",
+      "difficulty": "medium",
+      "score": 1.0,
+      "verifier_signal": "schema_ok",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": true
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"WebFetch\",\"brief_reason\":\"Fetch Ax GitHub repo README for core abstractions\"}",
+      "parsed_output": {
+        "tool_name": "WebFetch",
+        "brief_reason": "Fetch Ax GitHub repo README for core abstractions"
+      },
+      "prompt_tokens_est": 368,
+      "output_tokens_est": 22,
+      "latency_ms": 1795,
+      "error": null
+    },
+    {
+      "id": "task_tool_routing_013",
+      "category": "tool_routing",
+      "difficulty": "medium",
+      "score": 1.0,
+      "verifier_signal": "schema_ok",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": true
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"WebFetch\",\"brief_reason\":\"Fetch Ax docs for Anthropic provider integration details\"}",
+      "parsed_output": {
+        "tool_name": "WebFetch",
+        "brief_reason": "Fetch Ax docs for Anthropic provider integration details"
+      },
+      "prompt_tokens_est": 409,
+      "output_tokens_est": 24,
+      "latency_ms": 1851,
+      "error": null
+    },
+    {
+      "id": "task_tool_routing_014",
+      "category": "tool_routing",
+      "difficulty": "medium",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"WebFetch\",\"brief_reason\":\"Fetch Ax docs site for signature syntax and Anthropic integration details\"}",
+      "parsed_output": {
+        "tool_name": "WebFetch",
+        "brief_reason": "Fetch Ax docs site for signature syntax and Anthropic integration details"
+      },
+      "prompt_tokens_est": 491,
+      "output_tokens_est": 28,
+      "latency_ms": 1941,
+      "error": null
+    },
+    {
+      "id": "task_tool_routing_015",
+      "category": "tool_routing",
+      "difficulty": "hard",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"EnterPlanMode\",\"brief_reason\":\"Plan contract settlement before parallel work\"}",
+      "parsed_output": {
+        "tool_name": "EnterPlanMode",
+        "brief_reason": "Plan contract settlement before parallel work"
+      },
+      "prompt_tokens_est": 358,
+      "output_tokens_est": 23,
+      "latency_ms": 1695,
+      "error": null
+    },
+    {
+      "id": "task_tool_routing_016",
+      "category": "tool_routing",
+      "difficulty": "hard",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"TaskCreate\",\"brief_reason\":\"Create tasks to draft contracts for parallel workstreams\"}",
+      "parsed_output": {
+        "tool_name": "TaskCreate",
+        "brief_reason": "Create tasks to draft contracts for parallel workstreams"
+      },
+      "prompt_tokens_est": 380,
+      "output_tokens_est": 25,
+      "latency_ms": 1698,
+      "error": null
+    },
+    {
+      "id": "task_tool_routing_017",
+      "category": "tool_routing",
+      "difficulty": "hard",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"EnterPlanMode\",\"brief_reason\":\"Plan contract definitions before implementing to align boundaries\"}",
+      "parsed_output": {
+        "tool_name": "EnterPlanMode",
+        "brief_reason": "Plan contract definitions before implementing to align boundaries"
+      },
+      "prompt_tokens_est": 393,
+      "output_tokens_est": 28,
+      "latency_ms": 2429,
+      "error": null
+    },
+    {
+      "id": "task_tool_routing_018",
+      "category": "tool_routing",
+      "difficulty": "hard",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"EnterPlanMode\",\"brief_reason\":\"Plan contract settlement work before executing changes\"}",
+      "parsed_output": {
+        "tool_name": "EnterPlanMode",
+        "brief_reason": "Plan contract settlement work before executing changes"
+      },
+      "prompt_tokens_est": 368,
+      "output_tokens_est": 25,
+      "latency_ms": 1807,
+      "error": null
+    },
+    {
+      "id": "task_tool_routing_019",
+      "category": "tool_routing",
+      "difficulty": "hard",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"\",\"brief_reason\":\"Need to run git commit/push via Bash, but Bash not in available tools list\"}",
+      "parsed_output": {
+        "tool_name": "",
+        "brief_reason": "Need to run git commit/push via Bash, but Bash not in available tools list"
+      },
+      "prompt_tokens_est": 496,
+      "output_tokens_est": 27,
+      "latency_ms": 2385,
+      "error": null
+    },
+    {
+      "id": "task_tool_routing_020",
+      "category": "tool_routing",
+      "difficulty": "hard",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"\",\"brief_reason\":\"Need Bash/Read tools not in available list; cannot proceed\"}",
+      "parsed_output": {
+        "tool_name": "",
+        "brief_reason": "Need Bash/Read tools not in available list; cannot proceed"
+      },
+      "prompt_tokens_est": 490,
+      "output_tokens_est": 23,
+      "latency_ms": 1979,
+      "error": null
+    },
+    {
+      "id": "task_tool_routing_021",
+      "category": "tool_routing",
+      "difficulty": "hard",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"\",\"brief_reason\":\"Need Bash/file tools to run transform and commit; none available\"}",
+      "parsed_output": {
+        "tool_name": "",
+        "brief_reason": "Need Bash/file tools to run transform and commit; none available"
+      },
+      "prompt_tokens_est": 496,
+      "output_tokens_est": 24,
+      "latency_ms": 2327,
+      "error": null
+    },
+    {
+      "id": "task_tool_routing_022",
+      "category": "tool_routing",
+      "difficulty": "hard",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"\",\"brief_reason\":\"Need Read/Edit/Bash tools not in available list; cannot proceed\"}",
+      "parsed_output": {
+        "tool_name": "",
+        "brief_reason": "Need Read/Edit/Bash tools not in available list; cannot proceed"
+      },
+      "prompt_tokens_est": 483,
+      "output_tokens_est": 24,
+      "latency_ms": 2436,
+      "error": null
+    },
+    {
+      "id": "task_tool_routing_023",
+      "category": "tool_routing",
+      "difficulty": "hard",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"\",\"brief_reason\":\"Operator log written; ready to report status to user\"}",
+      "parsed_output": {
+        "tool_name": "",
+        "brief_reason": "Operator log written; ready to report status to user"
+      },
+      "prompt_tokens_est": 547,
+      "output_tokens_est": 21,
+      "latency_ms": 1888,
+      "error": null
+    },
+    {
+      "id": "task_tool_routing_024",
+      "category": "tool_routing",
+      "difficulty": "hard",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"TaskList\",\"brief_reason\":\"Check status of launched subagent tasks\"}",
+      "parsed_output": {
+        "tool_name": "TaskList",
+        "brief_reason": "Check status of launched subagent tasks"
+      },
+      "prompt_tokens_est": 547,
+      "output_tokens_est": 20,
+      "latency_ms": 1685,
+      "error": null
+    },
+    {
+      "id": "task_tool_routing_025",
+      "category": "tool_routing",
+      "difficulty": "hard",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"TaskList\",\"brief_reason\":\"Check status of running background subagents before next decision\"}",
+      "parsed_output": {
+        "tool_name": "TaskList",
+        "brief_reason": "Check status of running background subagents before next decision"
+      },
+      "prompt_tokens_est": 528,
+      "output_tokens_est": 26,
+      "latency_ms": 1940,
+      "error": null
+    },
+    {
+      "id": "task_tool_routing_026",
+      "category": "tool_routing",
+      "difficulty": "hard",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"TaskList\",\"brief_reason\":\"Check status of launched subagent tasks\"}",
+      "parsed_output": {
+        "tool_name": "TaskList",
+        "brief_reason": "Check status of launched subagent tasks"
+      },
+      "prompt_tokens_est": 528,
+      "output_tokens_est": 20,
+      "latency_ms": 1744,
+      "error": null
+    },
+    {
+      "id": "task_tool_routing_027",
+      "category": "tool_routing",
+      "difficulty": "hard",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"EnterPlanMode\",\"brief_reason\":\"Need to plan new separate experiment project before creating files\"}",
+      "parsed_output": {
+        "tool_name": "EnterPlanMode",
+        "brief_reason": "Need to plan new separate experiment project before creating files"
+      },
+      "prompt_tokens_est": 505,
+      "output_tokens_est": 28,
+      "latency_ms": 1892,
+      "error": null
+    },
+    {
+      "id": "task_command_synthesis_000",
+      "category": "command_synthesis",
+      "difficulty": "easy",
+      "score": 0.0,
+      "verifier_signal": "regex_miss",
+      "verifier_details": {
+        "pattern": "ls.*/Users/satan/\\.claude/projects/"
+      },
+      "raw_output": "{\"tool_name\":\"AskUserQuestion\",\"brief_reason\":\"Need API key and details before connecting agent\"}",
+      "parsed_output": {
+        "tool_name": "AskUserQuestion",
+        "brief_reason": "Need API key and details before connecting agent"
+      },
+      "prompt_tokens_est": 250,
+      "output_tokens_est": 24,
+      "latency_ms": 1892,
+      "error": null
+    },
+    {
+      "id": "task_command_synthesis_001",
+      "category": "command_synthesis",
+      "difficulty": "easy",
+      "score": 0.0,
+      "verifier_signal": "regex_miss",
+      "verifier_details": {
+        "pattern": "ls.*/Users/satan/side/experiments/"
+      },
+      "raw_output": "{\"tool_name\":\"EnterPlanMode\",\"brief_reason\":\"Complex multi-step task requires planning before execution\"}",
+      "parsed_output": {
+        "tool_name": "EnterPlanMode",
+        "brief_reason": "Complex multi-step task requires planning before execution"
+      },
+      "prompt_tokens_est": 340,
+      "output_tokens_est": 26,
+      "latency_ms": 1825,
+      "error": null
+    },
+    {
+      "id": "task_command_synthesis_002",
+      "category": "command_synthesis",
+      "difficulty": "easy",
+      "score": 0.0,
+      "verifier_signal": "regex_miss",
+      "verifier_details": {
+        "pattern": "find.*\\~/\\.codex/sessions"
+      },
+      "raw_output": "{\"tool_name\":\"\",\"brief_reason\":\"No tools available to invoke\"}",
+      "parsed_output": {
+        "tool_name": "",
+        "brief_reason": "No tools available to invoke"
+      },
+      "prompt_tokens_est": 279,
+      "output_tokens_est": 15,
+      "latency_ms": 1699,
+      "error": null
+    },
+    {
+      "id": "task_command_synthesis_003",
+      "category": "command_synthesis",
+      "difficulty": "easy",
+      "score": 0.0,
+      "verifier_signal": "regex_miss",
+      "verifier_details": {
+        "pattern": "find.*/Users/satan/\\.claude/projects"
+      },
+      "raw_output": "{\"tool_name\":\"Bash\",\"brief_reason\":\"List session jsonl files to begin analysis\"}",
+      "parsed_output": {
+        "tool_name": "Bash",
+        "brief_reason": "List session jsonl files to begin analysis"
+      },
+      "prompt_tokens_est": 278,
+      "output_tokens_est": 20,
+      "latency_ms": 1635,
+      "error": null
+    },
+    {
+      "id": "task_command_synthesis_004",
+      "category": "command_synthesis",
+      "difficulty": "easy",
+      "score": 0.0,
+      "verifier_signal": "regex_miss",
+      "verifier_details": {
+        "pattern": "wc.*/Users/satan/\\.claude/projects/"
+      },
+      "raw_output": "{\"tool_name\":\"Bash\",\"brief_reason\":\"Inspect session file for skill listings and invocations\"}",
+      "parsed_output": {
+        "tool_name": "Bash",
+        "brief_reason": "Inspect session file for skill listings and invocations"
+      },
+      "prompt_tokens_est": 306,
+      "output_tokens_est": 23,
+      "latency_ms": 1854,
+      "error": null
+    },
+    {
+      "id": "task_command_synthesis_005",
+      "category": "command_synthesis",
+      "difficulty": "medium",
+      "score": 0.0,
+      "verifier_signal": "regex_miss",
+      "verifier_details": {
+        "pattern": "cat.*/Users/satan/side/experiments/"
+      },
+      "raw_output": "{\"tool_name\":\"TaskGet\",\"brief_reason\":\"Fetch task #14 details and mark in_progress\"}",
+      "parsed_output": {
+        "tool_name": "TaskGet",
+        "brief_reason": "Fetch task #14 details and mark in_progress"
+      },
+      "prompt_tokens_est": 418,
+      "output_tokens_est": 21,
+      "latency_ms": 1635,
+      "error": null
+    },
+    {
+      "id": "task_command_synthesis_006",
+      "category": "command_synthesis",
+      "difficulty": "medium",
+      "score": 0.0,
+      "verifier_signal": "regex_miss",
+      "verifier_details": {
+        "pattern": "cat.*/Users/satan/side/experiments/"
+      },
+      "raw_output": "{\"tool_name\":\"TaskGet\",\"brief_reason\":\"Fetch task #14 details and mark in_progress\"}",
+      "parsed_output": {
+        "tool_name": "TaskGet",
+        "brief_reason": "Fetch task #14 details and mark in_progress"
+      },
+      "prompt_tokens_est": 360,
+      "output_tokens_est": 21,
+      "latency_ms": 1581,
+      "error": null
+    },
+    {
+      "id": "task_command_synthesis_007",
+      "category": "command_synthesis",
+      "difficulty": "medium",
+      "score": 0.0,
+      "verifier_signal": "regex_miss",
+      "verifier_details": {
+        "pattern": "wc.*\\~/\\.codex/history\\.jsonl"
+      },
+      "raw_output": "{\"tool_name\":\"Bash\",\"brief_reason\":\"Continue surveying Claude Code session files and sizes across all projects\"}",
+      "parsed_output": {
+        "tool_name": "Bash",
+        "brief_reason": "Continue surveying Claude Code session files and sizes across all projects"
+      },
+      "prompt_tokens_est": 414,
+      "output_tokens_est": 28,
+      "latency_ms": 1991,
+      "error": null
+    },
+    {
+      "id": "task_command_synthesis_008",
+      "category": "command_synthesis",
+      "difficulty": "medium",
+      "score": 0.0,
+      "verifier_signal": "regex_miss",
+      "verifier_details": {
+        "pattern": "rg.*\\-\\-type"
+      },
+      "raw_output": "{\"tool_name\":\"TaskList\",\"brief_reason\":\"Plan tasks after orienting on plan, controller code, and runbook tone\"}",
+      "parsed_output": {
+        "tool_name": "TaskList",
+        "brief_reason": "Plan tasks after orienting on plan, controller code, and runbook tone"
+      },
+      "prompt_tokens_est": 386,
+      "output_tokens_est": 27,
+      "latency_ms": 1967,
+      "error": null
+    },
+    {
+      "id": "task_command_synthesis_009",
+      "category": "command_synthesis",
+      "difficulty": "medium",
+      "score": 0.0,
+      "verifier_signal": "regex_miss",
+      "verifier_details": {
+        "pattern": "rg.*\\-\\-type"
+      },
+      "raw_output": "{\"tool_name\":\"TaskList\",\"brief_reason\":\"Plan tasks after orienting on plan, controller code, and runbook\"}",
+      "parsed_output": {
+        "tool_name": "TaskList",
+        "brief_reason": "Plan tasks after orienting on plan, controller code, and runbook"
+      },
+      "prompt_tokens_est": 386,
+      "output_tokens_est": 26,
+      "latency_ms": 1944,
+      "error": null
+    },
+    {
+      "id": "task_command_synthesis_010",
+      "category": "command_synthesis",
+      "difficulty": "medium",
+      "score": 0.0,
+      "verifier_signal": "regex_miss",
+      "verifier_details": {
+        "pattern": "tail.*/Users/satan/side/experiments/"
+      },
+      "raw_output": "{\"tool_name\":\"EnterWorktree\",\"brief_reason\":\"Need isolated worktree to debug and fix the agent.py wrapper code\"}",
+      "parsed_output": {
+        "tool_name": "EnterWorktree",
+        "brief_reason": "Need isolated worktree to debug and fix the agent.py wrapper code"
+      },
+      "prompt_tokens_est": 441,
+      "output_tokens_est": 28,
+      "latency_ms": 2004,
+      "error": null
+    },
+    {
+      "id": "task_command_synthesis_011",
+      "category": "command_synthesis",
+      "difficulty": "hard",
+      "score": 0.0,
+      "verifier_signal": "regex_miss",
+      "verifier_details": {
+        "pattern": "pnpm.*\\-\\-noEmit"
+      },
+      "raw_output": "{\"tool_name\":\"\",\"brief_reason\":\"Contracts file written; ready to summarize next steps to user\"}",
+      "parsed_output": {
+        "tool_name": "",
+        "brief_reason": "Contracts file written; ready to summarize next steps to user"
+      },
+      "prompt_tokens_est": 410,
+      "output_tokens_est": 23,
+      "latency_ms": 1871,
+      "error": null
+    },
+    {
+      "id": "task_edit_safety_000",
+      "category": "edit_safety",
+      "difficulty": "medium",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": false
+          },
+          {
+            "k": "not_null",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"ExitPlanMode\",\"brief_reason\":\"Contracts settled and checks pass; proceed to implementation phase\"}",
+      "parsed_output": {
+        "tool_name": "ExitPlanMode",
+        "brief_reason": "Contracts settled and checks pass; proceed to implementation phase"
+      },
+      "prompt_tokens_est": 368,
+      "output_tokens_est": 28,
+      "latency_ms": 1888,
+      "error": null
+    },
+    {
+      "id": "task_edit_safety_001",
+      "category": "edit_safety",
+      "difficulty": "medium",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": false
+          },
+          {
+            "k": "not_null",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"\",\"brief_reason\":\"Need Bash/Read tools not available; cannot proceed with transform/commit via listed tools\"}",
+      "parsed_output": {
+        "tool_name": "",
+        "brief_reason": "Need Bash/Read tools not available; cannot proceed with transform/commit via listed tools"
+      },
+      "prompt_tokens_est": 496,
+      "output_tokens_est": 30,
+      "latency_ms": 2408,
+      "error": null
+    },
+    {
+      "id": "task_edit_safety_002",
+      "category": "edit_safety",
+      "difficulty": "medium",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": false
+          },
+          {
+            "k": "not_null",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"\",\"brief_reason\":\"Need Bash/Edit tools not in available list; cannot proceed\"}",
+      "parsed_output": {
+        "tool_name": "",
+        "brief_reason": "Need Bash/Edit tools not in available list; cannot proceed"
+      },
+      "prompt_tokens_est": 483,
+      "output_tokens_est": 23,
+      "latency_ms": 1871,
+      "error": null
+    },
+    {
+      "id": "task_edit_safety_003",
+      "category": "edit_safety",
+      "difficulty": "medium",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": false
+          },
+          {
+            "k": "not_null",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"\",\"brief_reason\":\"No suitable tool; need Bash/Edit which aren't in available list\"}",
+      "parsed_output": {
+        "tool_name": "",
+        "brief_reason": "No suitable tool; need Bash/Edit which aren't in available list"
+      },
+      "prompt_tokens_est": 491,
+      "output_tokens_est": 24,
+      "latency_ms": 1970,
+      "error": null
+    },
+    {
+      "id": "task_edit_safety_004",
+      "category": "edit_safety",
+      "difficulty": "medium",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": false
+          },
+          {
+            "k": "not_null",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"\",\"brief_reason\":\"Need Bash/Read tools not in available list; cannot proceed\"}",
+      "parsed_output": {
+        "tool_name": "",
+        "brief_reason": "Need Bash/Read tools not in available list; cannot proceed"
+      },
+      "prompt_tokens_est": 481,
+      "output_tokens_est": 23,
+      "latency_ms": 1961,
+      "error": null
+    },
+    {
+      "id": "task_edit_safety_005",
+      "category": "edit_safety",
+      "difficulty": "medium",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": false
+          },
+          {
+            "k": "not_null",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"\",\"brief_reason\":\"Need Bash/file tools not in available list; cannot proceed with setup steps\"}",
+      "parsed_output": {
+        "tool_name": "",
+        "brief_reason": "Need Bash/file tools not in available list; cannot proceed with setup steps"
+      },
+      "prompt_tokens_est": 550,
+      "output_tokens_est": 27,
+      "latency_ms": 2999,
+      "error": null
+    },
+    {
+      "id": "task_edit_safety_006",
+      "category": "edit_safety",
+      "difficulty": "medium",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": false
+          },
+          {
+            "k": "not_null",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"mcp__expo-mcp__authenticate\",\"brief_reason\":\"Switch Expo session to ai-omnipowerfuls organization\"}",
+      "parsed_output": {
+        "tool_name": "mcp__expo-mcp__authenticate",
+        "brief_reason": "Switch Expo session to ai-omnipowerfuls organization"
+      },
+      "prompt_tokens_est": 385,
+      "output_tokens_est": 28,
+      "latency_ms": 2459,
+      "error": null
+    },
+    {
+      "id": "task_edit_safety_007",
+      "category": "edit_safety",
+      "difficulty": "medium",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": false
+          },
+          {
+            "k": "not_null",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"\",\"brief_reason\":\"Need Bash to run eas init with org owner; Bash not in available tools list\"}",
+      "parsed_output": {
+        "tool_name": "",
+        "brief_reason": "Need Bash to run eas init with org owner; Bash not in available tools list"
+      },
+      "prompt_tokens_est": 385,
+      "output_tokens_est": 27,
+      "latency_ms": 2459,
+      "error": null
+    },
+    {
+      "id": "task_edit_safety_008",
+      "category": "edit_safety",
+      "difficulty": "medium",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": false
+          },
+          {
+            "k": "not_null",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"\",\"brief_reason\":\"Need Bash/Grep/Edit tools not in available list; cannot proceed\"}",
+      "parsed_output": {
+        "tool_name": "",
+        "brief_reason": "Need Bash/Grep/Edit tools not in available list; cannot proceed"
+      },
+      "prompt_tokens_est": 383,
+      "output_tokens_est": 24,
+      "latency_ms": 1962,
+      "error": null
+    },
+    {
+      "id": "task_edit_safety_009",
+      "category": "edit_safety",
+      "difficulty": "medium",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": false
+          },
+          {
+            "k": "not_null",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"\",\"brief_reason\":\"Edit/Read/Bash not in available tools; cannot proceed with rename\"}",
+      "parsed_output": {
+        "tool_name": "",
+        "brief_reason": "Edit/Read/Bash not in available tools; cannot proceed with rename"
+      },
+      "prompt_tokens_est": 383,
+      "output_tokens_est": 24,
+      "latency_ms": 1958,
+      "error": null
+    },
+    {
+      "id": "task_path_grounding_000",
+      "category": "path_grounding",
+      "difficulty": "hard",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "in",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"wait_agent\",\"brief_reason\":\"Wait for spawned investigation agents to complete\"}",
+      "parsed_output": {
+        "tool_name": "wait_agent",
+        "brief_reason": "Wait for spawned investigation agents to complete"
+      },
+      "prompt_tokens_est": 302,
+      "output_tokens_est": 23,
+      "latency_ms": 1551,
+      "error": null
+    },
+    {
+      "id": "task_path_grounding_001",
+      "category": "path_grounding",
+      "difficulty": "hard",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "in",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"wait_agent\",\"brief_reason\":\"Wait for spawned investigation agents to return findings\"}",
+      "parsed_output": {
+        "tool_name": "wait_agent",
+        "brief_reason": "Wait for spawned investigation agents to return findings"
+      },
+      "prompt_tokens_est": 298,
+      "output_tokens_est": 25,
+      "latency_ms": 1853,
+      "error": null
+    },
+    {
+      "id": "task_path_grounding_002",
+      "category": "path_grounding",
+      "difficulty": "hard",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "in",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"wait_agent\",\"brief_reason\":\"Wait for spawned investigation agents to complete\"}",
+      "parsed_output": {
+        "tool_name": "wait_agent",
+        "brief_reason": "Wait for spawned investigation agents to complete"
+      },
+      "prompt_tokens_est": 298,
+      "output_tokens_est": 23,
+      "latency_ms": 1717,
+      "error": null
+    },
+    {
+      "id": "task_path_grounding_003",
+      "category": "path_grounding",
+      "difficulty": "hard",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "in",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"wait_agent\",\"brief_reason\":\"Wait for spawned investigation agents to return findings\"}",
+      "parsed_output": {
+        "tool_name": "wait_agent",
+        "brief_reason": "Wait for spawned investigation agents to return findings"
+      },
+      "prompt_tokens_est": 298,
+      "output_tokens_est": 25,
+      "latency_ms": 1616,
+      "error": null
+    },
+    {
+      "id": "task_path_grounding_004",
+      "category": "path_grounding",
+      "difficulty": "hard",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "in",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"wait_agent\",\"brief_reason\":\"Wait for spawned investigation agents to complete\"}",
+      "parsed_output": {
+        "tool_name": "wait_agent",
+        "brief_reason": "Wait for spawned investigation agents to complete"
+      },
+      "prompt_tokens_est": 298,
+      "output_tokens_est": 23,
+      "latency_ms": 1733,
+      "error": null
+    },
+    {
+      "id": "task_path_grounding_005",
+      "category": "path_grounding",
+      "difficulty": "hard",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "in",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"wait_agent\",\"brief_reason\":\"Wait for spawned agents to return findings\"}",
+      "parsed_output": {
+        "tool_name": "wait_agent",
+        "brief_reason": "Wait for spawned agents to return findings"
+      },
+      "prompt_tokens_est": 298,
+      "output_tokens_est": 21,
+      "latency_ms": 1572,
+      "error": null
+    },
+    {
+      "id": "task_path_grounding_006",
+      "category": "path_grounding",
+      "difficulty": "hard",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "in",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"wait_agent\",\"brief_reason\":\"Wait for spawned agents to return findings\"}",
+      "parsed_output": {
+        "tool_name": "wait_agent",
+        "brief_reason": "Wait for spawned agents to return findings"
+      },
+      "prompt_tokens_est": 298,
+      "output_tokens_est": 21,
+      "latency_ms": 1932,
+      "error": null
+    },
+    {
+      "id": "task_path_grounding_007",
+      "category": "path_grounding",
+      "difficulty": "hard",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "in",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"wait_agent\",\"brief_reason\":\"Wait for spawned agents to return findings\"}",
+      "parsed_output": {
+        "tool_name": "wait_agent",
+        "brief_reason": "Wait for spawned agents to return findings"
+      },
+      "prompt_tokens_est": 298,
+      "output_tokens_est": 21,
+      "latency_ms": 4961,
+      "error": null
+    },
+    {
+      "id": "task_path_grounding_008",
+      "category": "path_grounding",
+      "difficulty": "hard",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "in",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"wait_agent\",\"brief_reason\":\"Wait for spawned agents to return findings\"}",
+      "parsed_output": {
+        "tool_name": "wait_agent",
+        "brief_reason": "Wait for spawned agents to return findings"
+      },
+      "prompt_tokens_est": 298,
+      "output_tokens_est": 21,
+      "latency_ms": 1640,
+      "error": null
+    },
+    {
+      "id": "task_path_grounding_009",
+      "category": "path_grounding",
+      "difficulty": "hard",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "in",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"wait_agent\",\"brief_reason\":\"Wait for spawned investigation agents to complete\"}",
+      "parsed_output": {
+        "tool_name": "wait_agent",
+        "brief_reason": "Wait for spawned investigation agents to complete"
+      },
+      "prompt_tokens_est": 298,
+      "output_tokens_est": 23,
+      "latency_ms": 1899,
+      "error": null
+    },
+    {
+      "id": "task_debugging_000",
+      "category": "debugging",
+      "difficulty": "medium",
+      "score": 1.0,
+      "verifier_signal": "schema_ok",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "no_repeat",
+            "ok": true
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"Bash\",\"brief_reason\":\"Check if these TS errors are pre-existing on main, unrelated to my changes\"}",
+      "parsed_output": {
+        "tool_name": "Bash",
+        "brief_reason": "Check if these TS errors are pre-existing on main, unrelated to my changes"
+      },
+      "prompt_tokens_est": 527,
+      "output_tokens_est": 28,
+      "latency_ms": 3207,
+      "error": null
+    },
+    {
+      "id": "task_debugging_001",
+      "category": "debugging",
+      "difficulty": "hard",
+      "score": 1.0,
+      "verifier_signal": "schema_ok",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "no_repeat",
+            "ok": true
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"exec_command\",\"brief_reason\":\"Try running fallow binary directly instead of npx\"}",
+      "parsed_output": {
+        "tool_name": "exec_command",
+        "brief_reason": "Try running fallow binary directly instead of npx"
+      },
+      "prompt_tokens_est": 313,
+      "output_tokens_est": 23,
+      "latency_ms": 1779,
+      "error": null
+    },
+    {
+      "id": "task_debugging_002",
+      "category": "debugging",
+      "difficulty": "medium",
+      "score": 1.0,
+      "verifier_signal": "schema_ok",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "no_repeat",
+            "ok": true
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"Bash\",\"brief_reason\":\"Continue investigating Zig 0.16 std.Io.Dir/File API for mmap alternative\"}",
+      "parsed_output": {
+        "tool_name": "Bash",
+        "brief_reason": "Continue investigating Zig 0.16 std.Io.Dir/File API for mmap alternative"
+      },
+      "prompt_tokens_est": 559,
+      "output_tokens_est": 27,
+      "latency_ms": 2370,
+      "error": null
+    },
+    {
+      "id": "task_debugging_003",
+      "category": "debugging",
+      "difficulty": "easy",
+      "score": 1.0,
+      "verifier_signal": "schema_ok",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "no_repeat",
+            "ok": true
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"Bash\",\"brief_reason\":\"Use zig build test instead of unsupported flags\"}",
+      "parsed_output": {
+        "tool_name": "Bash",
+        "brief_reason": "Use zig build test instead of unsupported flags"
+      },
+      "prompt_tokens_est": 494,
+      "output_tokens_est": 21,
+      "latency_ms": 2032,
+      "error": null
+    },
+    {
+      "id": "task_debugging_004",
+      "category": "debugging",
+      "difficulty": "hard",
+      "score": 1.0,
+      "verifier_signal": "schema_ok",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "no_repeat",
+            "ok": true
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"Read\",\"brief_reason\":\"Inspect storage.zig errors at lines 475, 495, 705\"}",
+      "parsed_output": {
+        "tool_name": "Read",
+        "brief_reason": "Inspect storage.zig errors at lines 475, 495, 705"
+      },
+      "prompt_tokens_est": 570,
+      "output_tokens_est": 21,
+      "latency_ms": 1865,
+      "error": null
+    },
+    {
+      "id": "task_debugging_005",
+      "category": "debugging",
+      "difficulty": "hard",
+      "score": 1.0,
+      "verifier_signal": "schema_ok",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "no_repeat",
+            "ok": true
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"Bash\",\"brief_reason\":\"Get full failure output to diagnose WCSS ratio regression\"}",
+      "parsed_output": {
+        "tool_name": "Bash",
+        "brief_reason": "Get full failure output to diagnose WCSS ratio regression"
+      },
+      "prompt_tokens_est": 594,
+      "output_tokens_est": 23,
+      "latency_ms": 4603,
+      "error": null
+    },
+    {
+      "id": "task_debugging_006",
+      "category": "debugging",
+      "difficulty": "hard",
+      "score": 1.0,
+      "verifier_signal": "schema_ok",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "no_repeat",
+            "ok": true
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"Read\",\"brief_reason\":\"Inspect token_dump.zig around line 448 to fix alignment issue\"}",
+      "parsed_output": {
+        "tool_name": "Read",
+        "brief_reason": "Inspect token_dump.zig around line 448 to fix alignment issue"
+      },
+      "prompt_tokens_est": 558,
+      "output_tokens_est": 24,
+      "latency_ms": 2006,
+      "error": null
+    },
+    {
+      "id": "task_debugging_007",
+      "category": "debugging",
+      "difficulty": "hard",
+      "score": 1.0,
+      "verifier_signal": "schema_ok",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "no_repeat",
+            "ok": true
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"Bash\",\"brief_reason\":\"Inspect pq.zig errors to fix var->const\"}",
+      "parsed_output": {
+        "tool_name": "Bash",
+        "brief_reason": "Inspect pq.zig errors to fix var->const"
+      },
+      "prompt_tokens_est": 558,
+      "output_tokens_est": 19,
+      "latency_ms": 2038,
+      "error": null
+    },
+    {
+      "id": "task_debugging_008",
+      "category": "debugging",
+      "difficulty": "medium",
+      "score": 1.0,
+      "verifier_signal": "schema_ok",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "no_repeat",
+            "ok": true
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"\",\"brief_reason\":\"Need Bash to run vp check --fix, not in available tools\"}",
+      "parsed_output": {
+        "tool_name": "",
+        "brief_reason": "Need Bash to run vp check --fix, not in available tools"
+      },
+      "prompt_tokens_est": 468,
+      "output_tokens_est": 22,
+      "latency_ms": 1863,
+      "error": null
+    },
+    {
+      "id": "task_debugging_009",
+      "category": "debugging",
+      "difficulty": "hard",
+      "score": 1.0,
+      "verifier_signal": "schema_ok",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "no_repeat",
+            "ok": true
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"Read\",\"brief_reason\":\"Inspect token_dump.zig to fix invalid fixture import path\"}",
+      "parsed_output": {
+        "tool_name": "Read",
+        "brief_reason": "Inspect token_dump.zig to fix invalid fixture import path"
+      },
+      "prompt_tokens_est": 571,
+      "output_tokens_est": 23,
+      "latency_ms": 2999,
+      "error": null
+    },
+    {
+      "id": "task_debugging_010",
+      "category": "debugging",
+      "difficulty": "hard",
+      "score": 1.0,
+      "verifier_signal": "schema_ok",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "no_repeat",
+            "ok": true
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"TaskGet\",\"brief_reason\":\"Read task #11 details before proceeding\"}",
+      "parsed_output": {
+        "tool_name": "TaskGet",
+        "brief_reason": "Read task #11 details before proceeding"
+      },
+      "prompt_tokens_est": 615,
+      "output_tokens_est": 20,
+      "latency_ms": 1730,
+      "error": null
+    },
+    {
+      "id": "task_debugging_011",
+      "category": "debugging",
+      "difficulty": "easy",
+      "score": 1.0,
+      "verifier_signal": "schema_ok",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "no_repeat",
+            "ok": true
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"Bash\",\"brief_reason\":\"Run tests via zig build test instead of standalone zig test\"}",
+      "parsed_output": {
+        "tool_name": "Bash",
+        "brief_reason": "Run tests via zig build test instead of standalone zig test"
+      },
+      "prompt_tokens_est": 502,
+      "output_tokens_est": 24,
+      "latency_ms": 2072,
+      "error": null
+    },
+    {
+      "id": "task_debugging_012",
+      "category": "debugging",
+      "difficulty": "hard",
+      "score": 1.0,
+      "verifier_signal": "schema_ok",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "no_repeat",
+            "ok": true
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"exec_command\",\"brief_reason\":\"Inspect modified test files via git diff for read-only analysis\"}",
+      "parsed_output": {
+        "tool_name": "exec_command",
+        "brief_reason": "Inspect modified test files via git diff for read-only analysis"
+      },
+      "prompt_tokens_est": 398,
+      "output_tokens_est": 27,
+      "latency_ms": 1803,
+      "error": null
+    },
+    {
+      "id": "task_debugging_013",
+      "category": "debugging",
+      "difficulty": "hard",
+      "score": 1.0,
+      "verifier_signal": "schema_ok",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "no_repeat",
+            "ok": true
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"Edit\",\"brief_reason\":\"Fix var->const in pq.zig lines 283 and 276\"}",
+      "parsed_output": {
+        "tool_name": "Edit",
+        "brief_reason": "Fix var->const in pq.zig lines 283 and 276"
+      },
+      "prompt_tokens_est": 557,
+      "output_tokens_est": 20,
+      "latency_ms": 1803,
+      "error": null
+    },
+    {
+      "id": "task_debugging_014",
+      "category": "debugging",
+      "difficulty": "hard",
+      "score": 1.0,
+      "verifier_signal": "schema_ok",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "no_repeat",
+            "ok": true
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"exec_command\",\"brief_reason\":\"Retry cmake install with corrected shell command\"}",
+      "parsed_output": {
+        "tool_name": "exec_command",
+        "brief_reason": "Retry cmake install with corrected shell command"
+      },
+      "prompt_tokens_est": 299,
+      "output_tokens_est": 23,
+      "latency_ms": 1883,
+      "error": null
+    },
+    {
+      "id": "task_recovery_000",
+      "category": "recovery",
+      "difficulty": "hard",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"Edit\",\"brief_reason\":\"Fix Zig 0.16 GPA API usage in microbench_vec.zig\"}",
+      "parsed_output": {
+        "tool_name": "Edit",
+        "brief_reason": "Fix Zig 0.16 GPA API usage in microbench_vec.zig"
+      },
+      "prompt_tokens_est": 562,
+      "output_tokens_est": 21,
+      "latency_ms": 2029,
+      "error": null
+    },
+    {
+      "id": "task_recovery_001",
+      "category": "recovery",
+      "difficulty": "hard",
+      "score": 1.0,
+      "verifier_signal": "schema_ok",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": true
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"Bash\",\"brief_reason\":\"Investigate failing bimodal test output details\"}",
+      "parsed_output": {
+        "tool_name": "Bash",
+        "brief_reason": "Investigate failing bimodal test output details"
+      },
+      "prompt_tokens_est": 547,
+      "output_tokens_est": 21,
+      "latency_ms": 1918,
+      "error": null
+    },
+    {
+      "id": "task_recovery_002",
+      "category": "recovery",
+      "difficulty": "medium",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"TaskGet\",\"brief_reason\":\"Read task #12 details to claim and start work\"}",
+      "parsed_output": {
+        "tool_name": "TaskGet",
+        "brief_reason": "Read task #12 details to claim and start work"
+      },
+      "prompt_tokens_est": 594,
+      "output_tokens_est": 21,
+      "latency_ms": 2010,
+      "error": null
+    },
+    {
+      "id": "task_recovery_003",
+      "category": "recovery",
+      "difficulty": "hard",
+      "score": 1.0,
+      "verifier_signal": "schema_ok",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": true
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"Bash\",\"brief_reason\":\"Re-run build to see full errors after recent edits\"}",
+      "parsed_output": {
+        "tool_name": "Bash",
+        "brief_reason": "Re-run build to see full errors after recent edits"
+      },
+      "prompt_tokens_est": 546,
+      "output_tokens_est": 22,
+      "latency_ms": 1732,
+      "error": null
+    },
+    {
+      "id": "task_recovery_004",
+      "category": "recovery",
+      "difficulty": "hard",
+      "score": 1.0,
+      "verifier_signal": "schema_ok",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": true
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"Bash\",\"brief_reason\":\"Retry inspecting controller file with simpler command after failure\"}",
+      "parsed_output": {
+        "tool_name": "Bash",
+        "brief_reason": "Retry inspecting controller file with simpler command after failure"
+      },
+      "prompt_tokens_est": 469,
+      "output_tokens_est": 26,
+      "latency_ms": 1776,
+      "error": null
+    },
+    {
+      "id": "task_recovery_005",
+      "category": "recovery",
+      "difficulty": "hard",
+      "score": 1.0,
+      "verifier_signal": "schema_ok",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": true
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"exec_command\",\"brief_reason\":\"Run verification command in correct platform root repo\"}",
+      "parsed_output": {
+        "tool_name": "exec_command",
+        "brief_reason": "Run verification command in correct platform root repo"
+      },
+      "prompt_tokens_est": 345,
+      "output_tokens_est": 25,
+      "latency_ms": 2097,
+      "error": null
+    },
+    {
+      "id": "task_recovery_006",
+      "category": "recovery",
+      "difficulty": "hard",
+      "score": 1.0,
+      "verifier_signal": "schema_ok",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": true
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"Bash\",\"brief_reason\":\"Check std.time API in Zig 0.16 for Timer location\"}",
+      "parsed_output": {
+        "tool_name": "Bash",
+        "brief_reason": "Check std.time API in Zig 0.16 for Timer location"
+      },
+      "prompt_tokens_est": 567,
+      "output_tokens_est": 21,
+      "latency_ms": 1809,
+      "error": null
+    },
+    {
+      "id": "task_recovery_007",
+      "category": "recovery",
+      "difficulty": "medium",
+      "score": 1.0,
+      "verifier_signal": "schema_ok",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": true
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"Read\",\"brief_reason\":\"Must read file before editing per error\"}",
+      "parsed_output": {
+        "tool_name": "Read",
+        "brief_reason": "Must read file before editing per error"
+      },
+      "prompt_tokens_est": 495,
+      "output_tokens_est": 19,
+      "latency_ms": 1843,
+      "error": null
+    },
+    {
+      "id": "task_recovery_008",
+      "category": "recovery",
+      "difficulty": "hard",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"exec_command\",\"brief_reason\":\"Retry reading test-helpers file with proper output handling\"}",
+      "parsed_output": {
+        "tool_name": "exec_command",
+        "brief_reason": "Retry reading test-helpers file with proper output handling"
+      },
+      "prompt_tokens_est": 421,
+      "output_tokens_est": 26,
+      "latency_ms": 1729,
+      "error": null
+    },
+    {
+      "id": "task_recovery_009",
+      "category": "recovery",
+      "difficulty": "medium",
+      "score": 1.0,
+      "verifier_signal": "schema_ok",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": true
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"Read\",\"brief_reason\":\"Must read file before editing per error\"}",
+      "parsed_output": {
+        "tool_name": "Read",
+        "brief_reason": "Must read file before editing per error"
+      },
+      "prompt_tokens_est": 510,
+      "output_tokens_est": 19,
+      "latency_ms": 1878,
+      "error": null
+    },
+    {
+      "id": "task_recovery_010",
+      "category": "recovery",
+      "difficulty": "hard",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"Read\",\"brief_reason\":\"Fix path typo: saturn->satan for dspy_adapter.py\"}",
+      "parsed_output": {
+        "tool_name": "Read",
+        "brief_reason": "Fix path typo: saturn->satan for dspy_adapter.py"
+      },
+      "prompt_tokens_est": 468,
+      "output_tokens_est": 21,
+      "latency_ms": 1879,
+      "error": null
+    },
+    {
+      "id": "task_recovery_011",
+      "category": "recovery",
+      "difficulty": "medium",
+      "score": 1.0,
+      "verifier_signal": "schema_ok",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": true
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"exec_command\",\"brief_reason\":\"Retry diff with paging disabled to view full output\"}",
+      "parsed_output": {
+        "tool_name": "exec_command",
+        "brief_reason": "Retry diff with paging disabled to view full output"
+      },
+      "prompt_tokens_est": 421,
+      "output_tokens_est": 24,
+      "latency_ms": 1935,
+      "error": null
+    },
+    {
+      "id": "task_recovery_012",
+      "category": "recovery",
+      "difficulty": "medium",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"\",\"brief_reason\":\"Need Bash to stash changes and retry rebase, but Bash unavailable\"}",
+      "parsed_output": {
+        "tool_name": "",
+        "brief_reason": "Need Bash to stash changes and retry rebase, but Bash unavailable"
+      },
+      "prompt_tokens_est": 576,
+      "output_tokens_est": 24,
+      "latency_ms": 2166,
+      "error": null
+    },
+    {
+      "id": "task_recovery_013",
+      "category": "recovery",
+      "difficulty": "hard",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"Read\",\"brief_reason\":\"Inspect build.zig to understand module paths for fixture import\"}",
+      "parsed_output": {
+        "tool_name": "Read",
+        "brief_reason": "Inspect build.zig to understand module paths for fixture import"
+      },
+      "prompt_tokens_est": 547,
+      "output_tokens_est": 25,
+      "latency_ms": 1972,
+      "error": null
+    },
+    {
+      "id": "task_recovery_014",
+      "category": "recovery",
+      "difficulty": "hard",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"Read\",\"brief_reason\":\"Inspect failing test in tac.zig around line 361\"}",
+      "parsed_output": {
+        "tool_name": "Read",
+        "brief_reason": "Inspect failing test in tac.zig around line 361"
+      },
+      "prompt_tokens_est": 533,
+      "output_tokens_est": 21,
+      "latency_ms": 1949,
+      "error": null
+    },
+    {
+      "id": "task_planning_000",
+      "category": "planning",
+      "difficulty": "medium",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "mention_n_of",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"Read\",\"brief_reason\":\"Read the skill file to understand full instructions before acting\"}",
+      "parsed_output": {
+        "tool_name": "Read",
+        "brief_reason": "Read the skill file to understand full instructions before acting"
+      },
+      "prompt_tokens_est": 285,
+      "output_tokens_est": 25,
+      "latency_ms": 2038,
+      "error": null
+    },
+    {
+      "id": "task_planning_001",
+      "category": "planning",
+      "difficulty": "easy",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "mention_n_of",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"Bash\",\"brief_reason\":\"Create the new project directory first\"}",
+      "parsed_output": {
+        "tool_name": "Bash",
+        "brief_reason": "Create the new project directory first"
+      },
+      "prompt_tokens_est": 285,
+      "output_tokens_est": 19,
+      "latency_ms": 1543,
+      "error": null
+    },
+    {
+      "id": "task_planning_002",
+      "category": "planning",
+      "difficulty": "hard",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "mention_n_of",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"Bash\",\"brief_reason\":\"Explore repo structure to find agent config and API key integration points\"}",
+      "parsed_output": {
+        "tool_name": "Bash",
+        "brief_reason": "Explore repo structure to find agent config and API key integration points"
+      },
+      "prompt_tokens_est": 195,
+      "output_tokens_est": 28,
+      "latency_ms": 1758,
+      "error": null
+    },
+    {
+      "id": "task_planning_003",
+      "category": "planning",
+      "difficulty": "hard",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "mention_n_of",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"Bash\",\"brief_reason\":\"Explore project structure to find pages to restyle\"}",
+      "parsed_output": {
+        "tool_name": "Bash",
+        "brief_reason": "Explore project structure to find pages to restyle"
+      },
+      "prompt_tokens_est": 162,
+      "output_tokens_est": 22,
+      "latency_ms": 1865,
+      "error": null
+    },
+    {
+      "id": "task_planning_004",
+      "category": "planning",
+      "difficulty": "medium",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "mention_n_of",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"Bash\",\"brief_reason\":\"Explore project directory to understand existing traces and codebase structure\"}",
+      "parsed_output": {
+        "tool_name": "Bash",
+        "brief_reason": "Explore project directory to understand existing traces and codebase structure"
+      },
+      "prompt_tokens_est": 285,
+      "output_tokens_est": 29,
+      "latency_ms": 1989,
+      "error": null
+    },
+    {
+      "id": "task_planning_005",
+      "category": "planning",
+      "difficulty": "easy",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "mention_n_of",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"TaskCreate\",\"brief_reason\":\"Plan multi-step task: start server, expose via tunnel, set API key\"}",
+      "parsed_output": {
+        "tool_name": "TaskCreate",
+        "brief_reason": "Plan multi-step task: start server, expose via tunnel, set API key"
+      },
+      "prompt_tokens_est": 176,
+      "output_tokens_est": 27,
+      "latency_ms": 1941,
+      "error": null
+    },
+    {
+      "id": "task_planning_006",
+      "category": "planning",
+      "difficulty": "easy",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "mention_n_of",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"Bash\",\"brief_reason\":\"List repo structure to begin exploration\"}",
+      "parsed_output": {
+        "tool_name": "Bash",
+        "brief_reason": "List repo structure to begin exploration"
+      },
+      "prompt_tokens_est": 286,
+      "output_tokens_est": 19,
+      "latency_ms": 1514,
+      "error": null
+    },
+    {
+      "id": "task_planning_007",
+      "category": "planning",
+      "difficulty": "easy",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "mention_n_of",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"Read\",\"brief_reason\":\"Inspect AtlassianConnector contract to implement fixture-backed version\"}",
+      "parsed_output": {
+        "tool_name": "Read",
+        "brief_reason": "Inspect AtlassianConnector contract to implement fixture-backed version"
+      },
+      "prompt_tokens_est": 286,
+      "output_tokens_est": 27,
+      "latency_ms": 1915,
+      "error": null
+    },
+    {
+      "id": "task_planning_008",
+      "category": "planning",
+      "difficulty": "easy",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "mention_n_of",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"Bash\",\"brief_reason\":\"Get task #13 details via TaskGet CLI\"}",
+      "parsed_output": {
+        "tool_name": "Bash",
+        "brief_reason": "Get task #13 details via TaskGet CLI"
+      },
+      "prompt_tokens_est": 282,
+      "output_tokens_est": 18,
+      "latency_ms": 1533,
+      "error": null
+    },
+    {
+      "id": "task_planning_009",
+      "category": "planning",
+      "difficulty": "easy",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "mention_n_of",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"Bash\",\"brief_reason\":\"Get task #12 details via TaskGet\"}",
+      "parsed_output": {
+        "tool_name": "Bash",
+        "brief_reason": "Get task #12 details via TaskGet"
+      },
+      "prompt_tokens_est": 284,
+      "output_tokens_est": 17,
+      "latency_ms": 1592,
+      "error": null
+    },
+    {
+      "id": "task_planning_010",
+      "category": "planning",
+      "difficulty": "medium",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "mention_n_of",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"Read\",\"brief_reason\":\"Read plan file first as instructed\"}",
+      "parsed_output": {
+        "tool_name": "Read",
+        "brief_reason": "Read plan file first as instructed"
+      },
+      "prompt_tokens_est": 286,
+      "output_tokens_est": 18,
+      "latency_ms": 2262,
+      "error": null
+    },
+    {
+      "id": "task_planning_011",
+      "category": "planning",
+      "difficulty": "easy",
+      "score": 0.0,
+      "verifier_signal": "no_assertions_found",
+      "verifier_details": {
+        "pat": "plan must mention >= 2 of: ",
+        "undecidable": 1
+      },
+      "raw_output": "{\"tool_name\":\"TaskCreate\",\"brief_reason\":\"Dispatch deep research analysis task on the fallow repository\"}",
+      "parsed_output": {
+        "tool_name": "TaskCreate",
+        "brief_reason": "Dispatch deep research analysis task on the fallow repository"
+      },
+      "prompt_tokens_est": 179,
+      "output_tokens_est": 26,
+      "latency_ms": 1685,
+      "error": null
+    },
+    {
+      "id": "task_planning_012",
+      "category": "planning",
+      "difficulty": "medium",
+      "score": 0.0,
+      "verifier_signal": "no_assertions_found",
+      "verifier_details": {
+        "pat": "plan must mention >= 3 of: ",
+        "undecidable": 1
+      },
+      "raw_output": "{\"tool_name\":\"Bash\",\"brief_reason\":\"Explore target directory structure first\"}",
+      "parsed_output": {
+        "tool_name": "Bash",
+        "brief_reason": "Explore target directory structure first"
+      },
+      "prompt_tokens_est": 283,
+      "output_tokens_est": 19,
+      "latency_ms": 1882,
+      "error": null
+    },
+    {
+      "id": "task_planning_013",
+      "category": "planning",
+      "difficulty": "easy",
+      "score": 0.0,
+      "verifier_signal": "no_assertions_found",
+      "verifier_details": {
+        "pat": "plan must mention >= 2 of: ",
+        "undecidable": 1
+      },
+      "raw_output": "{\"tool_name\":\"Bash\",\"brief_reason\":\"Inspect repo structure to start bring-up\"}",
+      "parsed_output": {
+        "tool_name": "Bash",
+        "brief_reason": "Inspect repo structure to start bring-up"
+      },
+      "prompt_tokens_est": 284,
+      "output_tokens_est": 19,
+      "latency_ms": 1715,
+      "error": null
+    },
+    {
+      "id": "task_planning_014",
+      "category": "planning",
+      "difficulty": "medium",
+      "score": 0.0,
+      "verifier_signal": "no_assertions_found",
+      "verifier_details": {
+        "pat": "plan must mention >= 3 of: ",
+        "undecidable": 1
+      },
+      "raw_output": "{\"tool_name\":\"Bash\",\"brief_reason\":\"Explore target directory structure first\"}",
+      "parsed_output": {
+        "tool_name": "Bash",
+        "brief_reason": "Explore target directory structure first"
+      },
+      "prompt_tokens_est": 283,
+      "output_tokens_est": 19,
+      "latency_ms": 2846,
+      "error": null
+    },
+    {
+      "id": "synth_edit_safety_strnu_000",
+      "category": "edit_safety",
+      "difficulty": "hard",
+      "score": 1.0,
+      "verifier_signal": "schema_ok",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": true
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"Read\",\"brief_reason\":\"Read users.ts to locate second db.query call\"}",
+      "parsed_output": {
+        "tool_name": "Read",
+        "brief_reason": "Read users.ts to locate second db.query call"
+      },
+      "prompt_tokens_est": 192,
+      "output_tokens_est": 20,
+      "latency_ms": 4525,
+      "error": null
+    },
+    {
+      "id": "synth_edit_safety_strnu_001",
+      "category": "edit_safety",
+      "difficulty": "hard",
+      "score": 1.0,
+      "verifier_signal": "schema_ok",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": true
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"Read\",\"brief_reason\":\"Inspect login function to locate the specific import to change\"}",
+      "parsed_output": {
+        "tool_name": "Read",
+        "brief_reason": "Inspect login function to locate the specific import to change"
+      },
+      "prompt_tokens_est": 204,
+      "output_tokens_est": 25,
+      "latency_ms": 1745,
+      "error": null
+    },
+    {
+      "id": "synth_edit_safety_strnu_002",
+      "category": "edit_safety",
+      "difficulty": "hard",
+      "score": 1.0,
+      "verifier_signal": "schema_ok",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": true
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"Read\",\"brief_reason\":\"Inspect read_header to make precise edit\"}",
+      "parsed_output": {
+        "tool_name": "Read",
+        "brief_reason": "Inspect read_header to make precise edit"
+      },
+      "prompt_tokens_est": 193,
+      "output_tokens_est": 19,
+      "latency_ms": 1646,
+      "error": null
+    },
+    {
+      "id": "synth_edit_safety_strnu_003",
+      "category": "edit_safety",
+      "difficulty": "hard",
+      "score": 1.0,
+      "verifier_signal": "schema_ok",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": true
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"Read\",\"brief_reason\":\"Inspect OpenFile branch to identify exact err handling block\"}",
+      "parsed_output": {
+        "tool_name": "Read",
+        "brief_reason": "Inspect OpenFile branch to identify exact err handling block"
+      },
+      "prompt_tokens_est": 203,
+      "output_tokens_est": 24,
+      "latency_ms": 1843,
+      "error": null
+    },
+    {
+      "id": "synth_edit_safety_strnu_004",
+      "category": "edit_safety",
+      "difficulty": "hard",
+      "score": 1.0,
+      "verifier_signal": "schema_ok",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": true
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"Read\",\"brief_reason\":\"Inspect build.zig to find test step configuration\"}",
+      "parsed_output": {
+        "tool_name": "Read",
+        "brief_reason": "Inspect build.zig to find test step configuration"
+      },
+      "prompt_tokens_est": 193,
+      "output_tokens_est": 21,
+      "latency_ms": 2384,
+      "error": null
+    },
+    {
+      "id": "synth_edit_safety_strnu_005",
+      "category": "edit_safety",
+      "difficulty": "hard",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"Grep\",\"brief_reason\":\"Find refund handler context to locate exact occurrence\"}",
+      "parsed_output": {
+        "tool_name": "Grep",
+        "brief_reason": "Find refund handler context to locate exact occurrence"
+      },
+      "prompt_tokens_est": 192,
+      "output_tokens_est": 23,
+      "latency_ms": 1707,
+      "error": null
+    },
+    {
+      "id": "synth_edit_safety_strnu_006",
+      "category": "edit_safety",
+      "difficulty": "hard",
+      "score": 1.0,
+      "verifier_signal": "schema_ok",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": true
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"Read\",\"brief_reason\":\"Inspect pyproject.toml to locate version field precisely\"}",
+      "parsed_output": {
+        "tool_name": "Read",
+        "brief_reason": "Inspect pyproject.toml to locate version field precisely"
+      },
+      "prompt_tokens_est": 187,
+      "output_tokens_est": 23,
+      "latency_ms": 1858,
+      "error": null
+    },
+    {
+      "id": "synth_edit_safety_strnu_007",
+      "category": "edit_safety",
+      "difficulty": "hard",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"Edit\",\"brief_reason\":\"Update only token.go header year via targeted edit\"}",
+      "parsed_output": {
+        "tool_name": "Edit",
+        "brief_reason": "Update only token.go header year via targeted edit"
+      },
+      "prompt_tokens_est": 197,
+      "output_tokens_est": 22,
+      "latency_ms": 1703,
+      "error": null
+    },
+    {
+      "id": "synth_edit_safety_strnu_008",
+      "category": "edit_safety",
+      "difficulty": "hard",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"Grep\",\"brief_reason\":\"Locate health route line numbers in routes.py\"}",
+      "parsed_output": {
+        "tool_name": "Grep",
+        "brief_reason": "Locate health route line numbers in routes.py"
+      },
+      "prompt_tokens_est": 194,
+      "output_tokens_est": 20,
+      "latency_ms": 1773,
+      "error": null
+    },
+    {
+      "id": "synth_edit_safety_strnu_009",
+      "category": "edit_safety",
+      "difficulty": "hard",
+      "score": 1.0,
+      "verifier_signal": "schema_ok",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": true
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"Read\",\"brief_reason\":\"Inspect file to locate second job's timeout field\"}",
+      "parsed_output": {
+        "tool_name": "Read",
+        "brief_reason": "Inspect file to locate second job's timeout field"
+      },
+      "prompt_tokens_est": 181,
+      "output_tokens_est": 21,
+      "latency_ms": 1778,
+      "error": null
+    },
+    {
+      "id": "synth_easy_tool_routing_000",
+      "category": "tool_routing",
+      "difficulty": "easy",
+      "score": 1.0,
+      "verifier_signal": "schema_ok",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": true
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"Read\",\"brief_reason\":\"User asked to read the specified file\"}",
+      "parsed_output": {
+        "tool_name": "Read",
+        "brief_reason": "User asked to read the specified file"
+      },
+      "prompt_tokens_est": 185,
+      "output_tokens_est": 18,
+      "latency_ms": 1659,
+      "error": null
+    },
+    {
+      "id": "synth_easy_tool_routing_001",
+      "category": "tool_routing",
+      "difficulty": "easy",
+      "score": 1.0,
+      "verifier_signal": "schema_ok",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": true
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"Grep\",\"brief_reason\":\"Search Python files under etl directory for 'BigQuery' string\"}",
+      "parsed_output": {
+        "tool_name": "Grep",
+        "brief_reason": "Search Python files under etl directory for 'BigQuery' string"
+      },
+      "prompt_tokens_est": 175,
+      "output_tokens_est": 24,
+      "latency_ms": 2118,
+      "error": null
+    },
+    {
+      "id": "synth_easy_tool_routing_002",
+      "category": "tool_routing",
+      "difficulty": "easy",
+      "score": 1.0,
+      "verifier_signal": "schema_ok",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": true
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"Glob\",\"brief_reason\":\"Find all .rs files under crates/parser/src\"}",
+      "parsed_output": {
+        "tool_name": "Glob",
+        "brief_reason": "Find all .rs files under crates/parser/src"
+      },
+      "prompt_tokens_est": 167,
+      "output_tokens_est": 20,
+      "latency_ms": 1328,
+      "error": null
+    },
+    {
+      "id": "synth_easy_tool_routing_003",
+      "category": "tool_routing",
+      "difficulty": "easy",
+      "score": 1.0,
+      "verifier_signal": "schema_ok",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": true
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"Bash\",\"brief_reason\":\"Run go test command to see failing tests\"}",
+      "parsed_output": {
+        "tool_name": "Bash",
+        "brief_reason": "Run go test command to see failing tests"
+      },
+      "prompt_tokens_est": 170,
+      "output_tokens_est": 19,
+      "latency_ms": 1546,
+      "error": null
+    },
+    {
+      "id": "synth_easy_tool_routing_004",
+      "category": "tool_routing",
+      "difficulty": "easy",
+      "score": 1.0,
+      "verifier_signal": "schema_ok",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": true
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"Read\",\"brief_reason\":\"Open build.zig to inspect addExecutable call\"}",
+      "parsed_output": {
+        "tool_name": "Read",
+        "brief_reason": "Open build.zig to inspect addExecutable call"
+      },
+      "prompt_tokens_est": 170,
+      "output_tokens_est": 20,
+      "latency_ms": 1576,
+      "error": null
+    },
+    {
+      "id": "synth_easy_planning_000",
+      "category": "planning",
+      "difficulty": "easy",
+      "score": 1.0,
+      "verifier_signal": "schema_ok",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": true
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"TaskCreate\",\"brief_reason\":\"Create a plan task for the multi-step CLI flag addition.\"}",
+      "parsed_output": {
+        "tool_name": "TaskCreate",
+        "brief_reason": "Create a plan task for the multi-step CLI flag addition."
+      },
+      "prompt_tokens_est": 171,
+      "output_tokens_est": 25,
+      "latency_ms": 1791,
+      "error": null
+    },
+    {
+      "id": "synth_easy_planning_001",
+      "category": "planning",
+      "difficulty": "easy",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"Read\",\"brief_reason\":\"Inspect handlers.py to plan migration tasks\"}",
+      "parsed_output": {
+        "tool_name": "Read",
+        "brief_reason": "Inspect handlers.py to plan migration tasks"
+      },
+      "prompt_tokens_est": 169,
+      "output_tokens_est": 20,
+      "latency_ms": 1822,
+      "error": null
+    },
+    {
+      "id": "synth_easy_planning_002",
+      "category": "planning",
+      "difficulty": "easy",
+      "score": 1.0,
+      "verifier_signal": "schema_ok",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": true
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"TaskCreate\",\"brief_reason\":\"Outline steps as a task plan per user request\"}",
+      "parsed_output": {
+        "tool_name": "TaskCreate",
+        "brief_reason": "Outline steps as a task plan per user request"
+      },
+      "prompt_tokens_est": 173,
+      "output_tokens_est": 22,
+      "latency_ms": 2062,
+      "error": null
+    },
+    {
+      "id": "synth_easy_planning_003",
+      "category": "planning",
+      "difficulty": "easy",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"Read\",\"brief_reason\":\"Inspect existing deploy.sh to identify flags and behavior\"}",
+      "parsed_output": {
+        "tool_name": "Read",
+        "brief_reason": "Inspect existing deploy.sh to identify flags and behavior"
+      },
+      "prompt_tokens_est": 176,
+      "output_tokens_est": 23,
+      "latency_ms": 1980,
+      "error": null
+    },
+    {
+      "id": "synth_easy_recovery_000",
+      "category": "recovery",
+      "difficulty": "easy",
+      "score": 0.0,
+      "verifier_signal": "regex_miss",
+      "verifier_details": {
+        "pattern": "npm (ci|install|i)\\b"
+      },
+      "raw_output": "{\"tool_name\":\"Bash\",\"brief_reason\":\"Install dependencies before running tests\"}",
+      "parsed_output": {
+        "tool_name": "Bash",
+        "brief_reason": "Install dependencies before running tests"
+      },
+      "prompt_tokens_est": 185,
+      "output_tokens_est": 19,
+      "latency_ms": 1556,
+      "error": null
+    },
+    {
+      "id": "synth_easy_recovery_001",
+      "category": "recovery",
+      "difficulty": "easy",
+      "score": 0.0,
+      "verifier_signal": "regex_miss",
+      "verifier_details": {
+        "pattern": "pip install\\b.*(requests|-r\\s+requirements)"
+      },
+      "raw_output": "{\"tool_name\":\"Bash\",\"brief_reason\":\"Install missing requests module before re-running tests\"}",
+      "parsed_output": {
+        "tool_name": "Bash",
+        "brief_reason": "Install missing requests module before re-running tests"
+      },
+      "prompt_tokens_est": 194,
+      "output_tokens_est": 23,
+      "latency_ms": 1796,
+      "error": null
+    },
+    {
+      "id": "synth_easy_recovery_002",
+      "category": "recovery",
+      "difficulty": "easy",
+      "score": 0.0,
+      "verifier_signal": "regex_miss",
+      "verifier_details": {
+        "pattern": "cargo build --release\\b"
+      },
+      "raw_output": "{\"tool_name\":\"Bash\",\"brief_reason\":\"Retry with correct --release flag\"}",
+      "parsed_output": {
+        "tool_name": "Bash",
+        "brief_reason": "Retry with correct --release flag"
+      },
+      "prompt_tokens_est": 199,
+      "output_tokens_est": 17,
+      "latency_ms": 1513,
+      "error": null
+    },
+    {
+      "id": "synth_easy_recovery_003",
+      "category": "recovery",
+      "difficulty": "easy",
+      "score": 0.0,
+      "verifier_signal": "regex_miss",
+      "verifier_details": {
+        "pattern": "mkdir -p build\\b"
+      },
+      "raw_output": "{\"tool_name\":\"Bash\",\"brief_reason\":\"Create build dir then rebuild\"}",
+      "parsed_output": {
+        "tool_name": "Bash",
+        "brief_reason": "Create build dir then rebuild"
+      },
+      "prompt_tokens_est": 209,
+      "output_tokens_est": 16,
+      "latency_ms": 1486,
+      "error": null
+    },
+    {
+      "id": "synth_easy_path_grounding_000",
+      "category": "path_grounding",
+      "difficulty": "easy",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "in",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"Read\",\"brief_reason\":\"Open user_service.py to view login function\"}",
+      "parsed_output": {
+        "tool_name": "Read",
+        "brief_reason": "Open user_service.py to view login function"
+      },
+      "prompt_tokens_est": 158,
+      "output_tokens_est": 20,
+      "latency_ms": 1433,
+      "error": null
+    },
+    {
+      "id": "synth_easy_path_grounding_001",
+      "category": "path_grounding",
+      "difficulty": "easy",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "in",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"Read\",\"brief_reason\":\"Read main.rs to analyze entry point\"}",
+      "parsed_output": {
+        "tool_name": "Read",
+        "brief_reason": "Read main.rs to analyze entry point"
+      },
+      "prompt_tokens_est": 159,
+      "output_tokens_est": 18,
+      "latency_ms": 1523,
+      "error": null
+    },
+    {
+      "id": "synth_easy_path_grounding_002",
+      "category": "path_grounding",
+      "difficulty": "easy",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "in",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"Read\",\"brief_reason\":\"Read handler.go to review nil checks\"}",
+      "parsed_output": {
+        "tool_name": "Read",
+        "brief_reason": "Read handler.go to review nil checks"
+      },
+      "prompt_tokens_est": 160,
+      "output_tokens_est": 18,
+      "latency_ms": 1730,
+      "error": null
+    },
+    {
+      "id": "synth_easy_path_grounding_003",
+      "category": "path_grounding",
+      "difficulty": "easy",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "in",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"Read\",\"brief_reason\":\"Read build.zig first to check release config\"}",
+      "parsed_output": {
+        "tool_name": "Read",
+        "brief_reason": "Read build.zig first to check release config"
+      },
+      "prompt_tokens_est": 163,
+      "output_tokens_est": 20,
+      "latency_ms": 1773,
+      "error": null
+    },
+    {
+      "id": "synth_easy_command_synthesis_000",
+      "category": "command_synthesis",
+      "difficulty": "easy",
+      "score": 0.0,
+      "verifier_signal": "regex_miss",
+      "verifier_details": {
+        "pattern": "^git status"
+      },
+      "raw_output": "{\"tool_name\":\"Bash\",\"brief_reason\":\"Run git status --porcelain to show staged, modified, untracked files\"}",
+      "parsed_output": {
+        "tool_name": "Bash",
+        "brief_reason": "Run git status --porcelain to show staged, modified, untracked files"
+      },
+      "prompt_tokens_est": 228,
+      "output_tokens_est": 26,
+      "latency_ms": 1591,
+      "error": null
+    },
+    {
+      "id": "synth_easy_command_synthesis_001",
+      "category": "command_synthesis",
+      "difficulty": "easy",
+      "score": 0.0,
+      "verifier_signal": "regex_miss",
+      "verifier_details": {
+        "pattern": "^wc -l\\s+.*src/lib\\.rs"
+      },
+      "raw_output": "{\"tool_name\":\"Bash\",\"brief_reason\":\"Count lines in src/lib.rs using wc -l\"}",
+      "parsed_output": {
+        "tool_name": "Bash",
+        "brief_reason": "Count lines in src/lib.rs using wc -l"
+      },
+      "prompt_tokens_est": 190,
+      "output_tokens_est": 18,
+      "latency_ms": 1798,
+      "error": null
+    },
+    {
+      "id": "synth_easy_command_synthesis_002",
+      "category": "command_synthesis",
+      "difficulty": "easy",
+      "score": 0.0,
+      "verifier_signal": "regex_miss",
+      "verifier_details": {
+        "pattern": "^grep\\b.*TODO"
+      },
+      "raw_output": "{\"tool_name\":\"Grep\",\"brief_reason\":\"Recursive grep for TODO in .py files with line numbers\"}",
+      "parsed_output": {
+        "tool_name": "Grep",
+        "brief_reason": "Recursive grep for TODO in .py files with line numbers"
+      },
+      "prompt_tokens_est": 192,
+      "output_tokens_est": 23,
+      "latency_ms": 1756,
+      "error": null
+    },
+    {
+      "id": "synth_easy_command_synthesis_003",
+      "category": "command_synthesis",
+      "difficulty": "easy",
+      "score": 0.0,
+      "verifier_signal": "regex_miss",
+      "verifier_details": {
+        "pattern": "^ls\\s+-l.*build"
+      },
+      "raw_output": "{\"tool_name\":\"Bash\",\"brief_reason\":\"Run ls -l on build/ directory to show sizes and timestamps\"}",
+      "parsed_output": {
+        "tool_name": "Bash",
+        "brief_reason": "Run ls -l on build/ directory to show sizes and timestamps"
+      },
+      "prompt_tokens_est": 175,
+      "output_tokens_est": 24,
+      "latency_ms": 1871,
+      "error": null
+    },
+    {
+      "id": "synth_easy_edit_safety_000",
+      "category": "edit_safety",
+      "difficulty": "easy",
+      "score": 1.0,
+      "verifier_signal": "schema_ok",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": true
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"Edit\",\"brief_reason\":\"Change default port 3000 to 8080 in config.ts\"}",
+      "parsed_output": {
+        "tool_name": "Edit",
+        "brief_reason": "Change default port 3000 to 8080 in config.ts"
+      },
+      "prompt_tokens_est": 218,
+      "output_tokens_est": 20,
+      "latency_ms": 1874,
+      "error": null
+    },
+    {
+      "id": "synth_easy_edit_safety_001",
+      "category": "edit_safety",
+      "difficulty": "easy",
+      "score": 1.0,
+      "verifier_signal": "schema_ok",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": true
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"Edit\",\"brief_reason\":\"Rename function in single location\"}",
+      "parsed_output": {
+        "tool_name": "Edit",
+        "brief_reason": "Rename function in single location"
+      },
+      "prompt_tokens_est": 203,
+      "output_tokens_est": 18,
+      "latency_ms": 1623,
+      "error": null
+    },
+    {
+      "id": "synth_easy_edit_safety_002",
+      "category": "edit_safety",
+      "difficulty": "easy",
+      "score": 1.0,
+      "verifier_signal": "schema_ok",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": true
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"Edit\",\"brief_reason\":\"Replace [srv] with [api] in main.go\"}",
+      "parsed_output": {
+        "tool_name": "Edit",
+        "brief_reason": "Replace [srv] with [api] in main.go"
+      },
+      "prompt_tokens_est": 205,
+      "output_tokens_est": 18,
+      "latency_ms": 2996,
+      "error": null
+    },
+    {
+      "id": "synth_easy_edit_safety_003",
+      "category": "edit_safety",
+      "difficulty": "easy",
+      "score": 1.0,
+      "verifier_signal": "schema_ok",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": true
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"Edit\",\"brief_reason\":\"Replace version string in src/lib.rs\"}",
+      "parsed_output": {
+        "tool_name": "Edit",
+        "brief_reason": "Replace version string in src/lib.rs"
+      },
+      "prompt_tokens_est": 190,
+      "output_tokens_est": 18,
+      "latency_ms": 1557,
+      "error": null
+    },
+    {
+      "id": "synth_edit_strnotuniq_000",
+      "category": "edit_safety",
+      "difficulty": "hard",
+      "score": 0.0,
+      "verifier_signal": "no_assertions_found",
+      "verifier_details": {
+        "pat": "$.tool_name in [\"Grep\",\"Read\"]",
+        "undecidable": 1
+      },
+      "raw_output": "{\"tool_name\":\"Edit\",\"brief_reason\":\"Perform the requested string replacement in handlers.ts\"}",
+      "parsed_output": {
+        "tool_name": "Edit",
+        "brief_reason": "Perform the requested string replacement in handlers.ts"
+      },
+      "prompt_tokens_est": 189,
+      "output_tokens_est": 23,
+      "latency_ms": 1911,
+      "error": null
+    },
+    {
+      "id": "synth_edit_strnotuniq_001",
+      "category": "edit_safety",
+      "difficulty": "hard",
+      "score": 0.0,
+      "verifier_signal": "no_assertions_found",
+      "verifier_details": {
+        "pat": "$.tool_name in [\"Read\",\"Grep\"]",
+        "undecidable": 1
+      },
+      "raw_output": "{\"tool_name\":\"Edit\",\"brief_reason\":\"Replace import os with import os, sys\"}",
+      "parsed_output": {
+        "tool_name": "Edit",
+        "brief_reason": "Replace import os with import os, sys"
+      },
+      "prompt_tokens_est": 168,
+      "output_tokens_est": 18,
+      "latency_ms": 1387,
+      "error": null
+    },
+    {
+      "id": "synth_edit_strnotuniq_002",
+      "category": "edit_safety",
+      "difficulty": "hard",
+      "score": 0.0,
+      "verifier_signal": "no_assertions_found",
+      "verifier_details": {
+        "pat": "$.tool_name in [\"Read\",\"Grep\"]",
+        "undecidable": 1
+      },
+      "raw_output": "{\"tool_name\":\"Read\",\"brief_reason\":\"Read server.go to find exact return nil context\"}",
+      "parsed_output": {
+        "tool_name": "Read",
+        "brief_reason": "Read server.go to find exact return nil context"
+      },
+      "prompt_tokens_est": 183,
+      "output_tokens_est": 21,
+      "latency_ms": 1691,
+      "error": null
+    },
+    {
+      "id": "synth_edit_strnotuniq_003",
+      "category": "edit_safety",
+      "difficulty": "hard",
+      "score": 0.0,
+      "verifier_signal": "no_assertions_found",
+      "verifier_details": {
+        "pat": "$.tool_name in [\"Grep\",\"Read\"]",
+        "undecidable": 1
+      },
+      "raw_output": "{\"tool_name\":\"Read\",\"brief_reason\":\"Inspect lib.rs to find unimplemented! location\"}",
+      "parsed_output": {
+        "tool_name": "Read",
+        "brief_reason": "Inspect lib.rs to find unimplemented! location"
+      },
+      "prompt_tokens_est": 180,
+      "output_tokens_est": 21,
+      "latency_ms": 1518,
+      "error": null
+    },
+    {
+      "id": "synth_edit_strnotuniq_004",
+      "category": "edit_safety",
+      "difficulty": "hard",
+      "score": 0.0,
+      "verifier_signal": "no_assertions_found",
+      "verifier_details": {
+        "pat": "$.tool_name in [\"Read\",\"Grep\"]",
+        "undecidable": 1
+      },
+      "raw_output": "{\"tool_name\":\"Read\",\"brief_reason\":\"Inspect build.zig to locate test step\"}",
+      "parsed_output": {
+        "tool_name": "Read",
+        "brief_reason": "Inspect build.zig to locate test step"
+      },
+      "prompt_tokens_est": 162,
+      "output_tokens_est": 18,
+      "latency_ms": 1701,
+      "error": null
+    },
+    {
+      "id": "synth_edit_strnotuniq_005",
+      "category": "edit_safety",
+      "difficulty": "hard",
+      "score": 0.0,
+      "verifier_signal": "no_assertions_found",
+      "verifier_details": {
+        "pat": "$.tool_name in [\"Read\",\"Grep\"]",
+        "undecidable": 1
+      },
+      "raw_output": "{\"tool_name\":\"Read\",\"brief_reason\":\"Read deploy.sh before editing\"}",
+      "parsed_output": {
+        "tool_name": "Read",
+        "brief_reason": "Read deploy.sh before editing"
+      },
+      "prompt_tokens_est": 171,
+      "output_tokens_est": 16,
+      "latency_ms": 1665,
+      "error": null
+    },
+    {
+      "id": "synth_edit_strnotuniq_006",
+      "category": "edit_safety",
+      "difficulty": "hard",
+      "score": 0.0,
+      "verifier_signal": "no_assertions_found",
+      "verifier_details": {
+        "pat": "$.tool_name in [\"Read\",\"Grep\"]",
+        "undecidable": 1
+      },
+      "raw_output": "{\"tool_name\":\"Read\",\"brief_reason\":\"Inspect utils.ts to find formatDate signature before editing\"}",
+      "parsed_output": {
+        "tool_name": "Read",
+        "brief_reason": "Inspect utils.ts to find formatDate signature before editing"
+      },
+      "prompt_tokens_est": 180,
+      "output_tokens_est": 24,
+      "latency_ms": 1666,
+      "error": null
+    },
+    {
+      "id": "synth_edit_strnotuniq_007",
+      "category": "edit_safety",
+      "difficulty": "hard",
+      "score": 0.0,
+      "verifier_signal": "no_assertions_found",
+      "verifier_details": {
+        "pat": "$.tool_name in [\"Read\",\"Grep\"]",
+        "undecidable": 1
+      },
+      "raw_output": "{\"tool_name\":\"Read\",\"brief_reason\":\"Read file to see exact context before editing\"}",
+      "parsed_output": {
+        "tool_name": "Read",
+        "brief_reason": "Read file to see exact context before editing"
+      },
+      "prompt_tokens_est": 187,
+      "output_tokens_est": 20,
+      "latency_ms": 1525,
+      "error": null
+    },
+    {
+      "id": "synth_edit_notread_000",
+      "category": "edit_safety",
+      "difficulty": "medium",
+      "score": 1.0,
+      "verifier_signal": "schema_ok",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": true
+          }
+        ],
+        "undecidable": 1
+      },
+      "raw_output": "{\"tool_name\":\"Read\",\"brief_reason\":\"Read config.ts to locate exact timeout value before editing\"}",
+      "parsed_output": {
+        "tool_name": "Read",
+        "brief_reason": "Read config.ts to locate exact timeout value before editing"
+      },
+      "prompt_tokens_est": 190,
+      "output_tokens_est": 24,
+      "latency_ms": 1777,
+      "error": null
+    },
+    {
+      "id": "synth_edit_notread_001",
+      "category": "edit_safety",
+      "difficulty": "medium",
+      "score": 1.0,
+      "verifier_signal": "schema_ok",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": true
+          }
+        ],
+        "undecidable": 1
+      },
+      "raw_output": "{\"tool_name\":\"Read\",\"brief_reason\":\"Read file to locate function and docstring before editing\"}",
+      "parsed_output": {
+        "tool_name": "Read",
+        "brief_reason": "Read file to locate function and docstring before editing"
+      },
+      "prompt_tokens_est": 202,
+      "output_tokens_est": 23,
+      "latency_ms": 1925,
+      "error": null
+    },
+    {
+      "id": "synth_edit_notread_002",
+      "category": "edit_safety",
+      "difficulty": "medium",
+      "score": 1.0,
+      "verifier_signal": "schema_ok",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": true
+          }
+        ],
+        "undecidable": 1
+      },
+      "raw_output": "{\"tool_name\":\"Read\",\"brief_reason\":\"Read Cargo.toml to see exact version line before editing\"}",
+      "parsed_output": {
+        "tool_name": "Read",
+        "brief_reason": "Read Cargo.toml to see exact version line before editing"
+      },
+      "prompt_tokens_est": 188,
+      "output_tokens_est": 23,
+      "latency_ms": 1832,
+      "error": null
+    },
+    {
+      "id": "synth_edit_notread_003",
+      "category": "edit_safety",
+      "difficulty": "medium",
+      "score": 1.0,
+      "verifier_signal": "schema_ok",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": true
+          }
+        ],
+        "undecidable": 1
+      },
+      "raw_output": "{\"tool_name\":\"Read\",\"brief_reason\":\"Read root.go to find init() block\"}",
+      "parsed_output": {
+        "tool_name": "Read",
+        "brief_reason": "Read root.go to find init() block"
+      },
+      "prompt_tokens_est": 193,
+      "output_tokens_est": 17,
+      "latency_ms": 1567,
+      "error": null
+    },
+    {
+      "id": "synth_edit_notread_004",
+      "category": "edit_safety",
+      "difficulty": "medium",
+      "score": 1.0,
+      "verifier_signal": "schema_ok",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": true
+          }
+        ],
+        "undecidable": 1
+      },
+      "raw_output": "{\"tool_name\":\"Read\",\"brief_reason\":\"Read src/main.zig to find exact port constant line\"}",
+      "parsed_output": {
+        "tool_name": "Read",
+        "brief_reason": "Read src/main.zig to find exact port constant line"
+      },
+      "prompt_tokens_est": 181,
+      "output_tokens_est": 22,
+      "latency_ms": 1869,
+      "error": null
+    },
+    {
+      "id": "synth_edit_notread_005",
+      "category": "edit_safety",
+      "difficulty": "medium",
+      "score": 1.0,
+      "verifier_signal": "schema_ok",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": true
+          }
+        ],
+        "undecidable": 1
+      },
+      "raw_output": "{\"tool_name\":\"Read\",\"brief_reason\":\"Read deploy.sh to see exact line for editing\"}",
+      "parsed_output": {
+        "tool_name": "Read",
+        "brief_reason": "Read deploy.sh to see exact line for editing"
+      },
+      "prompt_tokens_est": 199,
+      "output_tokens_est": 20,
+      "latency_ms": 1688,
+      "error": null
+    },
+    {
+      "id": "synth_hallucinated_skill_000",
+      "category": "tool_routing",
+      "difficulty": "hard",
+      "score": 0.0,
+      "verifier_signal": "no_assertions_found",
+      "verifier_details": {
+        "pat": "$.tool_name in [\"Bash\",\"Read\",\"Glob\"]",
+        "undecidable": 1
+      },
+      "raw_output": "{\"tool_name\":\"Skill\",\"brief_reason\":\"Invoke the requested rust-cargo-audit-pro skill\"}",
+      "parsed_output": {
+        "tool_name": "Skill",
+        "brief_reason": "Invoke the requested rust-cargo-audit-pro skill"
+      },
+      "prompt_tokens_est": 178,
+      "output_tokens_est": 21,
+      "latency_ms": 1732,
+      "error": null
+    },
+    {
+      "id": "synth_hallucinated_skill_001",
+      "category": "tool_routing",
+      "difficulty": "hard",
+      "score": 0.0,
+      "verifier_signal": "no_assertions_found",
+      "verifier_details": {
+        "pat": "$.tool_name in [\"Grep\",\"Bash\",\"Glob\",\"Read\"]",
+        "undecidable": 1
+      },
+      "raw_output": "{\"tool_name\":\"Skill\",\"brief_reason\":\"User explicitly requested invoking the ts-monorepo-analyzer skill\"}",
+      "parsed_output": {
+        "tool_name": "Skill",
+        "brief_reason": "User explicitly requested invoking the ts-monorepo-analyzer skill"
+      },
+      "prompt_tokens_est": 182,
+      "output_tokens_est": 26,
+      "latency_ms": 1886,
+      "error": null
+    },
+    {
+      "id": "synth_hallucinated_skill_002",
+      "category": "tool_routing",
+      "difficulty": "hard",
+      "score": 0.0,
+      "verifier_signal": "no_assertions_found",
+      "verifier_details": {
+        "pat": "$.tool_name in [\"Bash\",\"Read\"]",
+        "undecidable": 1
+      },
+      "raw_output": "{\"tool_name\":\"Skill\",\"brief_reason\":\"Invoke requested coverage-boost skill\"}",
+      "parsed_output": {
+        "tool_name": "Skill",
+        "brief_reason": "Invoke requested coverage-boost skill"
+      },
+      "prompt_tokens_est": 176,
+      "output_tokens_est": 19,
+      "latency_ms": 1726,
+      "error": null
+    },
+    {
+      "id": "synth_hallucinated_skill_003",
+      "category": "tool_routing",
+      "difficulty": "hard",
+      "score": 0.0,
+      "verifier_signal": "no_assertions_found",
+      "verifier_details": {
+        "pat": "$.tool_name in [\"Bash\",\"Read\"]",
+        "undecidable": 1
+      },
+      "raw_output": "{\"tool_name\":\"Skill\",\"brief_reason\":\"Invoke the go-mod-tidy-wizard skill as requested\"}",
+      "parsed_output": {
+        "tool_name": "Skill",
+        "brief_reason": "Invoke the go-mod-tidy-wizard skill as requested"
+      },
+      "prompt_tokens_est": 167,
+      "output_tokens_est": 21,
+      "latency_ms": 1598,
+      "error": null
+    },
+    {
+      "id": "synth_hallucinated_skill_004",
+      "category": "tool_routing",
+      "difficulty": "hard",
+      "score": 0.0,
+      "verifier_signal": "no_assertions_found",
+      "verifier_details": {
+        "pat": "$.tool_name in [\"Read\",\"Bash\",\"Glob\"]",
+        "undecidable": 1
+      },
+      "raw_output": "{\"tool_name\":\"Skill\",\"brief_reason\":\"Trigger the zig-build-inspector skill as requested\"}",
+      "parsed_output": {
+        "tool_name": "Skill",
+        "brief_reason": "Trigger the zig-build-inspector skill as requested"
+      },
+      "prompt_tokens_est": 168,
+      "output_tokens_est": 22,
+      "latency_ms": 1451,
+      "error": null
+    },
+    {
+      "id": "synth_hallucinated_skill_005",
+      "category": "tool_routing",
+      "difficulty": "hard",
+      "score": 0.0,
+      "verifier_signal": "no_assertions_found",
+      "verifier_details": {
+        "pat": "$.tool_name in [\"Bash\",\"Glob\",\"Read\"]",
+        "undecidable": 1
+      },
+      "raw_output": "{\"tool_name\":\"Skill\",\"brief_reason\":\"Invoke the shell-script-linter-plus skill as requested\"}",
+      "parsed_output": {
+        "tool_name": "Skill",
+        "brief_reason": "Invoke the shell-script-linter-plus skill as requested"
+      },
+      "prompt_tokens_est": 176,
+      "output_tokens_est": 23,
+      "latency_ms": 1825,
+      "error": null
+    },
+    {
+      "id": "synth_path_adversarial_000",
+      "category": "path_grounding",
+      "difficulty": "hard",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "in",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"Read\",\"brief_reason\":\"Read the actual file at src/util/helper.ts (singular)\"}",
+      "parsed_output": {
+        "tool_name": "Read",
+        "brief_reason": "Read the actual file at src/util/helper.ts (singular)"
+      },
+      "prompt_tokens_est": 211,
+      "output_tokens_est": 22,
+      "latency_ms": 1786,
+      "error": null
+    },
+    {
+      "id": "synth_path_adversarial_001",
+      "category": "path_grounding",
+      "difficulty": "hard",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "in",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"Read\",\"brief_reason\":\"Read the actual file at libs/effect-runtime/index.ts\"}",
+      "parsed_output": {
+        "tool_name": "Read",
+        "brief_reason": "Read the actual file at libs/effect-runtime/index.ts"
+      },
+      "prompt_tokens_est": 183,
+      "output_tokens_est": 22,
+      "latency_ms": 1335,
+      "error": null
+    },
+    {
+      "id": "synth_path_adversarial_002",
+      "category": "path_grounding",
+      "difficulty": "hard",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "in",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"Read\",\"brief_reason\":\"Read main.zig to inspect imports and code\"}",
+      "parsed_output": {
+        "tool_name": "Read",
+        "brief_reason": "Read main.zig to inspect imports and code"
+      },
+      "prompt_tokens_est": 197,
+      "output_tokens_est": 19,
+      "latency_ms": 1817,
+      "error": null
+    },
+    {
+      "id": "synth_path_adversarial_003",
+      "category": "path_grounding",
+      "difficulty": "hard",
+      "score": 1.0,
+      "verifier_signal": "schema_ok",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "in",
+            "ok": true
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"Glob\",\"brief_reason\":\"Locate actual checkout.go path under internal/handler/\"}",
+      "parsed_output": {
+        "tool_name": "Glob",
+        "brief_reason": "Locate actual checkout.go path under internal/handler/"
+      },
+      "prompt_tokens_est": 199,
+      "output_tokens_est": 23,
+      "latency_ms": 1478,
+      "error": null
+    },
+    {
+      "id": "synth_path_adversarial_004",
+      "category": "path_grounding",
+      "difficulty": "hard",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "in",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"Read\",\"brief_reason\":\"Read the attention.py file at corrected path\"}",
+      "parsed_output": {
+        "tool_name": "Read",
+        "brief_reason": "Read the attention.py file at corrected path"
+      },
+      "prompt_tokens_est": 197,
+      "output_tokens_est": 20,
+      "latency_ms": 1820,
+      "error": null
+    },
+    {
+      "id": "synth_path_adversarial_005",
+      "category": "path_grounding",
+      "difficulty": "hard",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "in",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"Read\",\"brief_reason\":\"Read actual cache module file at src/cache/mod.rs\"}",
+      "parsed_output": {
+        "tool_name": "Read",
+        "brief_reason": "Read actual cache module file at src/cache/mod.rs"
+      },
+      "prompt_tokens_est": 208,
+      "output_tokens_est": 21,
+      "latency_ms": 1786,
+      "error": null
+    },
+    {
+      "id": "synth_path_adversarial_006",
+      "category": "path_grounding",
+      "difficulty": "hard",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "in",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"Read\",\"brief_reason\":\"Read actual deploy script at tools/scripts/deploy.bash\"}",
+      "parsed_output": {
+        "tool_name": "Read",
+        "brief_reason": "Read actual deploy script at tools/scripts/deploy.bash"
+      },
+      "prompt_tokens_est": 197,
+      "output_tokens_est": 23,
+      "latency_ms": 1734,
+      "error": null
+    },
+    {
+      "id": "synth_path_adversarial_007",
+      "category": "path_grounding",
+      "difficulty": "hard",
+      "score": 1.0,
+      "verifier_signal": "schema_ok",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "in",
+            "ok": true
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"Glob\",\"brief_reason\":\"Locate actual Button component path in monorepo\"}",
+      "parsed_output": {
+        "tool_name": "Glob",
+        "brief_reason": "Locate actual Button component path in monorepo"
+      },
+      "prompt_tokens_est": 196,
+      "output_tokens_est": 21,
+      "latency_ms": 1891,
+      "error": null
+    },
+    {
+      "id": "synth_path_adversarial_008",
+      "category": "path_grounding",
+      "difficulty": "hard",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "in",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"Read\",\"brief_reason\":\"Read actual file src/driver/i2c.c to review timing\"}",
+      "parsed_output": {
+        "tool_name": "Read",
+        "brief_reason": "Read actual file src/driver/i2c.c to review timing"
+      },
+      "prompt_tokens_est": 205,
+      "output_tokens_est": 22,
+      "latency_ms": 1811,
+      "error": null
+    },
+    {
+      "id": "synth_path_adversarial_009",
+      "category": "path_grounding",
+      "difficulty": "hard",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "in",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"Read\",\"brief_reason\":\"Read actual auth main.go at correct path noted by user\"}",
+      "parsed_output": {
+        "tool_name": "Read",
+        "brief_reason": "Read actual auth main.go at correct path noted by user"
+      },
+      "prompt_tokens_est": 198,
+      "output_tokens_est": 23,
+      "latency_ms": 2061,
+      "error": null
+    },
+    {
+      "id": "synth_easy_debugging_000",
+      "category": "debugging",
+      "difficulty": "easy",
+      "score": 1.0,
+      "verifier_signal": "regex_match",
+      "verifier_details": {
+        "pattern": "server\\.ts"
+      },
+      "raw_output": "{\"tool_name\":\"Edit\",\"brief_reason\":\"Fix typo 'expres' to 'express' in src/server.ts\"}",
+      "parsed_output": {
+        "tool_name": "Edit",
+        "brief_reason": "Fix typo 'expres' to 'express' in src/server.ts"
+      },
+      "prompt_tokens_est": 235,
+      "output_tokens_est": 21,
+      "latency_ms": 1790,
+      "error": null
+    },
+    {
+      "id": "synth_easy_debugging_001",
+      "category": "debugging",
+      "difficulty": "easy",
+      "score": 0.0,
+      "verifier_signal": "regex_miss",
+      "verifier_details": {
+        "pattern": "^(file|head -n ?1|cat -A) scripts/deploy\\.sh$"
+      },
+      "raw_output": "{\"tool_name\":\"Read\",\"brief_reason\":\"Inspect deploy.sh to diagnose shebang/line-ending issue\"}",
+      "parsed_output": {
+        "tool_name": "Read",
+        "brief_reason": "Inspect deploy.sh to diagnose shebang/line-ending issue"
+      },
+      "prompt_tokens_est": 207,
+      "output_tokens_est": 23,
+      "latency_ms": 1877,
+      "error": null
+    },
+    {
+      "id": "synth_easy_debugging_002",
+      "category": "debugging",
+      "difficulty": "easy",
+      "score": 0.0,
+      "verifier_signal": "regex_miss",
+      "verifier_details": {
+        "pattern": "^cat (requirements\\.txt|pyproject\\.toml)$"
+      },
+      "raw_output": "{\"tool_name\":\"Bash\",\"brief_reason\":\"Install missing requests module via pip\"}",
+      "parsed_output": {
+        "tool_name": "Bash",
+        "brief_reason": "Install missing requests module via pip"
+      },
+      "prompt_tokens_est": 218,
+      "output_tokens_est": 19,
+      "latency_ms": 1550,
+      "error": null
+    },
+    {
+      "id": "synth_easy_debugging_003",
+      "category": "debugging",
+      "difficulty": "easy",
+      "score": 1.0,
+      "verifier_signal": "regex_match",
+      "verifier_details": {
+        "pattern": "Cargo\\.toml"
+      },
+      "raw_output": "{\"tool_name\":\"Read\",\"brief_reason\":\"Inspect Cargo.toml to add serde_json dependency\"}",
+      "parsed_output": {
+        "tool_name": "Read",
+        "brief_reason": "Inspect Cargo.toml to add serde_json dependency"
+      },
+      "prompt_tokens_est": 233,
+      "output_tokens_est": 21,
+      "latency_ms": 2113,
+      "error": null
+    },
+    {
+      "id": "synth_easy_debugging_004",
+      "category": "debugging",
+      "difficulty": "easy",
+      "score": 0.0,
+      "verifier_signal": "regex_miss",
+      "verifier_details": {
+        "pattern": "^ls (-la )?(users/)?testdata(/fixtures)?/?$"
+      },
+      "raw_output": "{\"tool_name\":\"Glob\",\"brief_reason\":\"Locate users.json fixture to fix path\"}",
+      "parsed_output": {
+        "tool_name": "Glob",
+        "brief_reason": "Locate users.json fixture to fix path"
+      },
+      "prompt_tokens_est": 212,
+      "output_tokens_est": 18,
+      "latency_ms": 1859,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,546 @@
+{
+  "model": "claude-opus-4-7",
+  "tasks_path": "trace-gepa/data/benchmark_tasks.jsonl",
+  "system_prompt_file": null,
+  "system_prompt_chars": 236,
+  "limit": 20,
+  "verifier": "bench.verifiers.verify",
+  "summary": {
+    "overall": {
+      "total_tasks": 20,
+      "mean_score": 0.1,
+      "wallclock_s": 8.5,
+      "lm_calls": 20,
+      "lm_errors": 0,
+      "prompt_tokens_est": 7093,
+      "output_tokens_est": 491,
+      "total_tokens_est": 7584
+    },
+    "per_category": {
+      "tool_routing": {
+        "count": 20,
+        "mean_score": 0.1,
+        "signal_breakdown": {
+          "schema_fail": 18,
+          "schema_ok": 2
+        }
+      }
+    },
+    "per_difficulty": {
+      "medium": {
+        "count": 13,
+        "mean_score": 0.1538
+      },
+      "easy": {
+        "count": 2,
+        "mean_score": 0.0
+      },
+      "hard": {
+        "count": 5,
+        "mean_score": 0.0
+      }
+    }
+  },
+  "per_task": [
+    {
+      "id": "task_tool_routing_000",
+      "category": "tool_routing",
+      "difficulty": "medium",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"EnterPlanMode\",\"brief_reason\":\"Need to read docs and plan implementation before acting\"}",
+      "parsed_output": {
+        "tool_name": "EnterPlanMode",
+        "brief_reason": "Need to read docs and plan implementation before acting"
+      },
+      "prompt_tokens_est": 357,
+      "output_tokens_est": 25,
+      "latency_ms": 2391,
+      "error": null
+    },
+    {
+      "id": "task_tool_routing_001",
+      "category": "tool_routing",
+      "difficulty": "medium",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"WebFetch\",\"brief_reason\":\"Fetch the arxiv paper to understand project context\"}",
+      "parsed_output": {
+        "tool_name": "WebFetch",
+        "brief_reason": "Fetch the arxiv paper to understand project context"
+      },
+      "prompt_tokens_est": 356,
+      "output_tokens_est": 23,
+      "latency_ms": 3308,
+      "error": null
+    },
+    {
+      "id": "task_tool_routing_002",
+      "category": "tool_routing",
+      "difficulty": "easy",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"AskUserQuestion\",\"brief_reason\":\"Need API key and details about BAG agent before proceeding\"}",
+      "parsed_output": {
+        "tool_name": "AskUserQuestion",
+        "brief_reason": "Need API key and details about BAG agent before proceeding"
+      },
+      "prompt_tokens_est": 250,
+      "output_tokens_est": 26,
+      "latency_ms": 2199,
+      "error": null
+    },
+    {
+      "id": "task_tool_routing_003",
+      "category": "tool_routing",
+      "difficulty": "medium",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"EnterPlanMode\",\"brief_reason\":\"Complex multi-step task requires planning before execution\"}",
+      "parsed_output": {
+        "tool_name": "EnterPlanMode",
+        "brief_reason": "Complex multi-step task requires planning before execution"
+      },
+      "prompt_tokens_est": 340,
+      "output_tokens_est": 26,
+      "latency_ms": 2358,
+      "error": null
+    },
+    {
+      "id": "task_tool_routing_004",
+      "category": "tool_routing",
+      "difficulty": "easy",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"AskUserQuestion\",\"brief_reason\":\"Need details: which server, port, tunnel preference, API key value\"}",
+      "parsed_output": {
+        "tool_name": "AskUserQuestion",
+        "brief_reason": "Need details: which server, port, tunnel preference, API key value"
+      },
+      "prompt_tokens_est": 248,
+      "output_tokens_est": 28,
+      "latency_ms": 2812,
+      "error": null
+    },
+    {
+      "id": "task_tool_routing_005",
+      "category": "tool_routing",
+      "difficulty": "medium",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"EnterWorktree\",\"brief_reason\":\"Enter ir-expo worktree to start implementing fixture connector\"}",
+      "parsed_output": {
+        "tool_name": "EnterWorktree",
+        "brief_reason": "Enter ir-expo worktree to start implementing fixture connector"
+      },
+      "prompt_tokens_est": 315,
+      "output_tokens_est": 27,
+      "latency_ms": 2358,
+      "error": null
+    },
+    {
+      "id": "task_tool_routing_006",
+      "category": "tool_routing",
+      "difficulty": "medium",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"TaskGet\",\"brief_reason\":\"Read task #3 details before claiming\"}",
+      "parsed_output": {
+        "tool_name": "TaskGet",
+        "brief_reason": "Read task #3 details before claiming"
+      },
+      "prompt_tokens_est": 337,
+      "output_tokens_est": 19,
+      "latency_ms": 1813,
+      "error": null
+    },
+    {
+      "id": "task_tool_routing_007",
+      "category": "tool_routing",
+      "difficulty": "medium",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"TaskGet\",\"brief_reason\":\"Read task #12 details before claiming\"}",
+      "parsed_output": {
+        "tool_name": "TaskGet",
+        "brief_reason": "Read task #12 details before claiming"
+      },
+      "prompt_tokens_est": 337,
+      "output_tokens_est": 19,
+      "latency_ms": 2848,
+      "error": null
+    },
+    {
+      "id": "task_tool_routing_008",
+      "category": "tool_routing",
+      "difficulty": "medium",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"EnterWorktree\",\"brief_reason\":\"Enter working directory to start orientation\"}",
+      "parsed_output": {
+        "tool_name": "EnterWorktree",
+        "brief_reason": "Enter working directory to start orientation"
+      },
+      "prompt_tokens_est": 324,
+      "output_tokens_est": 22,
+      "latency_ms": 1996,
+      "error": null
+    },
+    {
+      "id": "task_tool_routing_009",
+      "category": "tool_routing",
+      "difficulty": "medium",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"EnterWorktree\",\"brief_reason\":\"Enter worktree to read plan and start task\"}",
+      "parsed_output": {
+        "tool_name": "EnterWorktree",
+        "brief_reason": "Enter worktree to read plan and start task"
+      },
+      "prompt_tokens_est": 337,
+      "output_tokens_est": 22,
+      "latency_ms": 1782,
+      "error": null
+    },
+    {
+      "id": "task_tool_routing_010",
+      "category": "tool_routing",
+      "difficulty": "medium",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"EnterWorktree\",\"brief_reason\":\"Enter working directory to start orientation\"}",
+      "parsed_output": {
+        "tool_name": "EnterWorktree",
+        "brief_reason": "Enter working directory to start orientation"
+      },
+      "prompt_tokens_est": 325,
+      "output_tokens_est": 22,
+      "latency_ms": 1810,
+      "error": null
+    },
+    {
+      "id": "task_tool_routing_011",
+      "category": "tool_routing",
+      "difficulty": "medium",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"\",\"brief_reason\":\"No suitable file-reading tool available; cannot proceed with read-only investigation.\"}",
+      "parsed_output": {
+        "tool_name": "",
+        "brief_reason": "No suitable file-reading tool available; cannot proceed with read-only investigation."
+      },
+      "prompt_tokens_est": 304,
+      "output_tokens_est": 29,
+      "latency_ms": 2338,
+      "error": null
+    },
+    {
+      "id": "task_tool_routing_012",
+      "category": "tool_routing",
+      "difficulty": "medium",
+      "score": 1.0,
+      "verifier_signal": "schema_ok",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": true
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"WebFetch\",\"brief_reason\":\"Fetch Ax GitHub README for core abstractions and provider info\"}",
+      "parsed_output": {
+        "tool_name": "WebFetch",
+        "brief_reason": "Fetch Ax GitHub README for core abstractions and provider info"
+      },
+      "prompt_tokens_est": 368,
+      "output_tokens_est": 26,
+      "latency_ms": 1789,
+      "error": null
+    },
+    {
+      "id": "task_tool_routing_013",
+      "category": "tool_routing",
+      "difficulty": "medium",
+      "score": 1.0,
+      "verifier_signal": "schema_ok",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": true
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"WebFetch\",\"brief_reason\":\"Fetch Ax docs for Anthropic provider integration details\"}",
+      "parsed_output": {
+        "tool_name": "WebFetch",
+        "brief_reason": "Fetch Ax docs for Anthropic provider integration details"
+      },
+      "prompt_tokens_est": 409,
+      "output_tokens_est": 24,
+      "latency_ms": 2355,
+      "error": null
+    },
+    {
+      "id": "task_tool_routing_014",
+      "category": "tool_routing",
+      "difficulty": "medium",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"WebFetch\",\"brief_reason\":\"Fetch Ax docs site for Anthropic provider integration details and signature examples\"}",
+      "parsed_output": {
+        "tool_name": "WebFetch",
+        "brief_reason": "Fetch Ax docs site for Anthropic provider integration details and signature examples"
+      },
+      "prompt_tokens_est": 491,
+      "output_tokens_est": 31,
+      "latency_ms": 2248,
+      "error": null
+    },
+    {
+      "id": "task_tool_routing_015",
+      "category": "tool_routing",
+      "difficulty": "hard",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"EnterPlanMode\",\"brief_reason\":\"Plan contracts before parallel work\"}",
+      "parsed_output": {
+        "tool_name": "EnterPlanMode",
+        "brief_reason": "Plan contracts before parallel work"
+      },
+      "prompt_tokens_est": 358,
+      "output_tokens_est": 20,
+      "latency_ms": 1830,
+      "error": null
+    },
+    {
+      "id": "task_tool_routing_016",
+      "category": "tool_routing",
+      "difficulty": "hard",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"EnterPlanMode\",\"brief_reason\":\"Plan contracts before implementing to align boundaries\"}",
+      "parsed_output": {
+        "tool_name": "EnterPlanMode",
+        "brief_reason": "Plan contracts before implementing to align boundaries"
+      },
+      "prompt_tokens_est": 380,
+      "output_tokens_est": 25,
+      "latency_ms": 2070,
+      "error": null
+    },
+    {
+      "id": "task_tool_routing_017",
+      "category": "tool_routing",
+      "difficulty": "hard",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"EnterPlanMode\",\"brief_reason\":\"Plan contracts before implementing to align boundaries\"}",
+      "parsed_output": {
+        "tool_name": "EnterPlanMode",
+        "brief_reason": "Plan contracts before implementing to align boundaries"
+      },
+      "prompt_tokens_est": 393,
+      "output_tokens_est": 25,
+      "latency_ms": 2175,
+      "error": null
+    },
+    {
+      "id": "task_tool_routing_018",
+      "category": "tool_routing",
+      "difficulty": "hard",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"ExitPlanMode\",\"brief_reason\":\"Contracts settled and checks passing; ready to proceed with implementation\"}",
+      "parsed_output": {
+        "tool_name": "ExitPlanMode",
+        "brief_reason": "Contracts settled and checks passing; ready to proceed with implementation"
+      },
+      "prompt_tokens_est": 368,
+      "output_tokens_est": 30,
+      "latency_ms": 2038,
+      "error": null
+    },
+    {
+      "id": "task_tool_routing_019",
+      "category": "tool_routing",
+      "difficulty": "hard",
+      "score": 0.0,
+      "verifier_signal": "schema_fail",
+      "verifier_details": {
+        "sub": [
+          {
+            "k": "eq",
+            "ok": false
+          }
+        ],
+        "undecidable": 0
+      },
+      "raw_output": "{\"tool_name\":\"\",\"brief_reason\":\"Need Bash to commit/push but not in available tools list\"}",
+      "parsed_output": {
+        "tool_name": "",
+        "brief_reason": "Need Bash to commit/push but not in available tools list"
+      },
+      "prompt_tokens_est": 496,
+      "output_tokens_est": 22,
+      "latency_ms": 2049,
+      "error": null
+    }
+  ]
+}

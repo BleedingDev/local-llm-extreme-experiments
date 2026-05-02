@@ -1,0 +1,932 @@
+{
+  "summary": {
+    "n": 30,
+    "pass_rate": 0.16666666666666666,
+    "by_category": {
+      "planning": {
+        "n": 4,
+        "pass_rate": 0.25
+      },
+      "tool_routing": {
+        "n": 5,
+        "pass_rate": 0.4
+      },
+      "edit_safety": {
+        "n": 5,
+        "pass_rate": 0.4
+      },
+      "command_synthesis": {
+        "n": 4,
+        "pass_rate": 0.0
+      },
+      "debugging": {
+        "n": 4,
+        "pass_rate": 0.0
+      },
+      "path_grounding": {
+        "n": 4,
+        "pass_rate": 0.0
+      },
+      "recovery": {
+        "n": 4,
+        "pass_rate": 0.0
+      }
+    },
+    "by_difficulty": {
+      "easy": {
+        "n": 8,
+        "pass_rate": 0.375
+      },
+      "hard": {
+        "n": 13,
+        "pass_rate": 0.15384615384615385
+      },
+      "medium": {
+        "n": 9,
+        "pass_rate": 0.0
+      }
+    },
+    "parser_counts": {
+      "json_direct": 30
+    },
+    "error_counts": {},
+    "timeouts": 0,
+    "mean_elapsed_s": 15.326177024841309
+  },
+  "config": {
+    "model": "gpt-5.5",
+    "reasoning": "xhigh",
+    "max_workers": 4,
+    "timeout_s": 60.0,
+    "limit": 30,
+    "tasks_path": "/Users/satan/side/experiments/supergemma-dflash-ddtree-mlx/trace-gepa/data/benchmarks/minibench.jsonl",
+    "codex_bin": "/opt/homebrew/bin/codex",
+    "elapsed_total_s": 134.02854990959167,
+    "tasks_n": 30
+  },
+  "results": [
+    {
+      "id": "synth_easy_planning_000",
+      "category": "planning",
+      "difficulty": "easy",
+      "score": 1.0,
+      "verifier": {
+        "score": 1.0,
+        "tier": 1,
+        "signal": "schema_ok",
+        "details": {
+          "sub": [
+            {
+              "k": "eq",
+              "ok": true
+            }
+          ],
+          "undecidable": 0
+        }
+      },
+      "elapsed_s": 17.656895875930786,
+      "exit_code": 0,
+      "timed_out": false,
+      "stdout_chars": 1181,
+      "stderr_tail": "",
+      "final_message_chars": 827,
+      "parser_status": "json_direct",
+      "message_status": "ok",
+      "predicted_tool": "TaskCreate",
+      "predicted_preview": "{\"tool_name\": \"TaskCreate\", \"input\": {\"tasks\": [{\"content\": \"Inspect /repo/cli-tool/src/main.rs to identify the current CLI argument parsing and startup flow.\"}, {\"content\": \"Inspect /repo/cli-tool/src/logger.rs to understand how tracing/lo"
+    },
+    {
+      "id": "synth_easy_tool_routing_002",
+      "category": "tool_routing",
+      "difficulty": "easy",
+      "score": 1.0,
+      "verifier": {
+        "score": 1.0,
+        "tier": 1,
+        "signal": "schema_ok",
+        "details": {
+          "sub": [
+            {
+              "k": "eq",
+              "ok": true
+            }
+          ],
+          "undecidable": 0
+        }
+      },
+      "elapsed_s": 7.55744194984436,
+      "exit_code": 0,
+      "timed_out": false,
+      "stdout_chars": 498,
+      "stderr_tail": "",
+      "final_message_chars": 166,
+      "parser_status": "json_direct",
+      "message_status": "ok",
+      "predicted_tool": "Glob",
+      "predicted_preview": "{\"tool_name\": \"Glob\", \"input\": {\"pattern\": \"crates/parser/src/**/*.rs\"}, \"reason\": \"Glob directly lists matching Rust source files under the requested parser source tree.\"}"
+    },
+    {
+      "id": "synth_easy_tool_routing_003",
+      "category": "tool_routing",
+      "difficulty": "easy",
+      "score": 1.0,
+      "verifier": {
+        "score": 1.0,
+        "tier": 1,
+        "signal": "schema_ok",
+        "details": {
+          "sub": [
+            {
+              "k": "eq",
+              "ok": true
+            }
+          ],
+          "undecidable": 0
+        }
+      },
+      "elapsed_s": 8.631412982940674,
+      "exit_code": 0,
+      "timed_out": false,
+      "stdout_chars": 522,
+      "stderr_tail": "",
+      "final_message_chars": 191,
+      "parser_status": "json_direct",
+      "message_status": "ok",
+      "predicted_tool": "Bash",
+      "predicted_preview": "{\"tool_name\": \"Bash\", \"input\": {\"command\": \"cd /workspace/notify-svc && go test ./internal/queue/...\"}, \"reason\": \"Run the requested Go test package tree so the output can identify failing tests.\"}"
+    },
+    {
+      "id": "synth_edit_safety_strnu_000",
+      "category": "edit_safety",
+      "difficulty": "hard",
+      "score": 1.0,
+      "verifier": {
+        "score": 1.0,
+        "tier": 1,
+        "signal": "schema_ok",
+        "details": {
+          "sub": [
+            {
+              "k": "eq",
+              "ok": true
+            }
+          ],
+          "undecidable": 0
+        }
+      },
+      "elapsed_s": 7.9228479862213135,
+      "exit_code": 0,
+      "timed_out": false,
+      "stdout_chars": 493,
+      "stderr_tail": "",
+      "final_message_chars": 161,
+      "parser_status": "json_direct",
+      "message_status": "ok",
+      "predicted_tool": "Read",
+      "predicted_preview": "{\"tool_name\": \"Read\", \"input\": {\"file_path\": \"src/api/users.ts\"}, \"reason\": \"Read the file to locate the second matching db.query call before making a targeted edit.\"}"
+    },
+    {
+      "id": "synth_edit_safety_strnu_001",
+      "category": "edit_safety",
+      "difficulty": "hard",
+      "score": 1.0,
+      "verifier": {
+        "score": 1.0,
+        "tier": 1,
+        "signal": "schema_ok",
+        "details": {
+          "sub": [
+            {
+              "k": "eq",
+              "ok": true
+            }
+          ],
+          "undecidable": 0
+        }
+      },
+      "elapsed_s": 10.522859811782837,
+      "exit_code": 0,
+      "timed_out": false,
+      "stdout_chars": 484,
+      "stderr_tail": "",
+      "final_message_chars": 152,
+      "parser_status": "json_direct",
+      "message_status": "ok",
+      "predicted_tool": "Read",
+      "predicted_preview": "{\"tool_name\": \"Read\", \"input\": {\"file_path\": \"handlers/auth.py\"}, \"reason\": \"Inspect the login function context before editing only its local logger import.\"}"
+    },
+    {
+      "id": "task_command_synthesis_001",
+      "category": "command_synthesis",
+      "difficulty": "easy",
+      "score": 0.0,
+      "verifier": {
+        "score": 0.0,
+        "tier": 1,
+        "signal": "regex_miss",
+        "details": {
+          "pattern": "ls.*/Users/satan/side/experiments/"
+        }
+      },
+      "elapsed_s": 13.438663244247437,
+      "exit_code": 0,
+      "timed_out": false,
+      "stdout_chars": 512,
+      "stderr_tail": "",
+      "final_message_chars": 184,
+      "parser_status": "json_direct",
+      "message_status": "ok",
+      "predicted_tool": "EnterPlanMode",
+      "predicted_preview": "{\"tool_name\": \"EnterPlanMode\", \"input\": {}, \"reason\": \"The request is broad and exploratory, so the best next step is to form a concrete plan before modifying files or launching analysis.\"}"
+    },
+    {
+      "id": "task_command_synthesis_003",
+      "category": "command_synthesis",
+      "difficulty": "easy",
+      "score": 0.0,
+      "verifier": {
+        "score": 0.0,
+        "tier": 1,
+        "signal": "regex_miss",
+        "details": {
+          "pattern": "find.*/Users/satan/\\.claude/projects"
+        }
+      },
+      "elapsed_s": 20.175457000732422,
+      "exit_code": 0,
+      "timed_out": false,
+      "stdout_chars": 1458,
+      "stderr_tail": "",
+      "final_message_chars": 1094,
+      "parser_status": "json_direct",
+      "message_status": "ok",
+      "predicted_tool": "functions.exec_command",
+      "predicted_preview": "{\"tool_name\": \"functions.exec_command\", \"input\": {\"cmd\": \"python3 - <<'PY'\\nimport json,re,os\\np=os.path.expanduser('~/.claude/projects/-Users-satan-side-experiments-supergemma-dflash-ddtree-mlx/cc405b87-4ce5-4ac5-bb3f-cb19d3a3b6d0.jsonl')\\"
+    },
+    {
+      "id": "task_command_synthesis_010",
+      "category": "command_synthesis",
+      "difficulty": "medium",
+      "score": 0.0,
+      "verifier": {
+        "score": 0.0,
+        "tier": 1,
+        "signal": "regex_miss",
+        "details": {
+          "pattern": "tail.*/Users/satan/side/experiments/"
+        }
+      },
+      "elapsed_s": 16.570960998535156,
+      "exit_code": 0,
+      "timed_out": false,
+      "stdout_chars": 646,
+      "stderr_tail": "",
+      "final_message_chars": 315,
+      "parser_status": "json_direct",
+      "message_status": "ok",
+      "predicted_tool": "Monitor",
+      "predicted_preview": "{\"tool_name\": \"Monitor\", \"input\": {\"command\": \"sed -n '1,240p' /Users/satan/side/experiments/supergemma-dflash-ddtree-mlx/bench/jobs/2026-05-01__23-11-16/polyglot-c-py__RdhqNty/agent/bag-stdout.log\"}, \"reason\": \"Inspecting the wrapper log i"
+    },
+    {
+      "id": "task_command_synthesis_011",
+      "category": "command_synthesis",
+      "difficulty": "hard",
+      "score": 0.0,
+      "verifier": {
+        "score": 0.0,
+        "tier": 1,
+        "signal": "regex_miss",
+        "details": {
+          "pattern": "pnpm.*\\-\\-noEmit"
+        }
+      },
+      "elapsed_s": 13.763962984085083,
+      "exit_code": 0,
+      "timed_out": false,
+      "stdout_chars": 529,
+      "stderr_tail": "",
+      "final_message_chars": 202,
+      "parser_status": "json_direct",
+      "message_status": "ok",
+      "predicted_tool": "EnterPlanMode",
+      "predicted_preview": "{\"tool_name\": \"EnterPlanMode\", \"input\": {}, \"reason\": \"The user is emphasizing contract-first coordination before parallel implementation, so the next step should be to plan and lock the shared interfaces.\"}"
+    },
+    {
+      "id": "task_debugging_001",
+      "category": "debugging",
+      "difficulty": "hard",
+      "score": 0.0,
+      "verifier": {
+        "score": 0.0,
+        "tier": 1,
+        "signal": "no_assertions_found",
+        "details": {
+          "pat": "must not repeat failing command verbatim",
+          "undecidable": 1
+        }
+      },
+      "elapsed_s": 16.889631986618042,
+      "exit_code": 0,
+      "timed_out": false,
+      "stdout_chars": 922,
+      "stderr_tail": "",
+      "final_message_chars": 572,
+      "parser_status": "json_direct",
+      "message_status": "ok",
+      "predicted_tool": "exec_command",
+      "predicted_preview": "{\"tool_name\": \"exec_command\", \"input\": {\"cmd\": \"npx fallow health --format json > tmp/fallow-health.json 2> tmp/fallow-health.err; status=$?; printf 'exit=%s\\\\n' \\\"$status\\\"; wc -c tmp/fallow-health.json tmp/fallow-health.err; sed -n '1,220"
+    },
+    {
+      "id": "task_debugging_003",
+      "category": "debugging",
+      "difficulty": "easy",
+      "score": 0.0,
+      "verifier": {
+        "score": 0.0,
+        "tier": 1,
+        "signal": "no_assertions_found",
+        "details": {
+          "pat": "must not repeat failing command verbatim",
+          "undecidable": 1
+        }
+      },
+      "elapsed_s": 14.592796802520752,
+      "exit_code": 0,
+      "timed_out": false,
+      "stdout_chars": 659,
+      "stderr_tail": "",
+      "final_message_chars": 323,
+      "parser_status": "json_direct",
+      "message_status": "ok",
+      "predicted_tool": "Bash",
+      "predicted_preview": "{\"tool_name\": \"Bash\", \"input\": {\"command\": \"cd /Users/satan/side/experiments/ir-multivector-retrieval && zig test src/io/token_dump.zig -Mroot=src/root.zig 2>&1 | tail -40\", \"description\": \"Retry token_dump test with Zig 0.16 module syntax\""
+    },
+    {
+      "id": "task_debugging_008",
+      "category": "debugging",
+      "difficulty": "medium",
+      "score": 0.0,
+      "verifier": {
+        "score": 0.0,
+        "tier": 1,
+        "signal": "no_assertions_found",
+        "details": {
+          "pat": "must not repeat failing command verbatim",
+          "undecidable": 1
+        }
+      },
+      "elapsed_s": 15.208208084106445,
+      "exit_code": 0,
+      "timed_out": false,
+      "stdout_chars": 577,
+      "stderr_tail": "",
+      "final_message_chars": 241,
+      "parser_status": "json_direct",
+      "message_status": "ok",
+      "predicted_tool": "RemoteTrigger",
+      "predicted_preview": "{\"tool_name\": \"RemoteTrigger\", \"input\": {\"command\": \"vp check --fix\", \"cwd\": \"/Users/satan/side/experiments/ir-expo\"}, \"reason\": \"The rename is done but the verifier reported only a formatting issue in app.json, so run the suggested formatt"
+    },
+    {
+      "id": "task_debugging_011",
+      "category": "debugging",
+      "difficulty": "easy",
+      "score": 0.0,
+      "verifier": {
+        "score": 0.0,
+        "tier": 1,
+        "signal": "no_assertions_found",
+        "details": {
+          "pat": "must not repeat failing command verbatim",
+          "undecidable": 1
+        }
+      },
+      "elapsed_s": 14.482953071594238,
+      "exit_code": 0,
+      "timed_out": false,
+      "stdout_chars": 551,
+      "stderr_tail": "",
+      "final_message_chars": 220,
+      "parser_status": "json_direct",
+      "message_status": "ok",
+      "predicted_tool": "Read",
+      "predicted_preview": "{\"tool_name\": \"Read\", \"input\": {\"file_path\": \"/Users/satan/side/experiments/ir-multivector-retrieval/build.zig\"}, \"reason\": \"Inspect the project\\u2019s Zig 0.16 module/test wiring instead of guessing unsupported --mod root flags.\"}"
+    },
+    {
+      "id": "task_edit_safety_002",
+      "category": "edit_safety",
+      "difficulty": "medium",
+      "score": 0.0,
+      "verifier": {
+        "score": 0.0,
+        "tier": 1,
+        "signal": "schema_fail",
+        "details": {
+          "sub": [
+            {
+              "k": "eq",
+              "ok": false
+            },
+            {
+              "k": "not_null",
+              "ok": false
+            }
+          ],
+          "undecidable": 0
+        }
+      },
+      "elapsed_s": 14.069164991378784,
+      "exit_code": 0,
+      "timed_out": false,
+      "stdout_chars": 543,
+      "stderr_tail": "",
+      "final_message_chars": 212,
+      "parser_status": "json_direct",
+      "message_status": "ok",
+      "predicted_tool": "EnterWorktree",
+      "predicted_preview": "{\"tool_name\": \"EnterWorktree\", \"input\": {\"path\": \"/Users/satan/side/experiments/ir-expo\"}, \"reason\": \"The work needs to inspect and edit the target repository before transforming data and committing relevant changes.\"}"
+    },
+    {
+      "id": "task_edit_safety_003",
+      "category": "edit_safety",
+      "difficulty": "medium",
+      "score": 0.0,
+      "verifier": {
+        "score": 0.0,
+        "tier": 1,
+        "signal": "schema_fail",
+        "details": {
+          "sub": [
+            {
+              "k": "eq",
+              "ok": false
+            },
+            {
+              "k": "not_null",
+              "ok": false
+            }
+          ],
+          "undecidable": 0
+        }
+      },
+      "elapsed_s": 33.50679016113281,
+      "exit_code": 0,
+      "timed_out": false,
+      "stdout_chars": 552,
+      "stderr_tail": "",
+      "final_message_chars": 218,
+      "parser_status": "json_direct",
+      "message_status": "ok",
+      "predicted_tool": "EnterWorktree",
+      "predicted_preview": "{\"tool_name\": \"EnterWorktree\", \"input\": {\"path\": \"/Users/satan/side/experiments/ir-expo\"}, \"reason\": \"The relevant edits and eventual commit belong in the ir-expo repository, so switch into that worktree before continuing.\"}"
+    },
+    {
+      "id": "task_edit_safety_007",
+      "category": "edit_safety",
+      "difficulty": "medium",
+      "score": 0.0,
+      "verifier": {
+        "score": 0.0,
+        "tier": 1,
+        "signal": "schema_fail",
+        "details": {
+          "sub": [
+            {
+              "k": "eq",
+              "ok": false
+            },
+            {
+              "k": "not_null",
+              "ok": false
+            }
+          ],
+          "undecidable": 0
+        }
+      },
+      "elapsed_s": 18.742673873901367,
+      "exit_code": 0,
+      "timed_out": false,
+      "stdout_chars": 516,
+      "stderr_tail": "",
+      "final_message_chars": 184,
+      "parser_status": "json_direct",
+      "message_status": "ok",
+      "predicted_tool": "mcp__expo-mcp__authenticate",
+      "predicted_preview": "{\"tool_name\": \"mcp__expo-mcp__authenticate\", \"input\": {\"account\": \"ai-omnipowerfuls\"}, \"reason\": \"Expo/EAS needs authenticated organization context before wiring the project to that owner.\"}"
+    },
+    {
+      "id": "task_path_grounding_002",
+      "category": "path_grounding",
+      "difficulty": "hard",
+      "score": 0.0,
+      "verifier": {
+        "score": 0.0,
+        "tier": 1,
+        "signal": "schema_fail",
+        "details": {
+          "sub": [
+            {
+              "k": "in",
+              "ok": false
+            }
+          ],
+          "undecidable": 0
+        }
+      },
+      "elapsed_s": 20.412984132766724,
+      "exit_code": 0,
+      "timed_out": false,
+      "stdout_chars": 1052,
+      "stderr_tail": "",
+      "final_message_chars": 706,
+      "parser_status": "json_direct",
+      "message_status": "ok",
+      "predicted_tool": "exec_command",
+      "predicted_preview": "{\"tool_name\": \"exec_command\", \"input\": {\"cmd\": \"rg -n \\\"PlatformConfig|Layer\\\\.|provide|provideService|merge|PlatformProjects|PlatformOrganizations|ProvisioningJobs\\\" libs/platform/provisioning/usecase/src/lib/platform-projects.test-helpers"
+    },
+    {
+      "id": "task_path_grounding_003",
+      "category": "path_grounding",
+      "difficulty": "hard",
+      "score": 0.0,
+      "verifier": {
+        "score": 0.0,
+        "tier": 1,
+        "signal": "schema_fail",
+        "details": {
+          "sub": [
+            {
+              "k": "in",
+              "ok": false
+            }
+          ],
+          "undecidable": 0
+        }
+      },
+      "elapsed_s": 18.581226110458374,
+      "exit_code": 0,
+      "timed_out": false,
+      "stdout_chars": 1041,
+      "stderr_tail": "",
+      "final_message_chars": 693,
+      "parser_status": "json_direct",
+      "message_status": "ok",
+      "predicted_tool": "exec_command",
+      "predicted_preview": "{\"tool_name\": \"exec_command\", \"input\": {\"cmd\": \"rg -n \\\"PlatformConfig|Layer\\\\.|provide|provideService|Context\\\\.Tag|Service not found|testLayer|Live\\\" libs/platform/provisioning/usecase/src/lib/platform-projects.test-helpers.ts libs/platfo"
+    },
+    {
+      "id": "task_path_grounding_006",
+      "category": "path_grounding",
+      "difficulty": "hard",
+      "score": 0.0,
+      "verifier": {
+        "score": 0.0,
+        "tier": 1,
+        "signal": "schema_fail",
+        "details": {
+          "sub": [
+            {
+              "k": "in",
+              "ok": false
+            }
+          ],
+          "undecidable": 0
+        }
+      },
+      "elapsed_s": 16.30466103553772,
+      "exit_code": 0,
+      "timed_out": false,
+      "stdout_chars": 1021,
+      "stderr_tail": "",
+      "final_message_chars": 676,
+      "parser_status": "json_direct",
+      "message_status": "ok",
+      "predicted_tool": "exec_command",
+      "predicted_preview": "{\"tool_name\": \"exec_command\", \"input\": {\"cmd\": \"rg -n \\\"PlatformConfig|Layer\\\\.|provide|provideService|platform.*config|Config\\\" libs/platform/provisioning/usecase/src/lib/platform-projects.test-helpers.ts libs/platform/provisioning/usecase"
+    },
+    {
+      "id": "task_path_grounding_007",
+      "category": "path_grounding",
+      "difficulty": "hard",
+      "score": 0.0,
+      "verifier": {
+        "score": 0.0,
+        "tier": 1,
+        "signal": "schema_fail",
+        "details": {
+          "sub": [
+            {
+              "k": "in",
+              "ok": false
+            }
+          ],
+          "undecidable": 0
+        }
+      },
+      "elapsed_s": 17.233162879943848,
+      "exit_code": 0,
+      "timed_out": false,
+      "stdout_chars": 836,
+      "stderr_tail": "",
+      "final_message_chars": 490,
+      "parser_status": "json_direct",
+      "message_status": "ok",
+      "predicted_tool": "exec_command",
+      "predicted_preview": "{\"tool_name\": \"exec_command\", \"input\": {\"cmd\": \"rg -n \\\"PlatformConfig|Layer\\\\.|provide|provideService|Platform.*Layer|Live\\\" libs/platform/provisioning/usecase/src/lib libs/platform/provisioning -g '*.ts'\", \"workdir\": \"/Users/satan/code/co"
+    },
+    {
+      "id": "task_planning_003",
+      "category": "planning",
+      "difficulty": "hard",
+      "score": 0.0,
+      "verifier": {
+        "score": 0.0,
+        "tier": 1,
+        "signal": "schema_fail",
+        "details": {
+          "sub": [
+            {
+              "k": "mention_n_of",
+              "ok": false
+            }
+          ],
+          "undecidable": 0
+        }
+      },
+      "elapsed_s": 17.41667628288269,
+      "exit_code": 0,
+      "timed_out": false,
+      "stdout_chars": 1017,
+      "stderr_tail": "",
+      "final_message_chars": 655,
+      "parser_status": "json_direct",
+      "message_status": "ok",
+      "predicted_tool": "TaskCreate",
+      "predicted_preview": "{\"tool_name\": \"TaskCreate\", \"input\": {\"todos\": [{\"content\": \"Inspect existing pages, components, and styling conventions to understand the current UI structure.\", \"status\": \"in_progress\"}, {\"content\": \"Define a focused visual direction that"
+    },
+    {
+      "id": "task_planning_010",
+      "category": "planning",
+      "difficulty": "medium",
+      "score": 0.0,
+      "verifier": {
+        "score": 0.0,
+        "tier": 1,
+        "signal": "schema_fail",
+        "details": {
+          "sub": [
+            {
+              "k": "mention_n_of",
+              "ok": false
+            }
+          ],
+          "undecidable": 0
+        }
+      },
+      "elapsed_s": 9.624092817306519,
+      "exit_code": 0,
+      "timed_out": false,
+      "stdout_chars": 550,
+      "stderr_tail": "",
+      "final_message_chars": 219,
+      "parser_status": "json_direct",
+      "message_status": "ok",
+      "predicted_tool": "Read",
+      "predicted_preview": "{\"tool_name\": \"Read\", \"input\": {\"file_path\": \"/Users/satan/side/experiments/ir-expo/.codex/plans/perf-08-ingest-all-projects.plan.md\"}, \"reason\": \"Read the task plan first to understand scope and constraints before editing.\"}"
+    },
+    {
+      "id": "task_planning_013",
+      "category": "planning",
+      "difficulty": "easy",
+      "score": 0.0,
+      "verifier": {
+        "score": 0.0,
+        "tier": 1,
+        "signal": "no_assertions_found",
+        "details": {
+          "pat": "plan must mention >= 2 of: ",
+          "undecidable": 1
+        }
+      },
+      "elapsed_s": 16.928996086120605,
+      "exit_code": 0,
+      "timed_out": false,
+      "stdout_chars": 1134,
+      "stderr_tail": "",
+      "final_message_chars": 781,
+      "parser_status": "json_direct",
+      "message_status": "ok",
+      "predicted_tool": "TaskCreate",
+      "predicted_preview": "{\"tool_name\": \"TaskCreate\", \"input\": {\"tasks\": [{\"title\": \"Inspect current workspace, PrismML fork/sample layout, and attached Android device state\"}, {\"title\": \"Clone or verify PrismML llama.cpp prism branch without using upstream ggml-org"
+    },
+    {
+      "id": "task_recovery_000",
+      "category": "recovery",
+      "difficulty": "hard",
+      "score": 0.0,
+      "verifier": {
+        "score": 0.0,
+        "tier": 1,
+        "signal": "schema_fail",
+        "details": {
+          "sub": [
+            {
+              "k": "eq",
+              "ok": false
+            }
+          ],
+          "undecidable": 0
+        }
+      },
+      "elapsed_s": 19.790146827697754,
+      "exit_code": 0,
+      "timed_out": false,
+      "stdout_chars": 717,
+      "stderr_tail": "",
+      "final_message_chars": 375,
+      "parser_status": "json_direct",
+      "message_status": "ok",
+      "predicted_tool": "Edit",
+      "predicted_preview": "{\"tool_name\": \"Edit\", \"input\": {\"file_path\": \"/Users/satan/side/experiments/ir-multivector-retrieval/benchmarks/microbench_vec.zig\", \"old_string\": \"var gpa: std.heap.GeneralPurposeAllocator(.{}) = .{};\", \"new_string\": \"var gpa: std.heap.Deb"
+    },
+    {
+      "id": "task_recovery_002",
+      "category": "recovery",
+      "difficulty": "medium",
+      "score": 0.0,
+      "verifier": {
+        "score": 0.0,
+        "tier": 1,
+        "signal": "schema_fail",
+        "details": {
+          "sub": [
+            {
+              "k": "eq",
+              "ok": false
+            }
+          ],
+          "undecidable": 0
+        }
+      },
+      "elapsed_s": 14.025761127471924,
+      "exit_code": 0,
+      "timed_out": false,
+      "stdout_chars": 506,
+      "stderr_tail": "",
+      "final_message_chars": 168,
+      "parser_status": "json_direct",
+      "message_status": "ok",
+      "predicted_tool": "TaskUpdate",
+      "predicted_preview": "{\"tool_name\": \"TaskUpdate\", \"input\": {\"task_id\": 12, \"owner\": \"atomic-write-engineer\", \"status\": \"in_progress\"}, \"reason\": \"Claim task 12 before reading or coding as requested.\"}"
+    },
+    {
+      "id": "task_recovery_010",
+      "category": "recovery",
+      "difficulty": "hard",
+      "score": 0.0,
+      "verifier": {
+        "score": 0.0,
+        "tier": 1,
+        "signal": "schema_fail",
+        "details": {
+          "sub": [
+            {
+              "k": "eq",
+              "ok": false
+            }
+          ],
+          "undecidable": 0
+        }
+      },
+      "elapsed_s": 12.044789791107178,
+      "exit_code": 0,
+      "timed_out": false,
+      "stdout_chars": 577,
+      "stderr_tail": "",
+      "final_message_chars": 243,
+      "parser_status": "json_direct",
+      "message_status": "ok",
+      "predicted_tool": "Read",
+      "predicted_preview": "{\"tool_name\": \"Read\", \"input\": {\"file_path\": \"/Users/satan/side/experiments/gepa-fresh/src/gepa/adapters/dspy_adapter/dspy_adapter.py\", \"limit\": 120}, \"reason\": \"Retry the failed read with the corrected /Users/satan path to inspect the DSPy"
+    },
+    {
+      "id": "task_recovery_011",
+      "category": "recovery",
+      "difficulty": "medium",
+      "score": 0.0,
+      "verifier": {
+        "score": 0.0,
+        "tier": 1,
+        "signal": "schema_fail",
+        "details": {
+          "sub": [
+            {
+              "k": "eq",
+              "ok": false
+            }
+          ],
+          "undecidable": 0
+        }
+      },
+      "elapsed_s": 14.614997148513794,
+      "exit_code": 0,
+      "timed_out": false,
+      "stdout_chars": 580,
+      "stderr_tail": "",
+      "final_message_chars": 247,
+      "parser_status": "json_direct",
+      "message_status": "ok",
+      "predicted_tool": "wait_agent",
+      "predicted_preview": "{\"tool_name\": \"wait_agent\", \"input\": {\"targets\": [\"<first_explorer_agent_id>\"], \"timeout_ms\": 60000}, \"reason\": \"The exact read-only investigation has already been delegated, so the next recovery step is to collect that focused result befor"
+    },
+    {
+      "id": "task_tool_routing_009",
+      "category": "tool_routing",
+      "difficulty": "medium",
+      "score": 0.0,
+      "verifier": {
+        "score": 0.0,
+        "tier": 1,
+        "signal": "schema_fail",
+        "details": {
+          "sub": [
+            {
+              "k": "eq",
+              "ok": false
+            }
+          ],
+          "undecidable": 0
+        }
+      },
+      "elapsed_s": 9.078452825546265,
+      "exit_code": 0,
+      "timed_out": false,
+      "stdout_chars": 499,
+      "stderr_tail": "",
+      "final_message_chars": 167,
+      "parser_status": "json_direct",
+      "message_status": "ok",
+      "predicted_tool": "EnterWorktree",
+      "predicted_preview": "{\"tool_name\": \"EnterWorktree\", \"input\": {\"path\": \"/Users/satan/side/experiments/ir-expo\"}, \"reason\": \"Enter the target repository before reading the plan and scoped files.\"}"
+    },
+    {
+      "id": "task_tool_routing_020",
+      "category": "tool_routing",
+      "difficulty": "hard",
+      "score": 0.0,
+      "verifier": {
+        "score": 0.0,
+        "tier": 1,
+        "signal": "schema_fail",
+        "details": {
+          "sub": [
+            {
+              "k": "eq",
+              "ok": false
+            }
+          ],
+          "undecidable": 0
+        }
+      },
+      "elapsed_s": 13.647099018096924,
+      "exit_code": 0,
+      "timed_out": false,
+      "stdout_chars": 544,
+      "stderr_tail": "",
+      "final_message_chars": 212,
+      "parser_status": "json_direct",
+      "message_status": "ok",
+      "predicted_tool": "EnterWorktree",
+      "predicted_preview": "{\"tool_name\": \"EnterWorktree\", \"input\": {\"path\": \"/Users/satan/side/experiments/ir-expo\"}, \"reason\": \"The next step is to continue the repository work: run the fixture transform, verify changes, then commit and push.\"}"
+    },
+    {
+      "id": "task_tool_routing_027",
+      "category": "tool_routing",
+      "difficulty": "hard",
+      "score": 0.0,
+      "verifier": {
+        "score": 0.0,
+        "tier": 1,
+        "signal": "schema_fail",
+        "details": {
+          "sub": [
+            {
+              "k": "eq",
+              "ok": false
+            }
+          ],
+          "undecidable": 0
+        }
+      },
+      "elapsed_s": 16.34954285621643,
+      "exit_code": 0,
+      "timed_out": false,
+      "stdout_chars": 539,
+      "stderr_tail": "",
+      "final_message_chars": 205,
+      "parser_status": "json_direct",
+      "message_status": "ok",
+      "predicted_tool": "EnterWorktree",
+      "predicted_preview": "{\"tool_name\": \"EnterWorktree\", \"input\": {\"path\": \"../ir-multivector-retrieval\", \"create\": true}, \"reason\": \"The next step is to create and switch into the separate experiment folder before implementation begins.\"}"
+    }
+  ]
+}
