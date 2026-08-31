@@ -1,7 +1,9 @@
 import { existsSync, lstatSync, readFileSync, readlinkSync } from "node:fs";
 import { basename, dirname, isAbsolute, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 
 const DISABLE_FLAG = "BAG_DISABLE_OPTIMIZED_PROMPT";
+const ENABLE_FLAG = "BAG_USE_OPTIMIZED_PROMPT";
 const ARTIFACT_REL = "artifacts/optimized-prompts/latest/best_candidate.json";
 
 const isDisabled = (): boolean => {
@@ -9,6 +11,13 @@ const isDisabled = (): boolean => {
   if (v == null) return false;
   const s = v.trim().toLowerCase();
   return s === "1" || s === "true";
+};
+
+const isEnabled = (): boolean => {
+  const v = process.env[ENABLE_FLAG];
+  if (v == null) return false;
+  const s = v.trim().toLowerCase();
+  return s === "1" || s === "true" || s === "yes" || s === "on";
 };
 
 const repoRootCandidates = (): string[] => {
@@ -20,7 +29,7 @@ const repoRootCandidates = (): string[] => {
   const cwd = process.cwd();
   // Module file lives under <repoRoot>/src/, so two levels up resolves the repo root
   // even when the process is launched from a sub-directory.
-  const here = resolve(dirname(new URL(import.meta.url).pathname), "..");
+  const here = resolve(dirname(fileURLToPath(import.meta.url)), "..");
   return [cwd, here];
 };
 
@@ -41,9 +50,10 @@ const resolveRunId = (latestPath: string): string => {
 };
 
 export const loadOptimizedExecutorPrompt = (): { system: string; runId: string } | null => {
-  // Default-on: load the optimised prompt whenever the artefact exists.
-  // Set BAG_DISABLE_OPTIMIZED_PROMPT=1 to opt out (emergency fallback to seed prompt).
-  if (isDisabled()) return null;
+  // Optimized prompts are an explicit promotion/runtime policy, not filesystem
+  // discovery. A rotated `latest` artifact only takes effect when the caller
+  // opts in; the disable flag remains an emergency override.
+  if (isDisabled() || !isEnabled()) return null;
   for (const root of repoRootCandidates()) {
     const file = isAbsolute(ARTIFACT_REL) ? ARTIFACT_REL : resolve(root, ARTIFACT_REL);
     if (!existsSync(file)) continue;

@@ -1,4 +1,5 @@
 .venv/
+.venv-gepa/
 __pycache__/
 *.py[cod]
 
@@ -13,6 +14,8 @@ htmlcov/
 # Notebook/editor/OS noise
 .ipynb_checkpoints/
 .DS_Store
+.cursor/*.out
+.oracle_probe.txt
 
 # Local runtime outputs and caches
 .cache/
@@ -23,7 +26,11 @@ tmp/
 *.log
 vendor/
 bench/vendor/
+bench/.venv/
+bench/jobs/
 bench/aider_polyglot/results/
+bench/ablation/results/
+bench/bag-runtime/node_modules/
 
 # trace-gepa: raw traces, derived RAG indexes, run intermediates
 trace-gepa/data/*.jsonl
@@ -31,6 +38,7 @@ trace-gepa/data/sanitised/
 trace-gepa/data/codex_session_models.json
 trace-gepa/artifacts/optimized-prompts/*/gepa_state/
 trace-gepa/artifacts/rag_index*
+trace-gepa/artifacts/anomaly_*.pkl
 trace-gepa/artifacts/real_smoke/
 trace-gepa/artifacts/lora_adapters/
 trace-gepa/.pytest_cache/
@@ -42,6 +50,13 @@ trace-gepa/.venv-gepa/
 !trace-gepa/artifacts/CLAUDE.generated.md
 !trace-gepa/artifacts/optimized-prompts/
 !trace-gepa/artifacts/optimized-prompts/**
+trace-gepa/artifacts/optimized-prompts/*/gepa_state/
+
+# Local agent orchestration state
+.codex/plan-graphs/
+.claude/worktrees/
+.claude/scheduled_tasks.lock
+docs/plans/
 
 # BleedingAgent TypeScript workspace
 node_modules/
@@ -53,3 +68,4 @@ dist/
 .env.*
 !.env.example
 bag.config.json
+.mcp.json

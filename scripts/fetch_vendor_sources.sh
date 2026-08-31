@@ -20,7 +20,7 @@ Clones/upgrades pinned upstream sources into local vendor/ directories.
 No global installs are performed.
 
 Options:
-  --component NAME     all | dflash | ddtree | turboquant-mlx | triattention (default: all)
+  --component NAME     all | dflash | ddtree | turboquant-mlx | triattention | paroquant (default: all)
   --vendor-dir PATH    Destination directory (default: ./vendor)
   --refresh            Always fetch latest remote metadata before checkout
   --skip-local-patches Do not apply local patches from ./patches
@@ -116,6 +116,7 @@ case "${COMPONENT}" in
     checkout_ref "ddtree" "${DDTREE_REPO_URL}" "${DDTREE_COMMIT}" "${VENDOR_DIR}/ddtree"
     checkout_ref "turboquant-mlx" "${TURBOQUANT_MLX_REPO_URL}" "${TURBOQUANT_MLX_COMMIT}" "${VENDOR_DIR}/turboquant-mlx"
     checkout_ref "triattention" "${TRIATTENTION_REPO_URL}" "${TRIATTENTION_COMMIT}" "${VENDOR_DIR}/triattention"
+    checkout_ref "paroquant" "${PAROQUANT_REPO_URL}" "${PAROQUANT_COMMIT}" "${VENDOR_DIR}/paroquant"
     ;;
   dflash)
     checkout_ref "dflash" "${DFLASH_REPO_URL}" "${DFLASH_COMMIT}" "${VENDOR_DIR}/dflash"
@@ -128,6 +129,9 @@ case "${COMPONENT}" in
     ;;
   triattention)
     checkout_ref "triattention" "${TRIATTENTION_REPO_URL}" "${TRIATTENTION_COMMIT}" "${VENDOR_DIR}/triattention"
+    ;;
+  paroquant)
+    checkout_ref "paroquant" "${PAROQUANT_REPO_URL}" "${PAROQUANT_COMMIT}" "${VENDOR_DIR}/paroquant"
     ;;
   *)
     echo "Unsupported component: ${COMPONENT}" >&2

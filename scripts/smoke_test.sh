@@ -65,6 +65,7 @@ required = {
 optional = {
     "ddtree": "DDTree",
     "dflash": "DFlash",
+    "paroquant": "ParoQuant",
 }
 strict_optional = os.environ.get("STRICT_OPTIONAL", "0") == "1"
 

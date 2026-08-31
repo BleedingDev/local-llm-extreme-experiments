@@ -109,6 +109,39 @@ Qwen experiments are documented and scripted separately from Gemma:
 - `scripts/run_qwen_turboquant_mlx.sh` (TurboQuant variants)
 - `scripts/run_qwen_ddtree_benchmark.sh` (DDTree benchmark/prototype path)
 
+DFlash MLX now also supports cache-optimization flags directly (passed after `--`):
+
+```bash
+# DFlash + KV quantized cache
+scripts/run_dflash_mlx_benchmark.sh \
+  --model jason-schulz/Carnice-9b-MLX \
+  --draft-model z-lab/Qwen3.5-9B-DFlash \
+  --max-samples 1 \
+  -- --max-new-tokens 16 --cache-optimization kv-quant --kv-bits 4 --kv-group-size 64 --quantized-kv-start 0
+
+# DFlash + TurboQuant cache
+scripts/run_dflash_mlx_benchmark.sh \
+  --model jason-schulz/Carnice-9b-MLX \
+  --draft-model z-lab/Qwen3.5-9B-DFlash \
+  --max-samples 1 \
+  -- --max-new-tokens 16 --cache-optimization turboquant --turboquant-strategy tqv2_4bit_lean --quantized-kv-start 0
+
+# Optional reproducibility pins
+scripts/run_dflash_mlx_benchmark.sh \
+  --model jason-schulz/Carnice-9b-MLX \
+  --model-revision <target_commit_or_tag> \
+  --draft-model z-lab/Qwen3.5-9B-DFlash \
+  --draft-revision <draft_commit_or_tag> \
+  --max-samples 3 \
+  -- --max-new-tokens 64
+```
+
+Focused Carnice max-throughput sweep:
+
+```bash
+scripts/run_carnice_dflash_max_tuning.sh --max-samples 3 --max-new-tokens 64
+```
+
 Primary Qwen reports:
 - `docs/qwen-tuning-report.md`
 - `docs/qwen-tuning-benchmarks.md`

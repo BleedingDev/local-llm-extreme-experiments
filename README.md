@@ -75,6 +75,7 @@ Qwen-specific docs:
 - `docs/qwen-turboquant-eval.md`
 - `docs/qwen-ddtree-eval.md`
 - `docs/qwen-optimization-report.md`
+- `docs/carnice-9b-eval.md` (Carnice 9B / Qwen 3.5 tool-focused run)
 
 ## Final benchmark outcomes (high-level)
 
@@ -138,6 +139,39 @@ scripts/run_dflash_mlx_benchmark.sh --dry-run
 scripts/run_qwen_mlx_kv_sweep.sh --help
 scripts/run_qwen_turboquant_mlx.sh --help
 scripts/run_qwen_ddtree_benchmark.sh --help
+scripts/run_carnice_dflash_max_tuning.sh --help
+```
+
+DFlash MLX cache-fusion examples:
+
+```bash
+# DFlash + KV quantized cache
+scripts/run_dflash_mlx_benchmark.sh \
+  --model jason-schulz/Carnice-9b-MLX \
+  --draft-model z-lab/Qwen3.5-9B-DFlash \
+  --max-samples 1 \
+  -- --max-new-tokens 16 --cache-optimization kv-quant --kv-bits 4 --kv-group-size 64 --quantized-kv-start 0
+
+# DFlash + TurboQuant cache
+scripts/run_dflash_mlx_benchmark.sh \
+  --model jason-schulz/Carnice-9b-MLX \
+  --draft-model z-lab/Qwen3.5-9B-DFlash \
+  --max-samples 1 \
+  -- --max-new-tokens 16 --cache-optimization turboquant --turboquant-strategy tqv2_4bit_lean --quantized-kv-start 0
+
+# Reproducible pinned revisions (target + draft)
+scripts/run_dflash_mlx_benchmark.sh \
+  --model jason-schulz/Carnice-9b-MLX \
+  --model-revision <target_commit_or_tag> \
+  --draft-model z-lab/Qwen3.5-9B-DFlash \
+  --draft-revision <draft_commit_or_tag> \
+  --max-samples 3 \
+  -- --max-new-tokens 64
+
+# Focused Carnice "max throughput" tuning sweep
+scripts/run_carnice_dflash_max_tuning.sh \
+  --max-samples 3 \
+  --max-new-tokens 64
 ```
 
 ## What exactly gets stored per run

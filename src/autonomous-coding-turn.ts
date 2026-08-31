@@ -51,14 +51,34 @@ import {
   type BashTraceTailEntry,
   SELF_CHECK_BASH_TAIL_MAX_CALLS,
 } from "./pre-submit-self-check";
+import { buildSystemPrompt as buildModularSystemPrompt } from "./prompts/loader";
+import { DEFAULT_PATH_PROFILE, type PathProfile } from "./types";
+import { loadHarnessGates, type HarnessGates } from "./harness-gates";
+import {
+  createEditStrategy,
+  type EditDispatchOutcome,
+  type EditStrategy,
+  type EditStrategyId,
+} from "./edit-strategies/registry";
 
 /**
- * Lazy-loaded failure cluster index. Auto-discovered patterns complement
- * the curated verifier-signature library — same retry-hint role but
- * data-driven from the BAG trial corpus.
+ * Lazy-loaded failure cluster index. Auto-discovered patterns are now the
+ * PRIMARY retry-hint source — the curated verifier-signature library
+ * remains as a soft-deprecated safety net (see
+ * `docs/bag-verifier-signature-retirement.md`).
  */
 let CACHED_FAILURE_CLUSTERS: FailureClustersDocument | null = null;
 let FAILURE_CLUSTERS_LOADED = false;
+/**
+ * Threshold for the trigram-Jaccard cluster matcher when invoked from the
+ * autonomous coding turn. Tuned 2026-05-02 against the 143-failure corpus —
+ * see `bench/.bag/optimizer/failure-clusters-config.json` and
+ * `tests/verifier-signature-vs-clusters-parity.test.ts`. Lower than the
+ * library default (0.45) so the cluster matcher is the primary signal,
+ * higher than 0.25 so a known spurious overlap (acp-internal-error vs
+ * FileNotFoundError cluster) doesn't pollute retry hints.
+ */
+const FAILURE_CLUSTER_MATCH_THRESHOLD = 0.3;
 const getFailureClusters = (): FailureClustersDocument | null => {
   if (FAILURE_CLUSTERS_LOADED) return CACHED_FAILURE_CLUSTERS;
   FAILURE_CLUSTERS_LOADED = true;
@@ -168,6 +188,24 @@ export type AutonomousTurnTraceEntry =
       source: "cluster" | "library" | "both" | "none";
       cluster_id?: string;
       library_id?: string;
+    }
+  | {
+      /**
+       * Emitted whenever the structured edit-strategy registry dispatches a
+       * tool call. Used by the edit-strategy study aggregator
+       * (`bench/edit_strategy_study/aggregate.py`) to compute the per-cell
+       * applied/match_failed/stale_context/syntax_error rate. Never emitted
+       * when `gates.editStrategy === "shell-heredoc"` because that strategy
+       * delegates to bash and has no structured dispatch.
+       */
+      kind: "edit_dispatch";
+      at: string;
+      strategy: EditStrategyId;
+      tool: string;
+      target: string;
+      outcome: EditDispatchOutcome;
+      bytes_changed: number;
+      retries_within_strategy: number;
     };
 
 export type AutonomousTurnResult = {
@@ -252,42 +290,48 @@ const DEFAULT_CONFIG: AutonomousTurnConfig = {
   maxAttemptRetries: 2,
 };
 
-export const SYSTEM_PROMPT_DEFAULT = `\
-You are BleedingAgent in autonomous coding mode. You have access to these tools: \`bash\`, \`view_image\`, \`code_search\`.
+/**
+ * Build the executor system prompt from a PathProfile.
+ *
+ * The prompt is now assembled from `src/prompts/principles.md` +
+ * `src/prompts/tactics/*.md` via `buildSystemPrompt()` so each forensic
+ * gate / clause is a separately-auditable file with YAML frontmatter
+ * (incident pointer, introduction date, review date, trigger). See
+ * `src/prompts/README.md` for the full design.
+ *
+ * `pathProfile` supplies three placeholder substitutions that the
+ * markdown sources reference:
+ *   - `${SCRATCH}`         — `pathProfile.scratchDirs[0]` (the cited scratch dir).
+ *   - `${PATH_JOINED}`     — `pathProfile.systemPathDirs.join(":")` (clean PATH for SUBPROCESS-PATH GATE).
+ *   - `${PERSIST_TARGET}`  — `pathProfile.systemPathDirs[0]` (where to install binaries system-wide).
+ *
+ * The default-profile output is byte-equivalent to the historical
+ * hard-coded string, modulo the trailing
+ * `[Tactics loaded: N — auditable in src/prompts/tactics/]` attestation
+ * footer the loader appends.
+ */
+export const buildExecutorSystemPrompt = (
+  pathProfile: PathProfile = DEFAULT_PATH_PROFILE,
+): string => {
+  const scratch = pathProfile.scratchDirs[0] ?? "/tmp";
+  const pathJoined = pathProfile.systemPathDirs.join(":");
+  const persistTarget = pathProfile.systemPathDirs[0] ?? "/usr/local/bin";
+  return buildModularSystemPrompt({
+    sentinel: SUBMIT_SENTINEL,
+    placeholders: {
+      SCRATCH: scratch,
+      PATH_JOINED: pathJoined,
+      PERSIST_TARGET: persistTarget,
+    },
+  });
+};
 
-Tool selection guide:
-- \`bash\` + \`rg\`: EXACT tokens, identifiers, error strings, file paths. Always your default for "find this literal string".
-- \`code_search\`: CONCEPTUAL questions ("where is auth middleware", "how is rate limiting handled", "where is the DAG cached"). Returns ranked file/line/symbol hits — read full bodies via \`bash\` once you have localized.
-- \`view_image\`: load an image into your visual context (only when verification depends on perceiving an image).
-Don't read large file bodies until you've localized via search.
-
-Workflow:
-1. Read the task carefully.
-2. Investigate the workspace via bash (\`ls\`, \`cat\`, \`grep\`, etc.) before editing.
-3. Reproduce the failure or required behaviour with a small bash check before making changes.
-4. Edit files using here-docs (\`cat <<'EOF' > path ... EOF\`), \`sed -i\`, \`printf >> path\`, etc.
-5. Test in /tmp (\`cp file /tmp/x && cd /tmp && gcc x ...\`) when you can — keeps the workspace clean for the verifier.
-6. Re-run any verification command the task implies.
-7. **Before submitting: \`ls -la\` the workspace and remove any compiled binaries, .o files, __pycache__, *.pyc, /tmp test artifacts, or other byproducts of testing that the verifier may not expect.** Verifiers frequently assert exact file lists; one stray binary == reward 0.
-   COMPILED-LANGUAGE GATE — when the task's deliverable is a SOURCE file but you compiled an executable to test it (gcc, g++, cc, clang, rustc, cargo build, go build, make, etc.), explicitly remove the compiled artifact (\`rm -f <binary>\`) before submitting. Verifiers that assert the deliverable directory contains an exact set of files reject any byproduct.
-   SCRATCH-DIR HYGIENE — anything you wrote under \`/tmp/\` (test scripts, log captures, build outputs, repro snippets, data dumps) MUST be removed before submitting unless the task explicitly placed a deliverable there. Today's verifier may not probe \`/tmp/\`, but tomorrow's clean-room verifier will. Run \`rm -rf /tmp/<your-paths>\` (or \`rm -rf /tmp/* 2>/dev/null || true\` if you do not own anything else under \`/tmp/\`) as part of your pre-submit pass.
-8. **CRITICAL — pre-submit final-check pass:** before \`echo ${SUBMIT_SENTINEL}\`, do these checks in one bash call (chained with \`&&\` or in a heredoc):
-   (a) Re-read the original task instruction line by line. Watch for plurals ("print **all** moves", "for **each** input"), edge cases ("if there are multiple X"), and END-TO-END flows ("then \`curl http://...\` should return Y").
-   (b) For end-to-end flows, **literally run the verification command from the task description** (e.g. \`curl -s http://localhost:8080/hello.html\` and inspect output, not just that the service is up).
-   (c) Confirm every output the task specified actually exists with the expected content (\`cat /app/move.txt\`, \`diff <expected> <actual>\`).
-   (d) **SUBPROCESS-PATH GATE** — when the task says a tool must be "in PATH" / "available system-wide" / "callable as \`X\`", the actual verifier runs in a fresh subprocess (typically \`subprocess.run(['X', ...])\` from Python) which has the DEFAULT system PATH (\`/usr/local/bin:/usr/bin:/bin\`) and does NOT inherit your shell's \`export PATH=\`, aliases, or virtualenv activation. Verify your fix from a clean shell: \`bash -c 'unset PATH; PATH=/usr/local/bin:/usr/bin:/bin command -v X'\` must succeed. If it doesn't, persist the binary system-wide via one of: \`ln -s /full/path/X /usr/local/bin/X\`, \`cp X /usr/local/bin/\`, \`pip install --user X\`, or place the binary in a directory already on default PATH. \`export PATH=\` alone is insufficient.
-   If any check disagrees, fix it BEFORE submitting. Do not submit on partial matches.
-9. When everything is verified end-to-end, run \`echo ${SUBMIT_SENTINEL}\` as the only command in a single bash call to submit.
-
-Hard rules:
-- Each bash call runs in a NEW subshell. cwd and env do NOT persist across calls. Always chain \`cd /workdir && ...\` if you need a directory.
-- Never run \`echo ${SUBMIT_SENTINEL}\` together with anything else; it must be the only command.
-- If a command's output is elided, do NOT keep retrying — narrow with \`head\`, \`tail\`, \`sed -n\`, or write to a temp file then read it.
-- Do not ask the user clarifying questions. Make a reasonable assumption and proceed; if you are blocked, write a short bash comment explaining and then submit.
-- Prefer small, observable steps; you can always run another command.
-
-Available tools: \`bash(command, timeout_sec?)\`, \`view_image(path)\`, \`code_search(query, top_k?, mode?, path_filter?, language_filter?)\`. Always include exactly one tool call per assistant turn.
-`;
+/**
+ * Backwards-compatible default executor system prompt. Internal callers that
+ * need to render for a different profile should call
+ * `buildExecutorSystemPrompt(profile)`.
+ */
+export const SYSTEM_PROMPT_DEFAULT = buildExecutorSystemPrompt(DEFAULT_PATH_PROFILE);
 
 const now = (): string => new Date().toISOString();
 
@@ -329,6 +373,12 @@ export const runAutonomousCodingTurn = async (input: {
   config?: Partial<AutonomousTurnConfig>;
   verifyAfterSubmit?: PostSubmitVerifier;
   /**
+   * Optional path-convention overrides flowed through to
+   * `runPreSubmitSelfCheck` (and any inner audit). When omitted the helper
+   * defaults to the Linux conventions baked into `BagConfigSchema.pathProfile`.
+   */
+  pathProfile?: PathProfile;
+  /**
    * Optional event hook invoked synchronously every time a trace entry is
    * appended. Used by `src/sdk/agent-session.ts` to stream live events to
    * external embedders (SDK consumers, RPC adapters) without forking the
@@ -337,16 +387,44 @@ export const runAutonomousCodingTurn = async (input: {
    * the `signal` parameter.
    */
   onTraceEntry?: (entry: AutonomousTurnTraceEntry) => void;
+  /**
+   * Optional harness-gate snapshot. When omitted, gates are read from the
+   * process env via `loadHarnessGates()`. Tests inject directly so they
+   * don't have to mutate `process.env`. Production callers rely on
+   * env-var resolution — the ablation harness sets BAG_MODE_BARE_ENV /
+   * BAG_MODE_MINIMAL_ENV before invoking.
+   */
+  gates?: HarnessGates;
 }): Promise<AutonomousTurnResult> => {
   const cfg: AutonomousTurnConfig = { ...DEFAULT_CONFIG, ...(input.config ?? {}) };
+  const gates: HarnessGates = input.gates ?? loadHarnessGates();
   const sentinel = cfg.submitSentinel ?? SUBMIT_SENTINEL;
   const optimized = loadOptimizedExecutorPrompt();
   const exec_system = optimized?.system ?? SYSTEM_PROMPT_DEFAULT;
   if (optimized) console.log(`[bag] using optimized executor prompt run=${optimized.runId}`);
-  const systemPrompt =
+  // Edit-strategy registry — when `gates.editStrategy !== "shell-heredoc"`
+  // the chosen strategy contributes additional tool definitions (e.g. `edit`,
+  // `apply_patch`, `fs_write_text_file`) that the model can call instead of
+  // shelling out via bash. The default strategy ships zero extra tools so
+  // existing BAG behaviour is byte-equivalent. See
+  // `src/edit-strategies/registry.ts` and `docs/bag-edit-strategy-study.md`.
+  const editStrategy: EditStrategy = createEditStrategy(gates.editStrategy);
+  const editStrategyToolDefs = editStrategy.toolDefinitions();
+  const editStrategyToolNames = new Set(
+    editStrategyToolDefs.map((def) => def.function.name),
+  );
+  const baseSystemPrompt =
     cfg.systemPromptOverride != null
       ? cfg.systemPromptOverride
       : exec_system.replace(/BAG_TASK_COMPLETE/g, sentinel);
+  // Append the strategy's tactic fragment ONLY when a non-default strategy is
+  // in play. shell-heredoc adds no tool surface and the existing executor
+  // prompt already explains shell-edit semantics, so we leave it untouched
+  // for the default path.
+  const systemPrompt =
+    gates.editStrategy === "shell-heredoc"
+      ? baseSystemPrompt
+      : `${baseSystemPrompt}\n\n${editStrategy.systemPromptFragment()}`;
   const trace: AutonomousTurnTraceEntry[] = [];
   const onTraceEntry = input.onTraceEntry;
   const pushTrace = (entry: AutonomousTurnTraceEntry): void => {
@@ -407,17 +485,22 @@ export const runAutonomousCodingTurn = async (input: {
   let stopReason: AutonomousTurnStopReason = "end_turn";
   let submittedOutput: string | null = null;
 
-  // Code-search tool gating: `BAG_CODE_SEARCH=0` removes the tool from the
-  // surface so the A/B harness can compare with-vs-without on the same model
-  // / task. Default = enabled (the tool is always REGISTERED; whether the
-  // backend binary is available is a separate runtime concern handled in
-  // executeCodeSearchTool below).
-  const codeSearchEnabled = process.env.BAG_CODE_SEARCH !== "0";
+  // Tool-surface gating: each tool can be removed independently via the
+  // matching `BAG_TOOL_*=0` env var (see src/harness-gates.ts). The A/B/C
+  // ablation harness uses BAG_MODE_BARE_ENV (gates off, multi-tool on) and
+  // BAG_MODE_MINIMAL_ENV (everything off) to enumerate the contribution of
+  // each gate / tool to BAG's pass rate per model tier. Defaults are ON so
+  // existing call sites are byte-equivalent.
+  const codeSearchEnabled = gates.codeSearch;
+  const viewImageEnabled = gates.viewImage;
   const codeSearchBackend: CodebaseSearchBackend =
     cfg.codeSearchBackend ?? colgrepBackend();
-  const tools: ChatWithToolsOptions["tools"] = codeSearchEnabled
-    ? [BASH_TOOL_DEFINITION, VIEW_IMAGE_TOOL_DEFINITION, CODE_SEARCH_TOOL_DEFINITION]
-    : [BASH_TOOL_DEFINITION, VIEW_IMAGE_TOOL_DEFINITION];
+  const tools: ChatWithToolsOptions["tools"] = [
+    BASH_TOOL_DEFINITION,
+    ...(viewImageEnabled ? [VIEW_IMAGE_TOOL_DEFINITION] : []),
+    ...(codeSearchEnabled ? [CODE_SEARCH_TOOL_DEFINITION] : []),
+    ...editStrategyToolDefs,
+  ];
   // Pending images queued by `view_image` tool calls — they get attached to
   // the NEXT outgoing user message as multimodal content blocks. See the
   // VIEW_IMAGE_TOOL_DEFINITION docstring for the rationale.
@@ -538,7 +621,11 @@ export const runAutonomousCodingTurn = async (input: {
     0,
     cfg.maxAttemptRetries ?? DEFAULT_CONFIG.maxAttemptRetries ?? 0,
   );
-  const totalAllowedAttempts = verifier ? 1 + maxAttemptRetries : 1;
+  // Gate: retry path disabled → cap attempts at 1 even with a verifier
+  // present. The verifier still runs (so we record pass/fail telemetry),
+  // but a failure ends the turn instead of injecting feedback + looping.
+  const effectiveMaxRetries = gates.retryPath ? maxAttemptRetries : 0;
+  const totalAllowedAttempts = verifier ? 1 + effectiveMaxRetries : 1;
 
   let attemptsUsed = 0;
   let attemptStart = {
@@ -622,6 +709,12 @@ export const runAutonomousCodingTurn = async (input: {
   // "gate ran and approved" (entry present, `complete: true`) from
   // "gate never reached on this attempt" (no entry).
   const runSelfCheckGate = async (): Promise<boolean> => {
+    // Gate: self-check disabled → accept the submission unconditionally.
+    // No trace entry is emitted (mirrors the "gate never reached" signal
+    // documented in the contract above; lift analyzers count cells with no
+    // pre_submit_self_check trace entry as "gate skipped"). The ablation
+    // harness uses this to isolate self-check's contribution per model tier.
+    if (!gates.selfCheck) return true;
     let result: { complete: boolean; missing: string[]; error?: string };
     let gateError: string | null = null;
     try {
@@ -629,6 +722,7 @@ export const runAutonomousCodingTurn = async (input: {
         router: input.router,
         instruction: instructionSummary.original,
         bashTraceTail: collectBashTraceTail(),
+        ...(input.pathProfile === undefined ? {} : { pathProfile: input.pathProfile }),
       });
     } catch (err) {
       // `runPreSubmitSelfCheck` already converts auditor-level errors
@@ -767,14 +861,22 @@ export const runAutonomousCodingTurn = async (input: {
         }
         const isCodeSearchCall =
           toolCall.name === CODE_SEARCH_TOOL_NAME && codeSearchEnabled;
+        const isViewImageCall =
+          toolCall.name === VIEW_IMAGE_TOOL_NAME && viewImageEnabled;
+        const isEditStrategyCall = editStrategyToolNames.has(toolCall.name);
         if (
           toolCall.name !== BASH_TOOL_NAME &&
-          toolCall.name !== VIEW_IMAGE_TOOL_NAME &&
-          !isCodeSearchCall
+          !isViewImageCall &&
+          !isCodeSearchCall &&
+          !isEditStrategyCall
         ) {
-          const known = codeSearchEnabled
-            ? `${BASH_TOOL_NAME}, ${VIEW_IMAGE_TOOL_NAME}, ${CODE_SEARCH_TOOL_NAME}`
-            : `${BASH_TOOL_NAME}, ${VIEW_IMAGE_TOOL_NAME}`;
+          const knownTools = [
+            BASH_TOOL_NAME,
+            ...(viewImageEnabled ? [VIEW_IMAGE_TOOL_NAME] : []),
+            ...(codeSearchEnabled ? [CODE_SEARCH_TOOL_NAME] : []),
+            ...editStrategyToolDefs.map((def) => def.function.name),
+          ];
+          const known = knownTools.join(", ");
           pushTrace({
             kind: "format_error",
             at: now(),
@@ -785,6 +887,69 @@ export const runAutonomousCodingTurn = async (input: {
             tool_call_id: toolCall.id,
             content: `error: unknown tool '${toolCall.name}'. Available tools: ${known}.`,
           });
+          continue;
+        }
+
+        if (isEditStrategyCall) {
+          let parsedArgs: unknown;
+          try {
+            parsedArgs = JSON.parse(toolCall.argumentsJson || "{}");
+          } catch (parseErr) {
+            const message = parseErr instanceof Error ? parseErr.message : String(parseErr);
+            pushTrace({
+              kind: "format_error",
+              at: now(),
+              reason: `${toolCall.name} arguments JSON parse failure: ${message}`,
+            });
+            messages.push({
+              role: "tool",
+              tool_call_id: toolCall.id,
+              content: `error: ${toolCall.name} arguments JSON parse failure: ${message}. Re-emit with valid JSON arguments.`,
+            });
+            continue;
+          }
+          pushTrace({
+            kind: "tool_call",
+            at: now(),
+            toolCallId: toolCall.id,
+            tool: toolCall.name,
+            argumentsJson: toolCall.argumentsJson,
+          });
+          toolCallsExecuted += 1;
+          try {
+            const editResult = await editStrategy.dispatch(toolCall.name, parsedArgs, {
+              cwd: input.cwd,
+              emit: (entry) => {
+                pushTrace({
+                  kind: "edit_dispatch",
+                  at: now(),
+                  strategy: entry.strategy,
+                  tool: entry.tool,
+                  target: entry.target,
+                  outcome: entry.outcome,
+                  bytes_changed: entry.bytesChanged,
+                  retries_within_strategy: entry.retriesWithinStrategy,
+                });
+              },
+            });
+            messages.push({
+              role: "tool",
+              tool_call_id: toolCall.id,
+              content: editResult.observation,
+            });
+          } catch (execError) {
+            const message = execError instanceof Error ? execError.message : String(execError);
+            pushTrace({
+              kind: "format_error",
+              at: now(),
+              reason: `${toolCall.name} dispatch failed: ${message}`,
+            });
+            messages.push({
+              role: "tool",
+              tool_call_id: toolCall.id,
+              content: `error: ${message}`,
+            });
+          }
           continue;
         }
 
@@ -1028,28 +1193,42 @@ export const runAutonomousCodingTurn = async (input: {
         break;
       }
       // Verifier failed. If retries remain AND we have turn budget, append
-      // feedback message and retry within the same conversation. Also try to
-      // match the verifier complaint against the curated VERIFIER_SIGNATURE_LIBRARY
-      // — if a known historical pattern matches, prepend its actionable fix
-      // hint so the model has prior-art guidance, not just the raw verifier
-      // output. This is the runtime hook for `docs/bag-failure-pattern-digest.md`.
+      // feedback message and retry within the same conversation. Match the
+      // verifier complaint against (1) the auto-discovered failure-cluster
+      // index PRIMARY, (2) the curated verifier-signature-library as a
+      // safety-net fallback. The clusters-first order reflects the
+      // retirement plan in `docs/bag-verifier-signature-retirement.md`:
+      // cluster matcher recall is now ≥5/8 vs the curated library, and we
+      // expect that gap to close as the BAG corpus grows. The curated
+      // library remains for: typecheck-missing-import (TS errors that the
+      // pytest-shaped corpus has no equivalent for), acp-internal-error
+      // (rare ACP crashes — corpus doesn't have enough volume yet), and
+      // the catchall (generic verifier-rejection nudge).
+      //
+      // Each retry emits a `retry_hint` trace entry with `source` so audit
+      // pipelines (bench/audit/...) can track library-vs-cluster hit rates;
+      // when library hit-rate drops below 5% over 30 BAG runs, retire.
       const retriesRemaining = totalAllowedAttempts - attemptsUsed;
       if (retriesRemaining > 0 && turnsUsed < cfg.maxTurns && !input.signal?.aborted) {
         const exitCodeStr = verifierResult.exitCode == null ? "n/a" : String(verifierResult.exitCode);
         const taskNameSnippet: string = input.task.split("\n")[0]?.slice(0, 80) ?? "";
+        // PRIMARY: auto-discovered failure clusters (data-driven, retirement target).
+        // Gate: clusterMatcher disabled → skip cluster lookup entirely; the
+        // curated verifier-signature-library still has a chance to fire below.
+        const clustersDoc = gates.clusterMatcher ? getFailureClusters() : null;
+        const matchedCluster = clustersDoc
+          ? matchClusterByVerifierOutput(
+              clustersDoc,
+              verifierResult.output,
+              FAILURE_CLUSTER_MATCH_THRESHOLD,
+            )
+          : null;
+        // FALLBACK: curated library (soft-deprecated, kept as safety net).
         const matchedSignature = matchVerifierSignature({
           taskName: taskNameSnippet,
           verifierOutput: verifierResult.output,
         });
-        const clustersDoc = getFailureClusters();
-        const matchedCluster = clustersDoc
-          ? matchClusterByVerifierOutput(clustersDoc, verifierResult.output)
-          : null;
         const messageLines: string[] = [];
-        if (matchedSignature !== null) {
-          messageLines.push(renderHintForRetry(matchedSignature));
-          messageLines.push("");
-        }
         if (matchedCluster !== null) {
           messageLines.push(
             [
@@ -1061,6 +1240,30 @@ export const runAutonomousCodingTurn = async (input: {
           );
           messageLines.push("");
         }
+        if (matchedSignature !== null) {
+          messageLines.push(renderHintForRetry(matchedSignature));
+          messageLines.push("");
+        }
+        // Telemetry: which retry-hint source fired? Used by the retirement
+        // audit (when `library` < 5% of fires across 30 runs, delete the
+        // curated library).
+        const hintSource: "cluster" | "library" | "both" | "none" =
+          matchedCluster !== null && matchedSignature !== null
+            ? "both"
+            : matchedCluster !== null
+              ? "cluster"
+              : matchedSignature !== null
+                ? "library"
+                : "none";
+        const hintEntry: AutonomousTurnTraceEntry = {
+          kind: "retry_hint",
+          at: now(),
+          attempt: attemptsUsed,
+          source: hintSource,
+          ...(matchedCluster !== null ? { cluster_id: matchedCluster.id } : {}),
+          ...(matchedSignature !== null ? { library_id: matchedSignature.id } : {}),
+        };
+        pushTrace(hintEntry);
         messageLines.push(
           `The submitted solution failed verification. Verifier output:`,
           verifierResult.output,

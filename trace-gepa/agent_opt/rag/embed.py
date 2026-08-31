@@ -14,9 +14,6 @@ import pickle
 from pathlib import Path
 from typing import Iterator
 
-from scipy import sparse
-from sklearn.feature_extraction.text import TfidfVectorizer
-
 
 _ORCH_PREFIXES = (
     "<teammate-message",
@@ -37,6 +34,17 @@ def _action_to_text(act) -> str:
     if isinstance(inp, dict):
         return f"{name}({json.dumps(inp)[:240]})"
     return name or json.dumps(act)[:200]
+
+
+def build_query_text(rec: dict, last_k: int = 2) -> str:
+    ctx = rec.get("context") or {}
+    user_request = (ctx.get("user_request") or "")[:1500]
+    actions = ctx.get("recent_actions") or []
+    if not isinstance(actions, list):
+        actions = []
+    actions_text = " | ".join(_action_to_text(a) for a in actions[-last_k:])
+    text = "\n".join(p for p in (user_request, actions_text) if p)
+    return text or "(empty)"
 
 
 def _record_text(rec: dict, last_k: int = 3) -> str:
@@ -90,6 +98,17 @@ def _iter_records(paths: list[str], limit: int | None, drop_orchestration: bool)
                     return
 
 
+def _load_index_deps():
+    try:
+        from scipy import sparse
+        from sklearn.feature_extraction.text import TfidfVectorizer
+    except ModuleNotFoundError as exc:
+        raise ModuleNotFoundError(
+            "trace RAG indexing requires scipy and scikit-learn; install them to run build_index"
+        ) from exc
+    return sparse, TfidfVectorizer
+
+
 def build_index(
     dataset_paths: list[str],
     output_dir: str,
@@ -100,6 +119,8 @@ def build_index(
     ngram_range: tuple = (1, 2),
     max_features: int = 50000,
 ) -> dict:
+    sparse, TfidfVectorizer = _load_index_deps()
+
     out = Path(output_dir)
     out.mkdir(parents=True, exist_ok=True)
 

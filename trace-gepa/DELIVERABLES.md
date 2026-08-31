@@ -62,14 +62,30 @@ which is itself one commit ahead of the original `e65b388` "Initial local coding
 benchmark extraction"). Tag `pre-quality-refactor` pushed to origin. Branch
 `benchmark-quality-refactor` deleted from origin (merged).
 
-**Real measurable numbers on this benchmark (commit `2a4a784`):**
+**Real measurable cross-model + per-cat-prompt leaderboard on bench/main:**
 
-- `reports/opus-action-real-smoke-30.jsonl`: claude-opus-4-7 on first 30 (hard-skewed) tasks: pass@1 = 2/30 (6.7%) — initial smoke, hard slice.
-- `reports/opus-action-full-175.jsonl`: claude-opus-4-7 on all 175 stratified tasks: **pass@1 = 53/175 (30.3%), mean_check_score = 0.306**.
+| run | model | prompt | pass@1 | mean | bench-commit |
+|---|---|---|---|---|---|
+| baseline | claude-opus-4-7 | built-in | 53/175 (30.3%) | 0.306 | 2a4a784 |
+| baseline | gpt-5.5 (high) | built-in | 42/175 (24.0%) | 0.240 | 73cda09 |
+| bash-bias v1 (regressed) | claude-opus-4-7 | bash-biased global | 46/175 (26.3%) | 0.263 | 682993d |
+| per-cat v1 | claude-opus-4-7 | 8 category prompts | 67/175 (38.3%) | 0.386 | c346a5b |
+| **per-cat v2** (planning fix) | **claude-opus-4-7** | **8 prompts (v2)** | **72/175 (41.1%)** | **0.417** | **9a4733b** |
 
-**Bench port is FAITHFUL.** Trace-gepa internal eval on the identical 175 tasks (`bench/results/results_final_opus.json`) was 0.291; bench port reads 0.306 — Δ = +0.015, well within run-to-run variance. End-to-end chain validated: same task corpus, same verifier semantics, same model behaviour.
+**Iteration arc:** calibration scorecard → diagnosed Bash under-picking → naive global Bash-bias regressed (-4.6pp) → per-category routing (8 prompts) +8.0pp but broke planning → inverted planning prompt → +11.4pp absolute / +36% relative over baseline.
 
-Manifest sidecars carry suite_hash 2377a55a, host, git, sampling, endpoint probe per the audit-grade convention introduced by `benchmark-quality-refactor`.
+**Per-category lift (baseline → per-cat v2):**
+- path_grounding: 8% → 50% (+41.7pp) — biggest single win
+- edit_safety: 47% → 58% (+10.5pp)
+- planning: 11% → 21% (+10.5pp) — recovered from v1 regression
+- recovery: 42% → 53% (+10.5pp)
+- tool_routing: 18% → 23% (+5.1pp)
+- debugging: 85% (saturated)
+- command_synthesis: 0% (still pathological, needs different intervention)
+
+**Bench port is FAITHFUL.** Trace-gepa internal eval on identical 175 tasks (`bench/results/results_final_opus.json`) was 0.291; bench port reads 0.306 — Δ = +0.015, well within run-to-run variance.
+
+Manifest sidecars carry suite_hash 2377a55a per the audit-grade convention. The `--system-prompt-file` and `--system-prompt-set` CLI flags are the durable infrastructure additions enabling cheap A/B prompt iteration without forking the script.
 
 ## 3. Per-deliverable inventory
 

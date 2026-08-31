@@ -7,6 +7,8 @@ ROOT_DIR="$(cd "${SCRIPT_DIR}/.." && pwd)"
 VENV_DIR="${ROOT_DIR}/.venv"
 MODEL="${DFLASH_MODEL:-Qwen/Qwen3.5-4B}"
 DRAFT_MODEL="${DFLASH_DRAFT_MODEL:-z-lab/Qwen3.5-4B-DFlash}"
+MODEL_REVISION="${DFLASH_MODEL_REVISION:-}"
+DRAFT_REVISION="${DFLASH_DRAFT_REVISION:-}"
 DATASET="${DFLASH_DATASET:-gsm8k}"
 MAX_SAMPLES="${DFLASH_MAX_SAMPLES:-16}"
 DRY_RUN=0
@@ -23,6 +25,8 @@ Options:
   --venv-path PATH      Override venv path (default: ./.venv)
   --model NAME          Target model (default: Qwen/Qwen3.5-4B)
   --draft-model NAME    DFlash draft model (default: z-lab/Qwen3.5-4B-DFlash)
+  --model-revision REF  Optional target model revision (HF commit/tag)
+  --draft-revision REF  Optional draft model revision (HF commit/tag)
   --dataset NAME        Dataset name (default: gsm8k)
   --max-samples N       Sample limit (default: 16)
   --dry-run             Print command and exit
@@ -32,6 +36,14 @@ TriAttention merge mode:
   Pass TriAttention flags after --, for example:
     -- --triattention-enable --triattention-kv-budget 2048 --triattention-divide-length 8
   Requires vendor/triattention (run: scripts/fetch_vendor_sources.sh --component triattention).
+
+Cache fusion mode (DFlash + cache optimization):
+  KV quantized cache:
+    -- --cache-optimization kv-quant --kv-bits 4 --kv-group-size 64 --quantized-kv-start 0
+  TurboQuant cache:
+    -- --cache-optimization turboquant --turboquant-strategy tqv2_4bit_lean --quantized-kv-start 0
+  Optional shared KV cap:
+    -- --max-kv-size 32768
 USAGE
 }
 
@@ -50,6 +62,16 @@ while [[ $# -gt 0 ]]; do
     --draft-model)
       [[ $# -lt 2 ]] && { echo "Missing value for --draft-model" >&2; exit 1; }
       DRAFT_MODEL="$2"
+      shift 2
+      ;;
+    --model-revision)
+      [[ $# -lt 2 ]] && { echo "Missing value for --model-revision" >&2; exit 1; }
+      MODEL_REVISION="$2"
+      shift 2
+      ;;
+    --draft-revision)
+      [[ $# -lt 2 ]] && { echo "Missing value for --draft-revision" >&2; exit 1; }
+      DRAFT_REVISION="$2"
       shift 2
       ;;
     --dataset)
@@ -97,6 +119,12 @@ cmd=(
   --dataset "${DATASET}"
   --max-samples "${MAX_SAMPLES}"
 )
+if [[ -n "${MODEL_REVISION}" ]]; then
+  cmd+=(--model-revision "${MODEL_REVISION}")
+fi
+if [[ -n "${DRAFT_REVISION}" ]]; then
+  cmd+=(--draft-revision "${DRAFT_REVISION}")
+fi
 cmd+=("${EXTRA_ARGS[@]}")
 
 if [[ "${DRY_RUN}" -eq 1 ]]; then

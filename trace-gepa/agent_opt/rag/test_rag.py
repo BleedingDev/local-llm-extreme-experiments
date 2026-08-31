@@ -1,15 +1,12 @@
 """Minimal tests for trace-rag.
 
-Tests build_query_text deterministically (no model load) and a tiny end-to-end
-build+query cycle when sentence-transformers is available.
+Tests build_query_text deterministically and a tiny end-to-end TF-IDF
+build+query cycle when the local indexing dependencies are available.
 """
 
 from __future__ import annotations
 
 import json
-import os
-import tempfile
-from pathlib import Path
 
 import pytest
 
@@ -42,10 +39,8 @@ def test_build_query_text_empty():
 
 
 def test_build_and_query_smoke(tmp_path):
-    try:
-        import sentence_transformers  # noqa: F401
-    except Exception:
-        pytest.skip("sentence-transformers not installed")
+    pytest.importorskip("scipy")
+    pytest.importorskip("sklearn")
 
     ds = tmp_path / "tiny.jsonl"
     rows = [
@@ -58,10 +53,11 @@ def test_build_and_query_smoke(tmp_path):
             fh.write(json.dumps(r) + "\n")
 
     out = tmp_path / "idx"
-    info = embed.build_index([str(ds)], str(out))
+    info = embed.build_index([str(ds)], str(out), min_df=1)
     assert info["n_records"] == 3
-    assert info["dim"] > 0
-    assert (out / "embeddings.npz").exists()
+    assert info["vocab_size"] > 0
+    assert (out / "tfidf_matrix.npz").exists()
+    assert (out / "vectorizer.pkl").exists()
     assert (out / "metadata.jsonl").exists()
 
     from .index import TraceIndex
@@ -69,4 +65,4 @@ def test_build_and_query_smoke(tmp_path):
     hits = idx.query("typescript test files", k=3)
     assert len(hits) == 3
     # First hit should be the typescript record.
-    assert hits[0]["record"]["id"] == "r1"
+    assert hits[0]["id"] == "r1"

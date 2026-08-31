@@ -4,25 +4,44 @@
  * its JSON stdout. Designed to be called from BAG's planner/executor when the
  * model is uncertain and wants past similar contexts.
  *
- * Repo-relative paths are auto-resolved via env vars set in .mcp.json or
- * via reasonable defaults.
+ * Lookup is disabled unless BAG_USE_TRACE_RAG is explicitly enabled.
+ * Repo-relative paths are auto-resolved via env vars or reasonable defaults.
  */
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
 import * as path from "node:path";
+import { fileURLToPath } from "node:url";
 
 const execFileAsync = promisify(execFile);
 
-const REPO_ROOT =
-  process.env.BAG_REPO_ROOT ||
-  path.resolve(__dirname, "..");
-const PY_BIN =
-  process.env.TRACE_RAG_PY ||
-  path.join(REPO_ROOT, ".venv-gepa", "bin", "python");
-const TRACE_GEPA = path.join(REPO_ROOT, "trace-gepa");
-const INDEX_DIR =
-  process.env.TRACE_RAG_INDEX_DIR ||
-  path.join(TRACE_GEPA, "artifacts", "rag_index_v2");
+const USE_TRACE_RAG_FLAG = "BAG_USE_TRACE_RAG";
+
+const isEnabled = (value: string | undefined): boolean => {
+  if (value == null) return false;
+  const normalized = value.trim().toLowerCase();
+  return (
+    normalized === "1" ||
+    normalized === "true" ||
+    normalized === "yes" ||
+    normalized === "on"
+  );
+};
+
+const isTraceRagEnabled = (): boolean => isEnabled(process.env[USE_TRACE_RAG_FLAG]);
+
+const repoRoot = (): string => {
+  const fromEnv = process.env.BAG_REPO_ROOT;
+  if (fromEnv != null && fromEnv.length > 0) return fromEnv;
+  return path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+};
+
+const traceGepaDir = (): string => path.join(repoRoot(), "trace-gepa");
+
+const pyBin = (): string =>
+  process.env.TRACE_RAG_PY || path.join(repoRoot(), ".venv-gepa", "bin", "python");
+
+const indexDir = (): string =>
+  process.env.TRACE_RAG_INDEX_DIR || path.join(traceGepaDir(), "artifacts", "rag_index_v2");
 
 export interface TraceRagHit {
   rank: number;
@@ -47,12 +66,13 @@ export async function lookupSimilarSituation(
   opts: LookupOptions = {},
 ): Promise<TraceRagHit[]> {
   if (!query || !query.trim()) return [];
+  if (!isTraceRagEnabled()) return [];
   const k = Math.max(1, Math.min(opts.k ?? 5, 20));
   const timeoutMs = opts.timeoutMs ?? 8000;
 
   try {
     const { stdout } = await execFileAsync(
-      PY_BIN,
+      pyBin(),
       [
         "-m",
         "agent_opt.rag.cli",
@@ -61,11 +81,11 @@ export async function lookupSimilarSituation(
         "--k",
         String(k),
         "--index-dir",
-        INDEX_DIR,
+        indexDir(),
       ],
       {
-        cwd: TRACE_GEPA,
-        env: { ...process.env, PYTHONPATH: TRACE_GEPA },
+        cwd: traceGepaDir(),
+        env: { ...process.env, PYTHONPATH: traceGepaDir() },
         timeout: timeoutMs,
         maxBuffer: 8 * 1024 * 1024,
       },

@@ -1,5 +1,5 @@
 diff --git a/dflash/benchmark.py b/dflash/benchmark.py
-index 7845a5a..5f18db2 100644
+index a273e50..dc74bb9 100644
 --- a/dflash/benchmark.py
 +++ b/dflash/benchmark.py
 @@ -109,11 +109,22 @@ def _apply_chat_template(tokenizer, messages: list[dict], enable_thinking: bool)
@@ -47,9 +47,34 @@ index 7845a5a..5f18db2 100644
      mean_accept = np.mean([np.mean(r[block_size].acceptance_lengths) for r in responses])
      print(f"Average Acceptance length: {mean_accept:.2f}")
  
-@@ -339,13 +364,22 @@ def _run_mlx(args: argparse.Namespace) -> None:
-     logger.info(f"Loading draft: {args.draft_model}")
-     draft = load_draft(args.draft_model)
+@@ -333,19 +358,64 @@ def _run_mlx(args: argparse.Namespace) -> None:
+     from .model_mlx import load, load_draft, stream_generate
+ 
+     sampler = make_sampler(temp=args.temperature)
++    baseline_kwargs: dict[str, Any] = {"sampler": sampler}
++    if args.max_kv_size is not None:
++        baseline_kwargs["max_kv_size"] = args.max_kv_size
++    if args.cache_optimization == "kv-quant":
++        baseline_kwargs.update(
++            kv_bits=args.kv_bits,
++            kv_group_size=args.kv_group_size,
++            quantized_kv_start=args.quantized_kv_start,
++        )
+ 
+-    logger.info(f"Loading target: {args.model}")
+-    model, tokenizer = load(args.model)
+-    logger.info(f"Loading draft: {args.draft_model}")
+-    draft = load_draft(args.draft_model, sliding_window_size=args.draft_sliding_window_size)
++    target_ref = f"{args.model}@{args.model_revision}" if args.model_revision else args.model
++    draft_ref = f"{args.draft_model}@{args.draft_revision}" if args.draft_revision else args.draft_model
++    logger.info(f"Loading target: {target_ref}")
++    model, tokenizer = load(args.model, revision=args.model_revision)
++    logger.info(f"Loading draft: {draft_ref}")
++    draft = load_draft(
++        args.draft_model,
++        revision=args.draft_revision,
++        sliding_window_size=args.draft_sliding_window_size,
++    )
      block_size = args.block_size if args.block_size is not None else int(draft.config.block_size)
 +    triattention_kwargs = {
 +        "triattention_enable": args.triattention_enable,
@@ -60,24 +85,47 @@ index 7845a5a..5f18db2 100644
 +        "triattention_disable_trig": args.triattention_disable_trig,
 +        "triattention_disable_mlr": args.triattention_disable_mlr,
 +    }
++    dflash_cache_kwargs = {
++        "max_kv_size": args.max_kv_size,
++        "prefill_chunk_size": args.prefill_chunk_size,
++        "cache_optimization": args.cache_optimization,
++        "kv_bits": args.kv_bits,
++        "kv_group_size": args.kv_group_size,
++        "quantized_kv_start": args.quantized_kv_start,
++        "turboquant_strategy": args.turboquant_strategy,
++        "turboquant_seed": args.turboquant_seed,
++    }
  
      dataset = load_and_process_dataset(args.dataset)
      dataset = _limit_dataset(dataset, args.max_samples)
  
      warmup_prompt = tokenizer.encode("Hi")
-     list(stream_generate_baseline(model, tokenizer, warmup_prompt, 3, sampler=sampler))
+-    list(stream_generate_baseline(model, tokenizer, warmup_prompt, 3, sampler=sampler))
 -    list(stream_generate(model, draft, tokenizer, warmup_prompt, block_size, 3, sampler=sampler))
-+    list(stream_generate(model, draft, tokenizer, warmup_prompt, block_size, 3, sampler=sampler, **triattention_kwargs))
++    for _ in range(args.warmup_passes):
++        list(stream_generate_baseline(model, tokenizer, warmup_prompt, args.warmup_tokens, **baseline_kwargs))
++        list(stream_generate(
++            model,
++            draft,
++            tokenizer,
++            warmup_prompt,
++            block_size,
++            args.warmup_tokens,
++            sampler=sampler,
++            **triattention_kwargs,
++            **dflash_cache_kwargs,
++        ))
  
      responses = []
      for idx in tqdm(range(len(dataset))):
-@@ -357,18 +391,41 @@ def _run_mlx(args: argparse.Namespace) -> None:
+@@ -357,18 +427,42 @@ def _run_mlx(args: argparse.Namespace) -> None:
  
              response = {}
  
 -            tokens_bl, tps_bl = [], 0
+-            for r in stream_generate_baseline(model, tokenizer, prompt, args.max_new_tokens, sampler=sampler):
 +            tokens_bl, tps_bl, peak_bl = [], 0, None
-             for r in stream_generate_baseline(model, tokenizer, prompt, args.max_new_tokens, sampler=sampler):
++            for r in stream_generate_baseline(model, tokenizer, prompt, args.max_new_tokens, **baseline_kwargs):
                  tokens_bl.append(r.token)
                  tps_bl = r.generation_tps
 -            response[1] = _make_decode_metrics(len(tokens_bl), tps_bl, [1])
@@ -99,6 +147,7 @@ index 7845a5a..5f18db2 100644
 +                args.max_new_tokens,
 +                sampler=sampler,
 +                **triattention_kwargs,
++                **dflash_cache_kwargs,
 +            ):
                  tokens_df.extend(r.tokens)
                  accs.append(r.accepted)
@@ -118,7 +167,26 @@ index 7845a5a..5f18db2 100644
  
              output_text = tokenizer.decode(tokens_df)
              messages.append({"role": "assistant", "content": output_text})
-@@ -496,6 +553,13 @@ def main() -> None:
+@@ -481,14 +575,18 @@ def main() -> None:
+     parser = argparse.ArgumentParser(description="DFlash benchmark")
+     parser.add_argument("--backend", choices=["transformers", "sglang", "vllm", "mlx"], required=True)
+     parser.add_argument("--model", type=str, required=True)
++    parser.add_argument("--model-revision", type=str, default=None)
+     parser.add_argument("--dataset", type=str, required=True)
+     parser.add_argument("--max-new-tokens", type=int, default=2048)
+     parser.add_argument("--temperature", type=float, default=0.0)
+ 
+     parser.add_argument("--draft-model", type=str, default=None)
++    parser.add_argument("--draft-revision", type=str, default=None)
+     parser.add_argument("--block-size", type=int, default=None)
+     parser.add_argument("--draft-sliding-window-size", type=int, default=None)
+     parser.add_argument("--max-samples", type=int, default=None)
++    parser.add_argument("--warmup-passes", type=int, default=1)
++    parser.add_argument("--warmup-tokens", type=int, default=3)
+ 
+     parser.add_argument("--base-url", type=str, default="http://127.0.0.1:30000")
+     parser.add_argument("--num-prompts", type=int, default=1024)
+@@ -497,6 +595,36 @@ def main() -> None:
      parser.add_argument("--top-k", type=int, default=1)
      parser.add_argument("--enable-thinking", action="store_true")
      parser.add_argument("--timeout-s", type=int, default=3600)
@@ -129,23 +197,116 @@ index 7845a5a..5f18db2 100644
 +    parser.add_argument("--triattention-prefill-pin", action="store_true")
 +    parser.add_argument("--triattention-disable-trig", action="store_true")
 +    parser.add_argument("--triattention-disable-mlr", action="store_true")
++    parser.add_argument("--max-kv-size", type=int, default=None)
++    parser.add_argument("--prefill-chunk-size", type=int, default=512)
++    parser.add_argument(
++        "--cache-optimization",
++        choices=["none", "kv-quant", "turboquant"],
++        default="none",
++    )
++    parser.add_argument("--kv-bits", type=int, default=4)
++    parser.add_argument("--kv-group-size", type=int, default=64)
++    parser.add_argument("--quantized-kv-start", type=int, default=0)
++    parser.add_argument(
++        "--turboquant-strategy",
++        type=str,
++        choices=[
++            "tqv2_4bit_lean",
++            "tqv2_4bit_rot",
++            "tqv2_3bit_rot_qjl",
++            "tqv3_3.5bit_mixed",
++            "tqv3_3bit",
++        ],
++        default="tqv2_4bit_lean",
++    )
++    parser.add_argument("--turboquant-seed", type=int, default=42)
  
      args = parser.parse_args()
  
+@@ -504,6 +632,16 @@ def main() -> None:
+         "DFlash draft models for Qwen3-4B and Qwen3-8B were not trained with thinking traces. "
+         "Using --enable-thinking will lead to suboptimal performance."
+     )
++    if args.cache_optimization != "none" and args.backend != "mlx":
++        parser.error("--cache-optimization is supported only for --backend mlx")
++    if args.cache_optimization == "turboquant" and args.quantized_kv_start != 0:
++        parser.error("TurboQuant path currently supports only --quantized-kv-start 0")
++    if args.warmup_passes <= 0:
++        parser.error("--warmup-passes must be > 0")
++    if args.warmup_tokens <= 0:
++        parser.error("--warmup-tokens must be > 0")
++    if args.prefill_chunk_size <= 0:
++        parser.error("--prefill-chunk-size must be > 0")
+ 
+     if args.backend == "transformers":
+         if args.draft_model is None:
 diff --git a/dflash/model_mlx.py b/dflash/model_mlx.py
-index ded744c..5439e7a 100644
+index 1a6293f..e8bbd99 100644
 --- a/dflash/model_mlx.py
 +++ b/dflash/model_mlx.py
-@@ -3,7 +3,7 @@ import time
- from dataclasses import dataclass
+@@ -1,15 +1,23 @@
+ import json
++import sys
+ import time
+ from dataclasses import dataclass, field
  from pathlib import Path
  from threading import RLock
--from typing import List, Optional, Tuple
-+from typing import Any, Callable, List, Optional, Tuple
+-from typing import Any, Dict, List, Optional, Tuple
++from typing import Any, Callable, Dict, List, Optional, Tuple
  
  import mlx.core as mx
  import mlx.nn as nn
-@@ -296,19 +296,131 @@ class GenerationResponse:
+ from huggingface_hub import snapshot_download
+ from mlx_lm.generate import generation_stream
+-from mlx_lm.models.cache import KVCache, RotatingKVCache, can_trim_prompt_cache, make_prompt_cache, trim_prompt_cache
++from mlx_lm.models.cache import (
++    KVCache,
++    QuantizedKVCache,
++    RotatingKVCache,
++    can_trim_prompt_cache,
++    make_prompt_cache,
++    trim_prompt_cache,
++)
+ from mlx_lm.models.qwen3 import MLP
+ from mlx_lm.models.rope_utils import initialize_rope
+ from mlx_lm.sample_utils import make_sampler
+@@ -157,17 +165,31 @@ class DFlashDraftModel(nn.Module):
+         return self.lm_head(self.norm(h))
+ 
+ 
+-def load(model_id: str):
++def load(model_id: str, revision: Optional[str] = None):
+     from mlx_lm import load as mlx_lm_load
+-    return mlx_lm_load(model_id)
++    kwargs = {}
++    if revision:
++        kwargs["revision"] = revision
++    return mlx_lm_load(model_id, **kwargs)
+ 
+ 
+-def load_draft(draft_id: str, sliding_window_size: Optional[int] = None) -> DFlashDraftModel:
++def load_draft(
++    draft_id: str,
++    revision: Optional[str] = None,
++    sliding_window_size: Optional[int] = None,
++) -> DFlashDraftModel:
+     if sliding_window_size is not None and sliding_window_size <= 0:
+         raise ValueError(
+             f"sliding_window_size must be positive or None, got {sliding_window_size}"
+         )
+-    path = Path(snapshot_download(draft_id, allow_patterns=["*.safetensors", "*.json"]))
++    local_path = Path(draft_id).expanduser()
++    if local_path.is_dir():
++        path = local_path
++    else:
++        download_kwargs: dict[str, Any] = {"allow_patterns": ["*.safetensors", "*.json"]}
++        if revision:
++            download_kwargs["revision"] = revision
++        path = Path(snapshot_download(draft_id, **download_kwargs))
+     cfg = json.loads((path / "config.json").read_text())
+     config = DFlashConfig(
+         hidden_size=cfg["hidden_size"],
+@@ -341,20 +363,288 @@ class GenerationResponse:
      generation_tokens: int
      generation_tps: float
      peak_memory: float
@@ -186,9 +347,9 @@ index ded744c..5439e7a 100644
 +        triattention_cache_len,
 +        triattention_compressions,
 +        finish_reason,
-+    )
-+
-+
+     )
+ 
+ 
 +def _cache_offset(cache_entry) -> int:
 +    return int(getattr(cache_entry, "offset", 0))
 +
@@ -263,12 +424,164 @@ index ded744c..5439e7a 100644
 +        kv_indices=kv_indices,
 +        cache_len=_cache_offset(target_cache[kv_indices[0]]),
 +        position=prompt_size,
-     )
- 
- 
++    )
++
++
++def _maybe_import_turboquant_runtime():
++    try:
++        import turboquant.patch as tq_patch
++        from turboquant.cache_v2 import TurboQuantKVCacheV2
++        from turboquant.cache_v3 import TurboQuantKVCacheV3
++        return tq_patch, TurboQuantKVCacheV2, TurboQuantKVCacheV3
++    except Exception:
++        vendor_dir = Path(__file__).resolve().parents[2]
++        turboquant_dir = vendor_dir / "turboquant-mlx"
++        if turboquant_dir.is_dir():
++            turboquant_path = str(turboquant_dir)
++            if turboquant_path not in sys.path:
++                sys.path.insert(0, turboquant_path)
++        import turboquant.patch as tq_patch
++        from turboquant.cache_v2 import TurboQuantKVCacheV2
++        from turboquant.cache_v3 import TurboQuantKVCacheV3
++        return tq_patch, TurboQuantKVCacheV2, TurboQuantKVCacheV3
++
++
++def _make_turboquant_cache(
++    strategy: str,
++    *,
++    head_dim: int,
++    seed: int,
++    TurboQuantKVCacheV2,
++    TurboQuantKVCacheV3,
++):
++    if strategy == "tqv2_4bit_lean":
++        return TurboQuantKVCacheV2(
++            head_dim=head_dim,
++            bits=4,
++            group_size=64,
++            use_rotation=False,
++            use_normalization=False,
++            use_qjl=False,
++            seed=seed,
++        )
++    if strategy == "tqv2_4bit_rot":
++        return TurboQuantKVCacheV2(
++            head_dim=head_dim,
++            bits=4,
++            group_size=64,
++            use_rotation=True,
++            use_normalization=True,
++            use_qjl=False,
++            seed=seed,
++        )
++    if strategy == "tqv2_3bit_rot_qjl":
++        return TurboQuantKVCacheV2(
++            head_dim=head_dim,
++            bits=3,
++            group_size=64,
++            use_rotation=True,
++            use_normalization=True,
++            use_qjl=True,
++            seed=seed,
++        )
++    if strategy == "tqv3_3.5bit_mixed":
++        return TurboQuantKVCacheV3(
++            head_dim=head_dim,
++            bits=3,
++            n_outlier=head_dim // 2,
++            outlier_bits=4,
++            use_qjl=False,
++            seed=seed,
++        )
++    if strategy == "tqv3_3bit":
++        return TurboQuantKVCacheV3(
++            head_dim=head_dim,
++            bits=3,
++            use_qjl=False,
++            seed=seed,
++        )
++    raise ValueError(
++        f"Unsupported TurboQuant strategy: {strategy}. "
++        "Expected one of: tqv2_4bit_lean, tqv2_4bit_rot, tqv2_3bit_rot_qjl, tqv3_3.5bit_mixed, tqv3_3bit."
++    )
++
++
++def _resolve_head_dim(layer, default_head_dim: Optional[int] = None) -> int:
++    attn = getattr(layer, "self_attn", None)
++    if attn is not None:
++        head_dim = getattr(attn, "head_dim", None)
++        if head_dim is None:
++            n_heads = getattr(attn, "n_heads", None)
++            q_proj = getattr(attn, "q_proj", None)
++            if n_heads and q_proj is not None and hasattr(q_proj, "weight"):
++                head_dim = int(q_proj.weight.shape[0]) // int(n_heads)
++        if head_dim is not None:
++            return int(head_dim)
++    if default_head_dim is not None:
++        return int(default_head_dim)
++    raise RuntimeError("Could not resolve attention head_dim for cache optimization.")
++
++
++def _apply_cache_optimization(
++    *,
++    cache_entries,
++    layers,
++    cache_optimization: str,
++    kv_bits: int,
++    kv_group_size: int,
++    quantized_kv_start: int,
++    turboquant_strategy: Optional[str],
++    turboquant_seed: int,
++    default_head_dim: Optional[int] = None,
++):
++    if cache_optimization == "none":
++        return
++    if quantized_kv_start != 0:
++        raise ValueError(
++            "quantized_kv_start > 0 is not supported in DFlash MLX cache fusion yet. "
++            "Use --quantized-kv-start 0."
++        )
++
++    if cache_optimization == "kv-quant":
++        for idx, cache in enumerate(cache_entries):
++            if isinstance(cache, KVCache):
++                cache_entries[idx] = QuantizedKVCache(group_size=kv_group_size, bits=kv_bits)
++        return
++
++    if cache_optimization != "turboquant":
++        raise ValueError(f"Unsupported cache_optimization: {cache_optimization}")
++
++    if not turboquant_strategy:
++        raise ValueError("--cache-optimization turboquant requires a TurboQuant strategy.")
++    tq_patch, TurboQuantKVCacheV2, TurboQuantKVCacheV3 = _maybe_import_turboquant_runtime()
++    tq_patch.apply()
++
++    for idx, cache in enumerate(cache_entries):
++        if not isinstance(cache, KVCache):
++            continue
++        if idx >= len(layers):
++            raise RuntimeError(f"Cache index {idx} exceeds layer count {len(layers)}.")
++        head_dim = _resolve_head_dim(layers[idx], default_head_dim=default_head_dim)
++        cache_entries[idx] = _make_turboquant_cache(
++            turboquant_strategy,
++            head_dim=head_dim,
++            seed=turboquant_seed + idx,
++            TurboQuantKVCacheV2=TurboQuantKVCacheV2,
++            TurboQuantKVCacheV3=TurboQuantKVCacheV3,
++        )
++
++
  def stream_generate(
      model, draft, tokenizer, prompt,
      block_size=None, max_tokens=256, temperature=0.0, sampler=None,
++    max_kv_size: Optional[int] = None,
++    prefill_chunk_size: int = 512,
++    cache_optimization: str = "none",
++    kv_bits: int = 4,
++    kv_group_size: int = 64,
++    quantized_kv_start: int = 0,
++    turboquant_strategy: Optional[str] = None,
++    turboquant_seed: int = 42,
 +    triattention_enable: bool = False,
 +    triattention_stats_path: Optional[str] = None,
 +    triattention_kv_budget: int = 2048,
@@ -277,9 +590,36 @@ index ded744c..5439e7a 100644
 +    triattention_disable_trig: bool = False,
 +    triattention_disable_mlr: bool = False,
  ):
++    if triattention_enable and cache_optimization != "none":
++        raise ValueError("TriAttention and cache optimization cannot be enabled together in one run.")
++    if prefill_chunk_size <= 0:
++        raise ValueError("prefill_chunk_size must be > 0")
      _patch_model(model, draft.config.target_layer_ids)
      block_size = block_size if block_size is not None else int(draft.config.block_size)
-@@ -337,6 +449,18 @@ def stream_generate(
+     sampler = sampler or make_sampler(temp=temperature)
+@@ -372,8 +662,19 @@ def stream_generate(
+     mask_id = int(draft.config.mask_token_id)
+     tokens = prompt.tolist()
+ 
+-    target_cache = make_prompt_cache(model)
+-    draft_cache = make_prompt_cache(draft)
++    target_cache = make_prompt_cache(model, max_kv_size=max_kv_size)
++    draft_cache = make_prompt_cache(draft, max_kv_size=max_kv_size)
++    target_layers = _get_layers(model)
++    _apply_cache_optimization(
++        cache_entries=target_cache,
++        layers=target_layers,
++        cache_optimization=cache_optimization,
++        kv_bits=kv_bits,
++        kv_group_size=kv_group_size,
++        quantized_kv_start=quantized_kv_start,
++        turboquant_strategy=turboquant_strategy,
++        turboquant_seed=turboquant_seed,
++    )
+     draft.bind(model)
+     _target_can_trim = can_trim_prompt_cache(target_cache)
+     if not _target_can_trim and not _HAS_GDN:
+@@ -382,13 +683,46 @@ def stream_generate(
              "mlx_lm.models.gated_delta is unavailable."
          )
      _capture = _GDNStateCapture() if not _target_can_trim else None
@@ -298,9 +638,24 @@ index ded744c..5439e7a 100644
  
      try:
          tic = time.perf_counter()
-@@ -344,6 +468,14 @@ def stream_generate(
-             logits = model(prompt[None], target_cache)
-             hidden = mx.concatenate(model._hidden_states, axis=-1)
++        hidden = None
+         with mx.stream(generation_stream):
+-            logits = model(prompt[None], target_cache)
+-            hidden = mx.concatenate(model._hidden_states, axis=-1)
++            if prompt.size == 0:
++                logits = model(mx.array([[mask_id]]), target_cache)
++                hidden = mx.concatenate(model._hidden_states, axis=-1)[:, -1:, :]
++            else:
++                logits = None
++                prompt_list = prompt.tolist()
++                for start in range(0, len(prompt_list), prefill_chunk_size):
++                    chunk = mx.array([prompt_list[start : start + prefill_chunk_size]])
++                    logits = model(chunk, target_cache)
++                    # Keep only the last hidden state slice to avoid a huge concat buffer
++                    # on long prefill inputs.
++                    hidden = mx.concatenate(model._hidden_states, axis=-1)[:, -1:, :]
++                if logits is None:
++                    raise RuntimeError("Prefill produced no logits.")
          mx.eval(logits, hidden)
 +        if triattention_runtime is not None and prompt.size > 0:
 +            _apply_triattention_step(
@@ -313,7 +668,7 @@ index ded744c..5439e7a 100644
          prompt_tps = prompt.size / (time.perf_counter() - tic)
  
          tic = time.perf_counter()
-@@ -354,11 +486,40 @@ def stream_generate(
+@@ -399,11 +733,40 @@ def stream_generate(
          if token in tokenizer.eos_token_ids:
              detokenizer.add_token(token)
              detokenizer.finalize()
@@ -356,7 +711,7 @@ index ded744c..5439e7a 100644
  
          while n < max_tokens:
              bs = min(block_size, max_tokens - n + 1)
-@@ -395,7 +556,22 @@ def stream_generate(
+@@ -443,7 +806,22 @@ def stream_generate(
                  detokenizer.finalize()
                  tokens.extend(new_tokens)
                  n += len(new_tokens)
@@ -380,7 +735,7 @@ index ded744c..5439e7a 100644
                  return
  
              for t in new_tokens:
-@@ -406,8 +582,6 @@ def stream_generate(
+@@ -454,8 +832,6 @@ def stream_generate(
              if n % 256 == 0:
                  mx.clear_cache()
  
@@ -389,7 +744,7 @@ index ded744c..5439e7a 100644
              trim = bs - accepted - 1
              if trim > 0:
                  if _target_can_trim:
-@@ -416,8 +590,56 @@ def stream_generate(
+@@ -464,8 +840,56 @@ def stream_generate(
                      _capture.rollback(target_cache, accepted, trim)
              hidden = hidden[:, :accepted + 1, :]
  

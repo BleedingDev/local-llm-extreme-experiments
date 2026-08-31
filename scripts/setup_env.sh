@@ -26,9 +26,13 @@ Options:
 Optional dependency install sources:
   DDTREE_INSTALL_SPEC   pip install spec/path for DDTree (explicit opt-in)
   DFLASH_INSTALL_SPEC   pip install spec/path for DFlash
+  PAROQUANT_INSTALL_SPEC pip install spec/path for ParoQuant
 
 If DFLASH_INSTALL_SPEC is not set, setup will try editable installs from:
   ./vendor/dflash, ./third_party/dflash, ./dflash
+
+If PAROQUANT_INSTALL_SPEC is not set, setup will try editable installs from:
+  ./vendor/paroquant, ./third_party/paroquant, ./paroquant
 
 DDTree is not auto-installed from local checkout by default because upstream
 targets CUDA/PyTorch stacks. To force local DDTree install, set:
@@ -131,6 +135,11 @@ install_optional_dependency "DFlash" "DFLASH_INSTALL_SPEC" \
   "${ROOT_DIR}/vendor/dflash" \
   "${ROOT_DIR}/third_party/dflash" \
   "${ROOT_DIR}/dflash"
+
+install_optional_dependency "ParoQuant" "PAROQUANT_INSTALL_SPEC" \
+  "${ROOT_DIR}/vendor/paroquant" \
+  "${ROOT_DIR}/third_party/paroquant" \
+  "${ROOT_DIR}/paroquant"
 
 if [[ "${RUN_SMOKE_TEST}" -eq 1 ]]; then
   smoke_args=(--venv-path "${VENV_DIR}")

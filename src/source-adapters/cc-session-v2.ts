@@ -19,6 +19,10 @@ import type {
   CanonicalSourceRecord,
   SourceAdapterCanonicalDiagnostic,
 } from "./canonical";
+import {
+  classifySourceAdapterFailure,
+  sourceAdapterFailureAttributes,
+} from "./failures";
 
 // New CC adapter type. Registered in boundary.ts so detection succeeds
 // before the legacy "acp-session-jsonl" detector. We deliberately keep it
@@ -36,6 +40,7 @@ const CC_RECORD_TYPES = new Set([
   "queue-operation",
   "file-history-snapshot",
   "summary",
+  "error",
 ]);
 
 const CANONICAL_SCOPE_NAME = "bag.source-adapters";
@@ -127,6 +132,8 @@ export const detectCcSessionV2 = (
 export type CanonicalizeCcSessionV2Input = {
   source: SourceMetadata;
   records: readonly unknown[];
+  recordIndexOffset?: number;
+  lineNumbers?: readonly (number | undefined)[];
   redactionOptions?: Omit<SourceAdapterRedactionOptions, "source">;
 };
 
@@ -135,13 +142,16 @@ export const canonicalizeCcSessionV2 = (input: CanonicalizeCcSessionV2Input): Ca
   const diagnostics: SourceAdapterCanonicalDiagnostic[] = [];
 
   for (let index = 0; index < input.records.length; index += 1) {
+    const recordIndex = (input.recordIndexOffset ?? 0) + index;
+    const line = input.lineNumbers?.[index];
     const record = input.records[index];
     if (!isObject(record)) {
       diagnostics.push({
         code: "non_object_record",
         message: "Canonical CC v2 requires JSON objects.",
         sourceType: input.source.sourceType,
-        recordIndex: index,
+        recordIndex,
+        ...(line === undefined ? {} : { line }),
       });
       continue;
     }
@@ -152,7 +162,8 @@ export const canonicalizeCcSessionV2 = (input: CanonicalizeCcSessionV2Input): Ca
         code: "non_object_record",
         message: "Redacted CC record was not an object.",
         sourceType: input.source.sourceType,
-        recordIndex: index,
+        recordIndex,
+        ...(line === undefined ? {} : { line }),
       });
       continue;
     }
@@ -164,7 +175,8 @@ export const canonicalizeCcSessionV2 = (input: CanonicalizeCcSessionV2Input): Ca
         code: "unsupported_record",
         message: `No canonical mapping for cc-session-jsonl-v2 record.`,
         sourceType: input.source.sourceType,
-        recordIndex: index,
+        recordIndex,
+        ...(line === undefined ? {} : { line }),
       };
       if (recordType != null) diag.recordType = recordType;
       diagnostics.push(diag);
@@ -183,7 +195,8 @@ export const canonicalizeCcSessionV2 = (input: CanonicalizeCcSessionV2Input): Ca
           redacted,
           event: ev,
           lineage,
-          recordIndex: index,
+          recordIndex,
+          ...(line === undefined ? {} : { line }),
           subEventIndex: evIdx,
         }),
       });
@@ -228,7 +241,7 @@ const ccEventsFromRecord = (record: JsonObject): CcSourceEvent[] => {
         if (itemType === "tool_result") {
           const isErr = item.is_error === true;
           events.push({
-            eventKind: "tool_result",
+            eventKind: sidechain ? "subagent_tool_result" : "tool_result",
             name: "source.cc-session-jsonl-v2.tool_result",
             observationKind: "TOOL",
             statusCode: isErr ? "STATUS_CODE_ERROR" : "STATUS_CODE_OK",
@@ -245,7 +258,7 @@ const ccEventsFromRecord = (record: JsonObject): CcSourceEvent[] => {
           });
         } else if (itemType === "text") {
           events.push({
-            eventKind: "user_message",
+            eventKind: sidechain ? "subagent_user_message" : "user_message",
             name: "source.cc-session-jsonl-v2.user_message",
             observationKind: "AGENT",
             timestamp: ts,
@@ -262,7 +275,7 @@ const ccEventsFromRecord = (record: JsonObject): CcSourceEvent[] => {
     }
     if (events.length === 0) {
       events.push({
-        eventKind: "user_message",
+        eventKind: sidechain ? "subagent_user_message" : "user_message",
         name: "source.cc-session-jsonl-v2.user_message",
         observationKind: "AGENT",
         timestamp: ts,
@@ -284,7 +297,7 @@ const ccEventsFromRecord = (record: JsonObject): CcSourceEvent[] => {
     const model = stringValue(message?.model);
     if (typeof content === "string") {
       events.push({
-        eventKind: "assistant_message",
+        eventKind: sidechain ? "subagent_assistant_message" : "assistant_message",
         name: "source.cc-session-jsonl-v2.assistant_message",
         observationKind: "LLM",
         timestamp: ts,
@@ -303,7 +316,7 @@ const ccEventsFromRecord = (record: JsonObject): CcSourceEvent[] => {
         const itemType = stringValue(item.type);
         if (itemType === "text") {
           events.push({
-            eventKind: "assistant_message",
+            eventKind: sidechain ? "subagent_assistant_message" : "assistant_message",
             name: "source.cc-session-jsonl-v2.assistant_message",
             observationKind: "LLM",
             timestamp: ts,
@@ -318,7 +331,7 @@ const ccEventsFromRecord = (record: JsonObject): CcSourceEvent[] => {
           });
         } else if (itemType === "thinking") {
           events.push({
-            eventKind: "assistant_thinking",
+            eventKind: sidechain ? "subagent_assistant_thinking" : "assistant_thinking",
             name: "source.cc-session-jsonl-v2.assistant_thinking",
             observationKind: "LLM",
             timestamp: ts,
@@ -326,13 +339,14 @@ const ccEventsFromRecord = (record: JsonObject): CcSourceEvent[] => {
               "message.role": "assistant",
               "source.cc.thinking": item.thinking,
               "inference.llm.model_name": model,
+              "source.cc.is_sidechain": sidechain,
               "source.cc.uuid": record.uuid,
               "source.cc.parent_uuid": record.parentUuid,
             }),
           });
         } else if (itemType === "tool_use") {
           events.push({
-            eventKind: "tool_call",
+            eventKind: sidechain ? "subagent_tool_call" : "tool_call",
             name: "source.cc-session-jsonl-v2.tool_call",
             observationKind: "TOOL",
             timestamp: ts,
@@ -461,6 +475,25 @@ const ccEventsFromRecord = (record: JsonObject): CcSourceEvent[] => {
     }];
   }
 
+  if (t === "error") {
+    const error = record.error ?? record.message ?? record.content ?? record.text;
+    return [{
+      eventKind: "error",
+      name: "source.cc-session-jsonl-v2.error",
+      observationKind: "CHAIN",
+      statusCode: "STATUS_CODE_ERROR",
+      statusMessage: firstLine(error),
+      timestamp: ts,
+      attributes: cleanAttributes({
+        "error.message": error,
+        "error.type": record.errorType ?? record.subtype ?? record.code,
+        "output.value": record,
+        "source.cc.uuid": record.uuid,
+        "source.cc.parent_uuid": record.parentUuid,
+      }),
+    }];
+  }
+
   return [];
 };
 
@@ -490,6 +523,7 @@ const spanFromEvent = (input: {
   event: CcSourceEvent;
   lineage: SourceRecordLineage;
   recordIndex?: number;
+  line?: number;
   subEventIndex?: number;
 }): HaloSpan => {
   const ts = input.event.timestamp ?? DEFAULT_TIMESTAMP;
@@ -507,6 +541,14 @@ const spanFromEvent = (input: {
   const parentSpanId = input.lineage.parentId == null
     ? ""
     : stableId("span", input.source.sourceType, input.source.sessionId, input.lineage.parentId);
+  const classification = classifySourceAdapterFailure({
+    sourceType: input.source.sourceType,
+    eventKind: input.event.eventKind,
+    observationKind: input.event.observationKind,
+    statusCode: input.event.statusCode,
+    statusMessage: input.event.statusMessage,
+    attributes: input.event.attributes,
+  });
 
   return {
     trace_id: traceId,
@@ -518,8 +560,8 @@ const spanFromEvent = (input: {
     start_time: ts,
     end_time: ts,
     status: {
-      code: input.event.statusCode ?? "STATUS_CODE_OK",
-      message: input.event.statusMessage ?? "",
+      code: input.event.statusCode ?? classification?.statusCode ?? "STATUS_CODE_OK",
+      message: input.event.statusMessage ?? classification?.statusMessage ?? "",
     },
     resource: {
       attributes: cleanAttributes({
@@ -543,6 +585,7 @@ const spanFromEvent = (input: {
       "source.adapter.schema_version": input.source.schemaVersion,
       "source.adapter.detected_signals": input.source.detectedSignals,
       "source.record.index": input.recordIndex,
+      "source.record.line": input.line,
       "source.record.sub_event_index": input.subEventIndex,
       "source.lineage.id": input.lineage.id,
       "source.lineage.parent_id": input.lineage.parentId,
@@ -557,6 +600,7 @@ const spanFromEvent = (input: {
       "source.redaction.full_content_included": input.redacted.redaction.fullContentIncluded,
       "source.redaction.secret_redaction_disabled": input.redacted.redaction.secretRedactionDisabled,
       ...input.event.attributes,
+      ...sourceAdapterFailureAttributes(classification),
       "source.record.redacted": input.redacted.record,
     }),
   };

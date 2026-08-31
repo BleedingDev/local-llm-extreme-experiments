@@ -1,0 +1,69 @@
+{
+  "name": "bleeding-agent",
+  "version": "1.0.0",
+  "description": "BleedingAgent ACP coding-agent backend and self-evolving optimization harness over TS, Ax, GPT master models, and local executors.",
+  "type": "module",
+  "packageManager": "npm@10.9.7",
+  "engines": {
+    "node": ">=22.0.0",
+    "npm": ">=10.9.0",
+    "bun": ">=1.3.13"
+  },
+  "main": "dist/index.js",
+  "bin": {
+    "bag": "dist/index.js"
+  },
+  "files": [
+    "dist/",
+    "README.md",
+    ".mcp.example.json",
+    "docs/bleeding-agent.md",
+    "docs/bleeding-agent-experiment-boundaries.md",
+    "docs/bleeding-agent-gepa-operations.md",
+    "docs/bleeding-agent-green-gates.md",
+    "docs/bleeding-agent-live-tool-loop-inventory.md",
+    "docs/bleeding-agent-operator-runbook.md",
+    "docs/bleeding-agent-ownership-manifest.md",
+    "docs/bleeding-agent-packaging-inventory.md",
+    "docs/bleeding-agent-parallel-orchestration.md",
+    "docs/bleeding-agent-quality-execution-release-proof.md",
+    "docs/bleeding-agent-real-replay-dataset.md",
+    "docs/bleeding-agent-release-readiness.md",
+    "docs/bag-path-profile.md"
+  ],
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "build": "rspack build --config rspack.config.ts",
+    "dev": "tsx src/index.ts",
+    "bag": "tsx src/index.ts",
+    "acp:verify-consumers": "tsx scripts/verify_acp_consumer_setup.ts",
+    "test": "bun test tests",
+    "typecheck": "tsc -p tsconfig.json --noEmit && tsc -p tsconfig.test.json --noEmit"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BleedingDev/local-llm-extreme-experiments.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/BleedingDev/local-llm-extreme-experiments/issues"
+  },
+  "homepage": "https://github.com/BleedingDev/local-llm-extreme-experiments#readme",
+  "dependencies": {
+    "@agentclientprotocol/sdk": "^0.21.0",
+    "@ax-llm/ax": "^20.0.0",
+    "@mariozechner/pi-ai": "^0.72.0",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@rspack/cli": "^2.0.1",
+    "@rspack/core": "^2.0.1",
+    "@types/node": "^25.6.0",
+    "tsx": "^4.21.0",
+    "typescript": "^6.0.3"
+  }
+}

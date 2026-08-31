@@ -15,7 +15,7 @@ Usage: scripts/apply_vendor_patches.sh [options]
 Applies local reproducibility patches on top of pinned vendor sources.
 
 Options:
-  --component NAME   all | dflash | ddtree | turboquant-mlx | triattention (default: all)
+  --component NAME   all | dflash | ddtree | turboquant-mlx | triattention | paroquant (default: all)
   --vendor-dir PATH  Vendor directory (default: ./vendor)
   --patches-dir PATH Patches directory (default: ./patches)
   -h, --help         Show this help text
@@ -83,7 +83,7 @@ case "${COMPONENT}" in
   all|dflash)
     apply_patch_file "${VENDOR_DIR}/dflash" "${PATCHES_DIR}/dflash-triattention-mlx.patch"
     ;;
-  ddtree|turboquant-mlx|turboquant_mlx|triattention)
+  ddtree|turboquant-mlx|turboquant_mlx|triattention|paroquant)
     echo "No local patches defined for component: ${COMPONENT}"
     ;;
   *)
