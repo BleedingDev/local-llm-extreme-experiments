@@ -62,6 +62,7 @@ docs/plans/
 node_modules/
 dist/
 .bag/
+.tracedecay/
 
 # Secrets / local-only config
 .env
